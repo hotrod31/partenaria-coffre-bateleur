@@ -27,7 +27,7 @@ Ton geste est un **rite d'initiation technique** : tu poses les fondations sur l
 
 Si aucun argument n'est fourni : demander le chemin au bateleur, une seule fois, avec un message clair.
 
-## Flux d'exécution (6 étapes)
+## Flux d'exécution (8 étapes)
 
 ### Étape 1 — Validation de l'entrée
 
@@ -36,7 +36,19 @@ Si aucun argument n'est fourni : demander le chemin au bateleur, une seule fois,
 3. Si extension non supportée : arrêter avec message clair
 4. Si fichier introuvable : arrêter avec message clair
 
-### Étape 2 — Lecture (et conversion si nécessaire)
+### Étape 2 — Question 1 : nom du coffre (méta, avant toute lecture)
+
+Pose au bateleur cette question **avant** d'ouvrir le fichier d'introspection :
+
+> Quel nom veux-tu donner à ton coffre ? Ce nom apparaîtra dans le titre de ton `Contexte.md` et te sera proposé pour renommer le dossier physique en fin d'initialisation.
+>
+> Exemples : « Elsa », « Coffre Elsa », « PartenarIA Elsa », « Mon Coffre ».
+
+Récupère la réponse. Nettoie-la (retire les caractères problématiques pour un nom de dossier : `< > : " / \ | ? *`). Note-la comme `<NOM_COFFRE>`.
+
+Note aussi la version « nom de dossier » compatible : `<NOM_COFFRE_DOSSIER>` (identique si déjà propre, sinon adapté).
+
+### Étape 3 — Lecture (et conversion si nécessaire)
 
 - **`.md` / `.txt`** : lecture directe avec le tool Read
 - **`.pdf`** : lecture native via le tool Read (Claude Code gère les PDF)
@@ -48,7 +60,7 @@ Si aucun argument n'est fourni : demander le chemin au bateleur, une seule fois,
 
 L'initialisation continue quand même — le bateleur assume.
 
-### Étape 3 — Extraction sémantique
+### Étape 4 — Extraction sémantique
 
 Analyse le contenu pour identifier les éléments correspondant aux **7 sections du guide** :
 
@@ -65,9 +77,9 @@ Analyse le contenu pour identifier les éléments correspondant aux **7 sections
 
 **Règle stricte** : si une section n'est pas traitée dans le fichier, tu insères un placeholder `[à compléter — Q_X du guide d'introspection non renseignée]` dans la section correspondante du fichier généré. Tu n'inventes rien.
 
-### Étape 4 — Micro-interaction (unique question méta)
+### Étape 5 — Question 2 : nom de la première phase de vie
 
-Pose au bateleur une **seule question** :
+Pose au bateleur cette deuxième question :
 
 > Comment veux-tu nommer cette première phase de vie ? (2-5 mots, format libre — ex : « Découverte », « Retrouver mon corps », « Cadrer mon activité ». Elle durera 2-12 semaines.)
 
@@ -83,16 +95,16 @@ date +%Y-%m          # ex: 2026-08
 
 Note les valeurs comme `<TODAY>`, `<WEEK>`, `<YEAR_MONTH>`.
 
-### Étape 5 — Génération des 7 fichiers cibles
+### Étape 6 — Génération des 7 fichiers cibles
 
 **Règle d'idempotence** : avant chaque Write, vérifier si le fichier existe déjà. Si oui, arrêter le flux et signaler au bateleur : « Le fichier X existe déjà. Ton coffre semble déjà initialisé. Je m'arrête pour ne rien écraser. »
 
 Génère dans cet ordre :
 
-**a) `1 ALIGNEMENT/Contexte.md`** — 6 sections alignées sur le guide :
+**a) `1 ALIGNEMENT/Contexte.md`** — 6 sections alignées sur le guide. Utilise `<NOM_COFFRE>` collecté à l'étape 2 comme titre :
 
 ```markdown
-# Contexte — [Prénom ou "Bateleur"]
+# Contexte — <NOM_COFFRE>
 
 ## Moi
 [Identité, provenance, fil rouge du parcours intime, expériences structurantes — extrait de S1]
@@ -113,7 +125,7 @@ Génère dans cet ordre :
 [Ce que tu attends techniquement, relationnellement, intérieurement — extrait de S7]
 ```
 
-Si `<Prénom>` n'est pas identifiable dans le fichier, utiliser `Bateleur`.
+Le titre reprend `<NOM_COFFRE>` tel que saisi par le bateleur à l'étape 2. Ne pas essayer d'extraire un prénom de la note d'introspection pour ce titre — c'est le bateleur qui décide.
 
 **b) `1 ALIGNEMENT/Préférences.md`** — 4 sections :
 
@@ -198,7 +210,7 @@ Utiliser le template `5 RESSOURCES/Modèles/Weekly Note.md`. Remplacer les place
 
 Utiliser le template `5 RESSOURCES/Modèles/Daily Note.md`. Remplacer `{{date:YYYY-MM-DD}}` par `<TODAY>`.
 
-### Étape 6 — Configuration Obsidian
+### Étape 7 — Configuration Obsidian
 
 Mettre à jour **3 fichiers de config** pour que les plugins periodic-notes et calendar sachent où créer les futures dailies/weeklies.
 
@@ -210,15 +222,15 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
 
 **c) `.obsidian/plugins/calendar/data.json`** — remplacer `"weeklyNoteFolder": ""` par `"weeklyNoteFolder": "1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>"`
 
-### Étape 7 — Rapport de fin (factuel, sans révéler de contenu)
+### Étape 8 — Rapport de fin + proposition de renommage du dossier
 
-Émettre exactement ce message (adapter uniquement les chemins) :
+Émettre exactement ce message (adapter les chemins et `<NOM_COFFRE_DOSSIER>`) :
 
 ```
 ✓ Coffre initialisé.
 
 7 fichiers créés :
-  • 1 ALIGNEMENT/Contexte.md
+  • 1 ALIGNEMENT/Contexte.md (titre : « Contexte — <NOM_COFFRE> »)
   • 1 ALIGNEMENT/Préférences.md
   • 1 ALIGNEMENT/Chapitres/<YEAR_MONTH> - <intention>.md
   • 1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>/Clarté/1 Intention.md
@@ -233,15 +245,36 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
 
 Ton coffre est prêt.
 
-Prochaine étape : lance /hello quand tu veux commencer ta première session.
+═══════════════════════════════════════════════════════════
+
+Renommage du dossier physique
+═══════════════════════════════════════════════════════════
+
+Le dossier de ton coffre s'appelle actuellement « partenaria-coffre-bateleur »
+(le nom du repo GitHub par défaut). Tu veux le renommer en « <NOM_COFFRE_DOSSIER> »
+pour qu'il porte ton nom.
+
+Comme Claude Code et Obsidian sont actuellement ouverts sur ce dossier,
+je ne peux pas le renommer moi-même (le dossier est verrouillé par les
+processus actifs). Voici la procédure à suivre :
+
+1. Ferme complètement Obsidian (Ctrl+Q ou fermer via la barre des tâches)
+2. Ferme cette session Claude Code (tape /exit ou ferme le terminal)
+3. Ouvre l'explorateur de fichiers sur le dossier parent
+4. Renomme le dossier « partenaria-coffre-bateleur » en « <NOM_COFFRE_DOSSIER> »
+5. Rouvre Obsidian : Fichier → Ouvrir un coffre → sélectionne le dossier renommé
+6. Ouvre un terminal dans le nouveau dossier et lance `claude` pour reprendre
+
+Prochaine étape (après renommage) : lance /hello quand tu veux commencer
+ta première session.
 ```
 
-**Aucune autre information sortie**. Pas d'extrait, pas de commentaire, pas de résumé de ton introspection.
+**Aucune valeur extraite de la note d'introspection n'est répétée dans le rapport** — respect de l'intégrité du bateleur (le rapport peut être partagé en visio sans rien révéler).
 
 ## Règles de conception (à respecter absolument)
 
 1. **Silence sur le contenu** — ne cite jamais de valeurs extraites dans ce que tu affiches à l'utilisateur
-2. **Une seule question au bateleur** — le nom de sa première phase de vie, rien d'autre
+2. **Deux questions au bateleur** — le nom du coffre (étape 2, avant lecture) puis le nom de la première phase de vie (étape 5, après extraction). Rien d'autre.
 3. **Aucune invention** — si une section du guide n'est pas traitée, placeholder `[à compléter — Q_X ...]`
 4. **Idempotence stricte** — si un fichier cible existe déjà, arrêter net et signaler, jamais écraser
 5. **Dates système** — toujours via commande Bash `date`, jamais inférer
