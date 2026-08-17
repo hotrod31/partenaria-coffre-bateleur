@@ -9,6 +9,14 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v1.0.1 — 2026-08-17
+
+### Correctif
+
+- Ajout de README de méthode dans `6 ARCHIVES/`, `5 RESSOURCES/Outils/` et `5 RESSOURCES/Processus/` pour que ces dossiers structurels soient présents dès le clone (Git ne track pas les dossiers vides).
+
+---
+
 ## v1.0.0 — 2026-08-17
 
 Première version distribuable du coffre-template Bateleur.
