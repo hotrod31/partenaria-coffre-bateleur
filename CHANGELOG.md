@@ -9,6 +9,34 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v1.1.1 — 2026-08-17
+
+### Voix par défaut selon consonance du nom du coffre
+
+Le skill `/initialisation` détermine automatiquement la voix du premier cri (Jessica féminine ou Pierre masculin) en analysant la consonance du prénom identifiable dans le nom du coffre saisi par le bateleur.
+
+**Nouvelle étape 2b** :
+1. Extraire le prénom candidat dans `<NOM_COFFRE>` (ignorer les mots génériques : « Coffre », « Mon », « PartenarIA », « Vault »).
+2. Analyser la consonance du prénom :
+   - Terminaisons féminines (`-a`, `-e`, `-ette`, `-elle`, `-ine`, `-ie`, `-ia`, `-ah`, `-anne`, etc.) ou prénom connu féminin → Jessica
+   - Terminaisons masculines (`-o`, `-us`, `-in`, `-en`, `-c`, `-l`, `-r`, `-t`, `-d`, etc.) ou prénom connu masculin → Pierre
+   - Ambigu (Camille, Dominique, ou aucun prénom identifiable) → **Jessica par défaut** (règle : dans le doute, féminin)
+3. Utiliser cette voix à l'étape 7b pour configurer les flags Piper et lors du premier cri.
+
+**Exemples** :
+- « Elsa » → Jessica ✓
+- « Marc » → Pierre ✓
+- « PartenarIA Sarah » → Jessica ✓ (prénom extrait)
+- « Coffre Rodrigue » → Pierre ✓
+- « Mon Coffre » → Jessica ✓ (ambigu, défaut féminin)
+- « Camille » → Jessica ✓ (épicène, défaut féminin)
+
+Le bateleur peut toujours changer via `/vocal-jessica`, `/vocal-pierre`, `/vocal-siwis`, `/vocal-stop`.
+
+Aucune question supplémentaire posée au bateleur — respect de la règle « 2 questions max au bateleur ».
+
+---
+
 ## v1.1.0 — 2026-08-17
 
 ### Feature majeure — Mode vocal Piper local

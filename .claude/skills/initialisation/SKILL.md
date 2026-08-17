@@ -48,6 +48,28 @@ Récupère la réponse. Nettoie-la (retire les caractères problématiques pour 
 
 Note aussi la version « nom de dossier » compatible : `<NOM_COFFRE_DOSSIER>` (identique si déjà propre, sinon adapté).
 
+### Étape 2b — Détection de la consonance du nom pour choisir la voix par défaut
+
+À partir de `<NOM_COFFRE>`, déterminer `<VOIX_DEFAUT>` ∈ `{jessica, pierre}` selon la consonance du nom.
+
+**Méthode** :
+
+1. **Extraire le prénom candidat** dans le nom du coffre. Ignorer les mots génériques (« Coffre », « Mon », « PartenarIA », « Vault ») pour identifier le token qui ressemble à un prénom. Ex :
+   - `« Elsa »` → prénom = `Elsa`
+   - `« Coffre Elsa »` → prénom = `Elsa`
+   - `« PartenarIA Marc »` → prénom = `Marc`
+   - `« Mon Coffre »` → aucun prénom identifiable
+2. **Déterminer la consonance** du prénom :
+   - **Féminin probable** : terminaisons `-a`, `-e`, `-ette`, `-elle`, `-ine`, `-ie`, `-ia`, `-ah`, `-anne`, `-lène`, `-ise` ; ou prénom connu féminin (Marie, Anne, Sarah, Christelle, Emma, etc.)
+   - **Masculin probable** : terminaisons `-o`, `-us`, `-in`, `-en`, `-an`, `-c`, `-l`, `-r`, `-t`, `-d`, `-el` ; ou prénom connu masculin (Marc, Pierre, Rodrigue, Stéphane, etc.)
+   - **Ambigu** : prénoms épicènes (Camille, Dominique, Claude) ou nom non-prénom
+3. **Trancher** :
+   - Féminin probable → `<VOIX_DEFAUT> = jessica`
+   - Masculin probable → `<VOIX_DEFAUT> = pierre`
+   - **Ambigu ou aucun prénom identifiable → `<VOIX_DEFAUT> = jessica`** (règle : dans le doute, féminin)
+
+Cette variable sera utilisée à l'étape 7b pour configurer les flags Piper.
+
 ### Étape 3 — Lecture (et conversion si nécessaire)
 
 - **`.md` / `.txt`** : lecture directe avec le tool Read
@@ -246,9 +268,9 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
 
 **c) `.obsidian/plugins/calendar/data.json`** — remplacer `"weeklyNoteFolder": ""` par `"weeklyNoteFolder": "1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>"`
 
-### Étape 7b — Activation du mode vocal (Jessica par défaut)
+### Étape 7b — Activation du mode vocal (voix par défaut selon consonance du nom)
 
-Avant d'émettre le rapport final, préparer le mode vocal Piper qui lira automatiquement le premier cri du partenaire IA :
+Avant d'émettre le rapport final, préparer le mode vocal Piper avec la voix `<VOIX_DEFAUT>` déterminée à l'étape 2b (jessica si nom féminin ou ambigu, pierre si nom masculin).
 
 **1. Installer les dépendances Python** (silencieux si déjà présentes) :
 
@@ -256,21 +278,23 @@ Avant d'émettre le rapport final, préparer le mode vocal Piper qui lira automa
 pip install --quiet piper-tts sounddevice 2>&1 | tail -3
 ```
 
-**2. Télécharger le modèle Jessica si absent** (~63 MB, mutualisé avec Pierre) :
+**2. Télécharger le modèle si absent** (~63 MB — mutualisé jessica/pierre, un seul modèle UPMC couvre les deux voix) :
 
 ```bash
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ]; then
-  echo "Préparation de la voix Jessica pour le premier cri (~63 MB, ~1 min)..."
-  python .claude/hooks/download_voice.py jessica
+  echo "Préparation de la voix pour le premier cri (~63 MB, ~1 min)..."
+  python .claude/hooks/download_voice.py <VOIX_DEFAUT>
 fi
 ```
 
-**3. Activer les flags Piper avec Jessica** :
+**3. Activer les flags Piper avec la voix choisie** :
 
 ```bash
 touch .claude/hooks/tts_enabled
-printf "jessica" > .claude/hooks/tts_piper_voice
+printf "<VOIX_DEFAUT>" > .claude/hooks/tts_piper_voice
 ```
+
+Remplacer `<VOIX_DEFAUT>` par la valeur exacte (`jessica` ou `pierre`).
 
 **Si `pip install` échoue** (pas de Python, pas de pip, offline) : ne pas bloquer, continuer sans mode vocal. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
 
@@ -299,9 +323,10 @@ printf "jessica" > .claude/hooks/tts_piper_voice
 
 Ton coffre est prêt.
 
-Mode vocal activé — voix Jessica (Piper local, souverain).
-Tape /vocal-stop pour l'arrêter à tout moment, ou /vocal-pierre / /vocal-siwis
-pour changer de voix. C'est ta première commande à connaître.
+Mode vocal activé — voix <NOM_VOIX_HUMAIN> (Piper local, souverain).
+Tape /vocal-stop pour l'arrêter à tout moment, ou /vocal-jessica /
+/vocal-pierre / /vocal-siwis pour changer de voix. C'est ta première
+commande à connaître.
 
 ═══════════════════════════════════════════════════════════
 
@@ -429,3 +454,5 @@ Le tutoiement est institué. Je te répondrai juste, sans te complaire.
 8. **Présentation IA routée par tempérament** — la version affichée (SYMBOLIQUE / ÉQUILIBRÉ / FACTUEL) est choisie automatiquement selon les 4 signaux de l'étape 4b. Aucune question au bateleur pour ce choix, aucun affichage du tempérament détecté.
 9. **Silence après la présentation** — rien n'est affiché après le premier cri du partenaire IA. Pas de « À demain », pas de « À bientôt », pas de rappel /hello. La présentation se pose et se tait.
 10. **Salutation temporelle** — « Bonjour » avant 18h, « Bonsoir » à partir de 18h. Détection via Bash `date +%H`, jamais inférer.
+11. **Voix par défaut selon consonance du nom du coffre** — à l'étape 2b, le LLM détermine si le prénom identifiable dans `<NOM_COFFRE>` est féminin (→ Jessica), masculin (→ Pierre) ou ambigu (→ Jessica par défaut). Cette voix est utilisée pour le premier cri parlé. Aucune question au bateleur pour ce choix. Le bateleur peut toujours changer après via `/vocal-*`.
+12. **`<NOM_VOIX_HUMAIN>` dans le rapport** — substituer par le nom capitalisé de la voix : `jessica` → « Jessica », `pierre` → « Pierre ». Utilisé dans la ligne « Mode vocal activé — voix ___ » du rapport.
