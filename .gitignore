@@ -1,0 +1,39 @@
+# Obsidian — traces personnelles à ne pas versionner
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/graph.json
+.obsidian/bookmarks.json
+
+# Obsidian — trash local
+.trash/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python (pour les scripts de skills)
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Node (si un skill utilise Node)
+node_modules/
+
+# Fichiers d'introspection intime — JAMAIS versionnés
+# (au cas où un bateleur placerait sa note dans le repo par erreur)
+introspection*.md
+introspection*.txt
+introspection*.pdf
+introspection*.docx
+*-introspection.*

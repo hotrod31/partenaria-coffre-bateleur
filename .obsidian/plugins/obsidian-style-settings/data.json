@@ -1,0 +1,13 @@
+{
+  "shimmering-focus@@normal-tab-bar": true,
+  "shimmering-focus@@show-new-tab-button": true,
+  "shimmering-focus@@show-tab-list-button": true,
+  "shimmering-focus@@show-close-buttons": true,
+  "shimmering-focus@@show-sidebar-toggle-buttons": true,
+  "shimmering-focus@@show-sidebar-header-buttons": true,
+  "shimmering-focus@@hide-vault-switcher-and-settings": false,
+  "shimmering-focus@@hide-inline-title-when-more-than-one-tab": false,
+  "shimmering-focus@@normal-header-bar": true,
+  "shimmering-focus@@tab-width": 200,
+  "shimmering-focus@@image-size": 80
+}

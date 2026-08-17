@@ -1,0 +1,49 @@
+{
+  "confirmDeletion": true,
+  "showAddCommand": true,
+  "debug": false,
+  "editorMenu": [
+    {
+      "id": "editor:open-link-in-new-leaf",
+      "icon": "lucide-link",
+      "name": "Ouvrir le lien sous le curseur dans un nouvel onglet",
+      "mode": "any"
+    }
+  ],
+  "fileMenu": [],
+  "leftRibbon": [
+    {
+      "id": "periodic-notes:open-weekly-note",
+      "icon": "calendar-week",
+      "name": "Periodic Notes: Open weekly note",
+      "mode": "any"
+    },
+    {
+      "id": "periodic-notes:open-weekly-note",
+      "icon": "calendar-week",
+      "name": "Periodic Notes: Open weekly note",
+      "mode": "any"
+    }
+  ],
+  "rightRibbon": [],
+  "titleBar": [],
+  "statusBar": [],
+  "pageHeader": [],
+  "macros": [],
+  "explorer": [],
+  "hide": {
+    "statusbar": [],
+    "leftRibbon": []
+  },
+  "spacing": 8,
+  "advancedToolbar": {
+    "rowHeight": 48,
+    "rowCount": 1,
+    "spacing": 0,
+    "buttonWidth": 48,
+    "columnLayout": false,
+    "mappedIcons": [],
+    "tooltips": false,
+    "heightOffset": 0
+  }
+}

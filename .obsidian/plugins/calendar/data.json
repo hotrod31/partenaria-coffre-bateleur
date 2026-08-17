@@ -1,0 +1,10 @@
+{
+  "shouldConfirmBeforeCreate": true,
+  "weekStart": "locale",
+  "wordsPerDot": 250,
+  "showWeeklyNote": true,
+  "weeklyNoteFormat": "YYYY-[W]WW/YYYY-[W]WW",
+  "weeklyNoteTemplate": "5 RESSOURCES/Modèles/Weekly Note.md",
+  "weeklyNoteFolder": "",
+  "localeOverride": "system-default"
+}
