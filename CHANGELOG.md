@@ -9,6 +9,41 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v1.1.0 — 2026-08-17
+
+### Feature majeure — Mode vocal Piper local
+
+Le partenaire IA parle. À l'initialisation, la voix **Jessica** (féminine chaleureuse, Piper local, 100% souverain, aucun appel réseau) est activée par défaut. Le premier cri est lu à voix haute.
+
+**Nouveaux fichiers embarqués** :
+- `.claude/hooks/piper_tts.py` — engine TTS Piper, appelé par le hook Stop après chaque réponse Claude Code. Lit les flags pour déterminer si le mode est actif et quelle voix utiliser. Streaming direct via `sounddevice` (multiplateforme, mais testé Windows uniquement en v1.1.0).
+- `.claude/hooks/download_voice.py` — utilitaire de téléchargement des modèles `.onnx` depuis Hugging Face (`rhasspy/piper-voices`).
+- `.claude/settings.local.json` — hook Stop configuré pour déclencher `piper_tts.py` après chaque réponse.
+
+**4 nouveaux skills** :
+- `/vocal-stop` — désactive le mode vocal, tue toute lecture en cours (silence immédiat). **La première commande que le bateleur apprend.**
+- `/vocal-jessica` — bascule sur Jessica (féminine chaleureuse). Voix par défaut à l'initialisation.
+- `/vocal-pierre` — bascule sur Pierre (masculine, même modèle UPMC).
+- `/vocal-siwis` — bascule sur Siwis (féminine neutre, modèle Siwis distinct).
+
+**Évolution `/initialisation`** :
+- Étape 7b ajoutée : installation `piper-tts sounddevice` via pip, téléchargement du modèle Jessica si absent (~63 MB), activation des flags Piper.
+- Le rapport final mentionne le mode vocal actif et rappelle `/vocal-stop`.
+- Fallback gracieux si Piper indisponible (message clair, pas de blocage).
+
+**Prérequis nouveau** : Python 3.x + `pip install piper-tts sounddevice`. Documenté dans le README.
+
+**Doctrine** : le silence est un droit absolu. `/vocal-stop` marche toujours, sans blocage possible. Le mode vocal est activé par défaut pour installer d'emblée le partenariat vocal, et la première commande apprise par le bateleur est celle qui le désactive — un geste doctrinal fort (« j'ai le pouvoir d'instituer le silence »).
+
+**Total skills embarqués** : 17 → **21**.
+
+### Portée v1.1.0 vs v1.2.0
+
+- v1.1.0 = **Windows-first** (testé Windows). Le code Python `piper_tts.py` est théoriquement multiplateforme (sounddevice fonctionne sur Mac/Linux) mais aucun test réalisé sur ces OS. Fallback sur `kill -9` au lieu de `taskkill` pour non-Windows.
+- v1.2.0 (à venir) : validation macOS/Linux, ajustements si nécessaire.
+
+---
+
 ## v1.0.4 — 2026-08-17
 
 ### Évolution majeure du skill `/initialisation`

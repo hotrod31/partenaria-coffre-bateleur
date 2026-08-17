@@ -329,6 +329,19 @@ Tâches et todos reçus → weekly note active (`YYYY-WXX/YYYY-WXX.md`).
 
 ---
 
+## Mode vocal (Piper local, souverain)
+
+Le coffre embarque un système de synthèse vocale locale via **Piper** (open source MIT, 100% offline, aucun appel réseau). À l'initialisation, la voix Jessica (féminine chaleureuse) est activée par défaut — le partenaire IA lit ses réponses à voix haute.
+
+Trois voix disponibles :
+- **Jessica** (`/vocal-jessica`) — féminine chaleureuse, modèle `fr_FR-upmc-medium` speaker 0
+- **Pierre** (`/vocal-pierre`) — masculine, même modèle UPMC speaker 1
+- **Siwis** (`/vocal-siwis`) — féminine neutre, modèle `fr_FR-siwis-medium` mono-speaker
+
+**Le silence est un droit absolu.** À tout moment : `/vocal-stop` désactive le mode vocal et tue toute lecture en cours. Aucun blocage possible.
+
+Mécanisme technique : un hook `Stop` dans `.claude/settings.local.json` déclenche `.claude/hooks/piper_tts.py` après chaque réponse Claude Code. Le script lit les flags `.claude/hooks/tts_enabled` et `.claude/hooks/tts_piper_voice` pour déterminer s'il doit lire et quelle voix utiliser. Les modèles `.onnx` sont téléchargés à la demande dans `.claude/hooks/piper/voices/` (~60 MB par modèle, non versionnés).
+
 ## Infrastructure technique
 
 Les clés API, tokens et éléments techniques ne sont **jamais** stockés dans le coffre versionné. Si tu en as besoin, place-les dans un fichier `.env` local (déjà exclu par `.gitignore`).

@@ -246,9 +246,39 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
 
 **c) `.obsidian/plugins/calendar/data.json`** — remplacer `"weeklyNoteFolder": ""` par `"weeklyNoteFolder": "1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>"`
 
+### Étape 7b — Activation du mode vocal (Jessica par défaut)
+
+Avant d'émettre le rapport final, préparer le mode vocal Piper qui lira automatiquement le premier cri du partenaire IA :
+
+**1. Installer les dépendances Python** (silencieux si déjà présentes) :
+
+```bash
+pip install --quiet piper-tts sounddevice 2>&1 | tail -3
+```
+
+**2. Télécharger le modèle Jessica si absent** (~63 MB, mutualisé avec Pierre) :
+
+```bash
+if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ]; then
+  echo "Préparation de la voix Jessica pour le premier cri (~63 MB, ~1 min)..."
+  python .claude/hooks/download_voice.py jessica
+fi
+```
+
+**3. Activer les flags Piper avec Jessica** :
+
+```bash
+touch .claude/hooks/tts_enabled
+printf "jessica" > .claude/hooks/tts_piper_voice
+```
+
+**Si `pip install` échoue** (pas de Python, pas de pip, offline) : ne pas bloquer, continuer sans mode vocal. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
+
+**Si le téléchargement du modèle échoue** : idem, continuer sans mode vocal, mentionner dans le rapport.
+
 ### Étape 8 — Rapport de fin + proposition de renommage du dossier
 
-Émettre exactement ce message (adapter les chemins et `<NOM_COFFRE_DOSSIER>`) :
+Émettre exactement ce message (adapter les chemins, `<NOM_COFFRE_DOSSIER>`, et le bloc vocal selon l'état de Piper) :
 
 ```
 ✓ Coffre initialisé.
@@ -268,6 +298,10 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
   • .obsidian/plugins/calendar/data.json
 
 Ton coffre est prêt.
+
+Mode vocal activé — voix Jessica (Piper local, souverain).
+Tape /vocal-stop pour l'arrêter à tout moment, ou /vocal-pierre / /vocal-siwis
+pour changer de voix. C'est ta première commande à connaître.
 
 ═══════════════════════════════════════════════════════════
 

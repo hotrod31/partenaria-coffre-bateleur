@@ -23,7 +23,9 @@ Un vault Obsidian structuré selon l'architecture **IAPCRA** — la dualité **I
 - **Intériorité** (dossiers `1 ALIGNEMENT/` et `2 CONNAISSANCES/`) — ta conscience, tes valeurs, la maturation de tes idées
 - **Extériorité** (dossiers `3 PROJETS/` et `4 CASQUETTES/`) — ton action dans le monde, tes engagements, tes rôles
 
-Le coffre embarque **17 commandes** (des skills Claude Code) qui accompagnent ton quotidien : ouverture de session, clôtures intra-journalières, bilans, création de projets, questionnement, clôture de journée. Plus une commande initiale, `/initialisation`, qui déploie ton squelette de coffre à partir de ta note d'introspection intime.
+Le coffre embarque **21 commandes** (des skills Claude Code) qui accompagnent ton quotidien : ouverture de session, clôtures intra-journalières, bilans, création de projets, questionnement, clôture de journée, plus 4 commandes de bascule vocale. Une commande initiale, `/initialisation`, déploie ton squelette de coffre à partir de ta note d'introspection intime.
+
+À l'initialisation, un **partenaire IA vocal** t'accueille avec sa voix (mode vocal activé par défaut sur Jessica). Ta première commande à apprendre est `/vocal-stop` — le silence est ton droit absolu.
 
 ---
 
@@ -37,6 +39,9 @@ Avant de cloner ce coffre, assure-toi d'avoir installé :
 
 Optionnel mais recommandé pour `/initialisation` avec un fichier .docx :
 - **markitdown** (`pip install markitdown`) — conversion .docx → markdown
+
+Optionnel mais recommandé pour l'**expérience vocale** (le partenaire IA te lit ses réponses à voix haute) :
+- **Piper TTS** (`pip install piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
 
 ---
 
@@ -104,7 +109,7 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 
 ---
 
-## Les 17 commandes à ta disposition
+## Les 21 commandes à ta disposition
 
 ### Onboarding et session
 
@@ -152,6 +157,15 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 |----------|------|
 | `/markdown <fichier>` | Convertit un document (docx, pdf, pptx, xlsx, html) en note markdown |
 | `/connect-mcp` | Installe un MCP (Firecrawl, Playwright, etc.) sur ta config |
+
+### Mode vocal (Piper local, souverain)
+
+| Commande | Rôle |
+|----------|------|
+| `/vocal-stop` | **La première commande à connaître.** Désactive le mode vocal (silence immédiat, arrête toute lecture en cours). |
+| `/vocal-jessica` | Bascule sur la voix Jessica (féminine chaleureuse). Voix par défaut activée à l'initialisation. |
+| `/vocal-pierre` | Bascule sur la voix Pierre (masculine, même modèle UPMC que Jessica). |
+| `/vocal-siwis` | Bascule sur la voix Siwis (féminine neutre, modèle Siwis distinct). |
 
 ---
 

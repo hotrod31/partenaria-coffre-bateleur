@@ -37,3 +37,10 @@ introspection*.txt
 introspection*.pdf
 introspection*.docx
 *-introspection.*
+
+# TTS Piper — flags de session et modèles téléchargés à la demande
+.claude/hooks/tts_enabled
+.claude/hooks/tts_piper_voice
+.claude/hooks/piper_tts.lock
+.claude/hooks/piper/voices/*.onnx
+.claude/hooks/piper/voices/*.onnx.json
