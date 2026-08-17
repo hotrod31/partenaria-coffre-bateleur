@@ -9,6 +9,32 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v1.0.4 — 2026-08-17
+
+### Évolution majeure du skill `/initialisation`
+
+Le rapport de fin comprend maintenant un **premier cri du partenaire IA** — un message de salutation et de présentation adressé au bateleur, qui pose la relation dès la fin de l'initialisation.
+
+**Trois versions du message**, routées automatiquement selon le tempérament du bateleur détecté à partir de sa note d'introspection :
+
+- **SYMBOLIQUE** — présentation baptismale (métaphores, quête, miroir, compagnon d'exécution) pour un bateleur au registre contemplatif/spirituel
+- **ÉQUILIBRÉ** — présentation moyenne pour un bateleur au registre mixte
+- **FACTUEL** — présentation opérationnelle (missions listées, ton direct) pour un bateleur au registre pragmatique
+
+Le tempérament est détecté par 4 signaux croisés : registre lexical dans les réponses S3/S7, structure des réponses (contemplative vs structurée), discipline installée (Q12), chef-d'œuvre imaginé (Q16). Fallback ÉQUILIBRÉ si les signaux sont mixtes.
+
+### Autres évolutions
+
+- **Salutation temporelle** : « Bonjour » avant 18h, « Bonsoir » à partir de 18h (détection Bash `date +%H`).
+- **Extraction du prénom** : le skill cherche le prénom du bateleur dans la Section 1 du fichier d'introspection (fil rouge du parcours) pour l'utiliser dans la salutation. Fallback sur le nom du coffre si non identifiable.
+- **Aucun message après la présentation** : la présentation IA se suffit à elle-même. Pas de « À demain », pas de rappel /hello. Le premier cri se pose et se tait.
+
+Le skill passe de 8 à 9 étapes internes (ajout de l'étape 4b : extraction prénom + détection tempérament).
+
+**Respect absolu de la confidentialité** : seuls le prénom (identité) et le tempérament (registre d'expression) sont mobilisés — jamais le contenu de la matière d'introspection.
+
+---
+
 ## v1.0.3 — 2026-08-17
 
 ### Correctifs plugins Obsidian (issus du test coffre Teillus)
