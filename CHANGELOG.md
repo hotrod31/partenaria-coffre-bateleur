@@ -9,6 +9,17 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v1.0.3 — 2026-08-17
+
+### Correctifs plugins Obsidian (issus du test coffre Teillus)
+
+- **Plugin Commander** : v0.5.5 → **v0.5.8**. La v0.5.5 avait un bug de rendu qui cassait les icônes SVG des autres plugins dans la ribbon (icônes cliquables mais invisibles). La v0.5.8 corrige.
+- **Plugin periodic-notes** : v0.0.17 → **v1.0.0 stable**. Le rendu des icônes weekly/daily ne fonctionnait plus correctement avec les versions récentes d'Obsidian (1.13+). Le manifest de la release GitHub 1.0.0 contient encore `"version": "0.0.17"` par erreur du mainteneur — corrigé localement dans le manifest embarqué.
+
+Sans ces mises à jour, les bateleurs voyaient certaines icônes de la ribbon vides ou manquantes après ouverture du coffre dans Obsidian.
+
+---
+
 ## v1.0.2 — 2026-08-17
 
 ### Correctifs (issus du premier test end-to-end)
