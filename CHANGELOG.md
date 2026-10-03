@@ -50,6 +50,20 @@ C'est aussi le chemin par lequel une leçon de `Ce que j'ai appris/` devient un 
 
 `/fin-session` devient **`/fin`**. Même commande, nom plus court pour ce qui se tape plusieurs fois par jour.
 
+### Le plugin Periodic Notes revient en 0.0.17 — le coffre livrait la version rollbackee
+
+Le coffre embarquait le plugin **Periodic Notes en « 1.0.0 »** — en realite la `v1.0.0-beta1`, une pre-release non officielle dont le manifeste annonce `1.0.0`. Empreinte du binaire livre : `4944026b…`, **exactement celle du fichier retire du coffre de reference le 18/08/2026 a 12h41**.
+
+La chronologie explique tout : la beta1 a ete installee le **17/08 a 09h43**, le coffre a ete fabrique **le meme jour** et l'a donc emportee, et le rollback du lendemain n'a jamais ete reporte ici.
+
+**Ce que la beta1 casse** : elle ajoute une icone de barre laterale interne — `this.ribbonEl = addRibbonIcon(...)` — qui **rend inertes les boutons poses via Commander**. Les identifiants de commande sont pourtant identiques entre les deux versions : ce n'est pas un probleme de configuration, c'est le plugin.
+
+**Second defaut, qui se cumulait au premier** : la configuration Commander du coffre portait **deux fois le bouton weekly et aucun bouton daily**. Un bateleur aurait donc vu, dans sa barre laterale, deux icones de semaine identiques — et aucune icone de jour. Les deux inertes au clic.
+
+Corriges tous les deux : **binaire 0.0.17 restaure** *(celui qui tourne en production depuis le 18/08)*, et les deux boutons retablis, un daily et un weekly, avec leurs couleurs.
+
+📌 **Une montee en 1.0.0 reste possible le jour ou une release stable sortira** — hors beta, sur `github.com/liamcain/obsidian-periodic-notes`. A tester avant, et avec les boutons Commander sous les yeux : c'est le symptome qui ne se voit qu'au clic.
+
 ### Un seul gabarit par note, et les six sont dans le coffre
 
 Le coffre portait **deux notes de contexte divergentes** : `5 RESSOURCES/Modèles/Projet.md`, que tu ouvres à la main, et une copie dans `assets/` du skill, que la commande appliquait. Elles n'avaient ni le même frontmatter, ni les mêmes titres de section — deux projets du même coffre, l'un créé à la main et l'autre par la commande, n'avaient donc pas la même note de contexte.

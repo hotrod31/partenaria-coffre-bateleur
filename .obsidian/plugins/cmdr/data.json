@@ -13,16 +13,18 @@
   "fileMenu": [],
   "leftRibbon": [
     {
-      "id": "periodic-notes:open-weekly-note",
-      "icon": "calendar-week",
-      "name": "Periodic Notes: Open weekly note",
-      "mode": "any"
+      "id": "periodic-notes:open-daily-note",
+      "icon": "lucide-calendar-1",
+      "name": "Periodic Notes: Open today's daily note",
+      "mode": "any",
+      "color": "#df26ad"
     },
     {
       "id": "periodic-notes:open-weekly-note",
       "icon": "calendar-week",
       "name": "Periodic Notes: Open weekly note",
-      "mode": "any"
+      "mode": "any",
+      "color": "#b047d7"
     }
   ],
   "rightRibbon": [],
