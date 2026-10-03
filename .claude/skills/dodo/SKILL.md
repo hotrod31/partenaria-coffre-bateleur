@@ -5,17 +5,17 @@ description: "Bilan de fin de journée : consolide les sessions du jour, sync we
 
 # Bilan de fin de journée
 
-Clôture **la journée** (pas une session). Différent de `/fin-session` qui clôture chaque session terminale en cours de journée.
+Clôture **la journée** (pas une session). Différent de `/fin` qui clôture chaque session terminale en cours de journée.
 
-## Coexistence avec `/fin-session`
+## Coexistence avec `/fin`
 
-| Critère | `/fin-session` | `/dodo` |
+| Critère | `/fin` | `/dodo` |
 |---|---|---|
 | Cadence | N fois/jour (1 par session terminale) | 1 fois/jour (fin de journée) |
 | Niveau ruissellement | 2 (daily) + 3 (contextes projet/casquette) | 4 (Contexte) + 5 (Préférences) + 2bis (sync weekly) + 3bis (jalon) + bilan introspectif |
 | Cas d'usage | À chaque fermeture de terminal en cours de journée | Une fois en fin de journée, avant `dodo` réel |
 
-**Détection automatique** : `/dodo` regarde si la daily du jour contient déjà des sections `## Logs IA <Runtime> / Session [HH:MM]` posées par `/fin-session`. Si oui, `/dodo` consolide plutôt que de re-faire le travail. Si non, `/dodo` fonctionne en mode autonome complet (cas d'une journée à 1 seule session sans `/fin-session` intermédiaire).
+**Détection automatique** : `/dodo` regarde si la daily du jour contient déjà des sections `## Logs IA <Runtime> / Session [HH:MM]` posées par `/fin`. Si oui, `/dodo` consolide plutôt que de re-faire le travail. Si non, `/dodo` fonctionne en mode autonome complet (cas d'une journée à 1 seule session sans `/fin` intermédiaire).
 
 **Coexistence multi-runtime** : si la daily contient des sections d'autres runtimes que Claude Code (ex. OpenCode), `/dodo` doit **les relire** lors de l'Étape 1 et de l'agrégation, pour intégrer leur contexte avant la mise à jour Contexte et Préférences. Sinon la mémoire externalisée diverge des actions réellement effectuées.
 
@@ -45,10 +45,10 @@ grep -oE "^## Logs IA [^/]+/" "$DAILY" 2>/dev/null | sort -u
 Deux modes selon `$SESSION_COUNT` :
 
 **Mode CONSOLIDATION (SESSION_COUNT >= 1)** :
-- Les Étapes 3-4 (log daily + mise à jour contextes) **sont déjà faites** par `/fin-session`
+- Les Étapes 3-4 (log daily + mise à jour contextes) **sont déjà faites** par `/fin`
 - `/dodo` ne re-fait PAS ces étapes
 - `/dodo` exécute : analyse globale du jour + Étape 4bis (jalon, si non détecté en cours de journée) + Étape 4ter (bilan introspectif) + Étape 5 (sync weekly) + Étape 6 (Contexte) + Étape 7 (Préférences) + Étape 8 (confirmation)
-- Pour l'Étape 1, analyser la conversation **uniquement de la dernière session** (sinon doublonnage avec les `/fin-session` précédents)
+- Pour l'Étape 1, analyser la conversation **uniquement de la dernière session** (sinon doublonnage avec les `/fin` précédents)
 
 **Mode AUTONOME (SESSION_COUNT = 0)** :
 - Aucune session n'a été fermée formellement aujourd'hui
@@ -57,7 +57,7 @@ Deux modes selon `$SESSION_COUNT` :
 Annonce à l'utilisateur lequel des 2 modes est activé :
 
 ```
-Mode détecté : [CONSOLIDATION (N sessions déjà loggées par /fin-session) | AUTONOME (aucune session formellement close aujourd'hui)]
+Mode détecté : [CONSOLIDATION (N sessions déjà loggées par /fin) | AUTONOME (aucune session formellement close aujourd'hui)]
 ```
 
 ### Étape 1 : Analyse de la conversation et extraction structurée
@@ -93,7 +93,7 @@ Extraire le numéro et nom de la phase depuis le nom du dossier.
 
 ### Étape 3 : Log dans la daily note (NIVEAU 2 — OBLIGATOIRE)
 
-> **Mode CONSOLIDATION (SESSION_COUNT >= 1)** : ne pas créer une nouvelle section `## Logs IA / Session [HH:MM]` (les sessions précédentes ont déjà été loggées par `/fin-session`). À la place, ajouter une section unique `## Bilan de fin de journée [HH:MM]` qui consolide :
+> **Mode CONSOLIDATION (SESSION_COUNT >= 1)** : ne pas créer une nouvelle section `## Logs IA / Session [HH:MM]` (les sessions précédentes ont déjà été loggées par `/fin`). À la place, ajouter une section unique `## Bilan de fin de journée [HH:MM]` qui consolide :
 > - Résumé global du jour (3-5 lignes, regroupé par projet/thème)
 > - Synthèse des extractions accumulées sur toutes les sessions (lire les sections `## Logs IA / Session` précédentes pour agréger)
 > - Bilan introspectif (cf. Étape 4ter)
@@ -139,7 +139,7 @@ Ajoute à la fin de la note :
 
 ### Étape 4 : Mise à jour contextes projet/casquette (NIVEAU 3 — OBLIGATOIRE, appliqué directement sans validation)
 
-> **Mode CONSOLIDATION (SESSION_COUNT >= 1)** : les notes de contexte projet/casquette ont déjà été mises à jour par `/fin-session` à chaque session terminale. **Skip** cette étape pour les projets qui ont eu une session `/fin-session` aujourd'hui. Faire uniquement les mises à jour qui n'ont PAS été couvertes (cas rare : oubli `/fin-session` sur une session, ou projet touché en réflexion seulement en fin de journée).
+> **Mode CONSOLIDATION (SESSION_COUNT >= 1)** : les notes de contexte projet/casquette ont déjà été mises à jour par `/fin` à chaque session terminale. **Skip** cette étape pour les projets qui ont eu une session `/fin` aujourd'hui. Faire uniquement les mises à jour qui n'ont PAS été couvertes (cas rare : oubli `/fin` sur une session, ou projet touché en réflexion seulement en fin de journée).
 >
 > **Mode AUTONOME (SESSION_COUNT = 0)** : faire toutes les mises à jour ci-dessous comme avant.
 
@@ -169,7 +169,7 @@ En complément de la mise à jour factuelle ci-dessus, alimenter **systématique
 
 **Automaticité** : ne jamais demander validation à l'utilisateur. Le geste est intégré au workflow de `/dodo`.
 
-**Mode CONSOLIDATION** : si `/fin-session` a déjà alimenté § 3/5/6 pour certains projets/casquettes pendant la journée, ne pas doublonner — compléter seulement ce qui n'a pas été couvert (nouvelles avancées, apprentissages, idées émergents en fin de journée uniquement).
+**Mode CONSOLIDATION** : si `/fin` a déjà alimenté § 3/5/6 pour certains projets/casquettes pendant la journée, ne pas doublonner — compléter seulement ce qui n'a pas été couvert (nouvelles avancées, apprentissages, idées émergents en fin de journée uniquement).
 
 ### Étape 4bis : Détection jalon franchi (NIVEAU 3bis — avec validation)
 
@@ -249,7 +249,7 @@ Si l'utilisateur dit non, ne pas insister, ne pas redemander dans la session. Pa
 
 ### Étape 4ter : Bilan introspectif du jour
 
-**Objectif** : capter en fin de journée un mini-bilan introspectif (équivalent compact de `/bilan-jour`), pour ne pas perdre la dimension réflexive. Différent de l'extraction factuelle de l'Étape 1 — ici on parle **énergie, win, friction, focus demain**. Compense le fait que `/fin-session` a déjà absorbé le ruissellement factuel.
+**Objectif** : capter en fin de journée un mini-bilan introspectif (équivalent compact de `/bilan-jour`), pour ne pas perdre la dimension réflexive. Différent de l'extraction factuelle de l'Étape 1 — ici on parle **énergie, win, friction, focus demain**. Compense le fait que `/fin` a déjà absorbé le ruissellement factuel.
 
 #### 4ter.1 — 4 questions courtes (mode propositionnel autorisé)
 
@@ -411,8 +411,8 @@ Extractions du jour :
 - [N4] contradictions résolues
 - [N5] ressources
 
-NIVEAU 2 — Daily note : [date] mise à jour (mode CONSOLIDATION : section « Bilan de fin de journée » ajoutée + N sessions déjà loggées par /fin-session | mode AUTONOME : section « Logs IA / Session » ajoutée)
-NIVEAU 3 — Contextes mis à jour : [liste des fichiers] (mode CONSOLIDATION : seulement les projets non couverts par /fin-session)
+NIVEAU 2 — Daily note : [date] mise à jour (mode CONSOLIDATION : section « Bilan de fin de journée » ajoutée + N sessions déjà loggées par /fin | mode AUTONOME : section « Logs IA / Session » ajoutée)
+NIVEAU 3 — Contextes mis à jour : [liste des fichiers] (mode CONSOLIDATION : seulement les projets non couverts par /fin)
 NIVEAU 3bis — Jalon Réflexion : [créée : chemin / aucun jalon détecté / refusée]
 NIVEAU 4ter — Bilan introspectif : [Énergie X/10, Win, Friction, Focus demain / sauté à la demande de l'utilisateur]
 NIVEAU 2bis — Weekly note : [N] coches appliquées + [M] émergents ajoutés
@@ -425,7 +425,7 @@ Cheminement de phase : [ligne ajoutée / pas d'insight notable]
 
 ## Notes
 
-- **Mode CONSOLIDATION vs AUTONOME** : `/dodo` détecte automatiquement si la daily du jour contient des sections `## Logs IA / Session [HH:MM]` (= `/fin-session` a déjà été lancé en cours de journée). Mode CONSOLIDATION = consolide ; Mode AUTONOME = fait tout le ruissellement (étapes 3-4 incluses).
+- **Mode CONSOLIDATION vs AUTONOME** : `/dodo` détecte automatiquement si la daily du jour contient des sections `## Logs IA / Session [HH:MM]` (= `/fin` a déjà été lancé en cours de journée). Mode CONSOLIDATION = consolide ; Mode AUTONOME = fait tout le ruissellement (étapes 3-4 incluses).
 - NIVEAU 2bis (sync daily → weekly) nécessite validation rapide en bloc — éviter validation item par item sauf confiance faible
 - NIVEAU 3 (projets/casquettes) est appliqué directement — pas de validation
 - NIVEAU 3bis (jalon Réflexion) nécessite validation simple o/n — ne jamais insister si refus
@@ -436,4 +436,4 @@ Cheminement de phase : [ligne ajoutée / pas d'insight notable]
 - Utiliser des liens `[[wikilinks]]` quand pertinent
 - **Convention weekly (rappel)** : la weekly porte le planning de la semaine en cours. Si la weekly ouverte porte le numéro de la semaine bilanée (ancienne convention W22 et antérieures), ne pas appliquer la sync — alerter l'utilisateur.
 - **Convention jalon Réflexion** : NIVEAU 3bis vise à combler la zone d'ombre des projets exécutés sans capitalisation Réflexion. Détection passive, validation explicite, pas d'insistance.
-- **Doctrine /fin-session vs /dodo** : `/fin-session` traite le ruissellement micro (par session, plusieurs fois/jour). `/dodo` traite le ruissellement macro (par jour, une fois). Le tout est conçu pour le mode de travail en sessions parallèles.
+- **Doctrine /fin vs /dodo** : `/fin` traite le ruissellement micro (par session, plusieurs fois/jour). `/dodo` traite le ruissellement macro (par jour, une fois). Le tout est conçu pour le mode de travail en sessions parallèles.

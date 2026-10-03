@@ -9,10 +9,10 @@ Adapte-le au fil du temps. C'est **ton** fichier, pas un dogme.
 ## Quick Start
 
 1. **En début de journée** : lance `/hello` — sync mémoire, briefing personnalisé, création de la daily du jour, objectifs
-2. **À la fin de chaque session thématique dans la journée** : lance `/fin-session` — log de la session dans la daily, ruissellement micro vers le projet/casquette concerné, création éventuelle d'une note détaillée
+2. **À la fin de chaque session thématique dans la journée** : lance `/fin` — log de la session dans la daily, ruissellement micro vers le projet/casquette concerné, création éventuelle d'une note détaillée
 3. **En fin de journée** : lance `/dodo` — consolidation des sessions du jour, bilan introspectif, ruissellement complet vers les contextes projets/casquettes, mise à jour Contexte.md si nécessaire
 
-`/fin-session` est la commande la plus utilisée au quotidien : une par session thématique, plusieurs par jour.
+`/fin` est la commande la plus utilisée au quotidien : une par session thématique, plusieurs par jour.
 
 ---
 
@@ -107,7 +107,7 @@ Lis toujours ces fichiers avant de faire quoi que ce soit :
 
 | Ce qui s'apprend | Où ça se capitalise | Qui l'écrit |
 | --- | --- | --- |
-| **Sur ta façon de faire** — méthode, compétence, piège à ne pas réapprendre | § 5 Expérience du projet ou de la casquette | `/fin-session` et `/dodo`, sans te demander |
+| **Sur ta façon de faire** — méthode, compétence, piège à ne pas réapprendre | § 5 Expérience du projet ou de la casquette | `/fin` et `/dodo`, sans te demander |
 | **Sur qui tu es** — ce que tu vises, ce que tu refuses, ce que tu comprends | `2 CONNAISSANCES/`, par `/ca-me-vient` | **toi**, avec l'aide du débrief — jamais l'IA seule |
 
 Et les tâches vivent au § 4 Todo. **Il n'y a pas de tableau de suivi, pas de Kanban, et il ne faut pas en créer** : un backlog qu'on ne voit pas en ouvrant la note du projet affiche des échéances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.
@@ -116,7 +116,7 @@ Et les tâches vivent au § 4 Todo. **Il n'y a pas de tableau de suivi, pas de K
 
 Une pensée qui surgit pendant une séance se traite **sur le moment**, par `/ca-me-vient`. La commande te fait parler, t'aide à formuler — sans formuler à ta place —, puis te demande où la poser : l'athanor, la semaine, la phase, le chapitre, ou ton `Contexte.md`.
 
-**Elle ne se propose pas d'elle-même.** `/fin-session` peut te signaler en une ligne qu'il a vu passer quelque chose, et il s'arrête là : pas de question, pas d'écriture. Ce qui n'est pas repris est perdu, et c'est assumé — une pensée qu'on se promet de traiter plus tard ne se traite jamais.
+**Elle ne se propose pas d'elle-même.** `/fin` peut te signaler en une ligne qu'il a vu passer quelque chose, et il s'arrête là : pas de question, pas d'écriture. Ce qui n'est pas repris est perdu, et c'est assumé — une pensée qu'on se promet de traiter plus tard ne se traite jamais.
 
 ---
 
@@ -295,7 +295,7 @@ Les commandes sont définies dans `.claude/skills/*/SKILL.md`.
 Voir le [`README.md`](README.md) du coffre pour la liste des commandes embarquées et leur rôle.
 
 Points clés :
-- **Cycle de session** : `/hello` en début de journée, `/fin-session` à chaque clôture de session thématique dans la journée, `/dodo` en fin de journée
+- **Cycle de session** : `/hello` en début de journée, `/fin` à chaque clôture de session thématique dans la journée, `/dodo` en fin de journée
 - `/bilan-jour` pour la réflexion quotidienne, `/bilan-semaine` pour la weekly review
 - `/nouveau-projet` pour créer un projet structuré, `/nouveau-chapitre` pour un nouveau cycle long
 - **`/ca-me-vient` au moment où une pensée surgit** — c'est la commande de l'intériorité, et la seule qui ne s'invoque pas à heure fixe

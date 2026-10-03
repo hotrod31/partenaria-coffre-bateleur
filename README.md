@@ -100,7 +100,7 @@ Ton partenaire IA se présente, lit ton contexte, crée ta daily du jour, et t'a
 **À la fin de chaque session thématique dans la journée** (c'est la commande la plus utilisée au quotidien) :
 
 ```
-/fin-session
+/fin
 ```
 
 Il log la session dans ta daily, propage les faits vers le projet ou la casquette concerné, crée une note détaillée si nécessaire.
@@ -123,7 +123,7 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 |----------|------|
 | `/initialisation <chemin>` | Déploie ton coffre à partir de ta note d'introspection intime |
 | `/hello` | Début de journée — sync mémoire, briefing personnalisé, création daily, objectifs |
-| `/fin-session` | Clôture d'une session thématique en cours de journée — log dans daily, ruissellement micro, note détaillée éventuelle |
+| `/fin` | Clôture d'une session thématique en cours de journée — log dans daily, ruissellement micro, note détaillée éventuelle |
 | `/dodo` | Fin de journée — consolidation sessions, bilan introspectif, ruissellement complet, mise à jour contextes |
 | `/trier-inbox` | Traite les items de `0 INBOX/` et les route |
 

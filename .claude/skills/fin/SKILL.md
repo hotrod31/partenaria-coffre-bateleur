@@ -1,5 +1,5 @@
 ---
-name: fin-session
+name: fin
 description: "Clôture d'une session terminale en cours de journée : log + propagation contextes + création note détaillée si pertinent. Ruissellement micro, distinct du bilan jour /dodo. Détecte automatiquement le runtime (Claude Code, OpenCode, ou IA externe) pour tagger correctement le log dans la daily note."
 ---
 
@@ -23,12 +23,12 @@ Skill mutualisé : fonctionne dans **Claude Code** et **OpenCode** (et IA extern
 
 ## Distinction avec `/dodo`
 
-| Critère | `/fin-session` | `/dodo` |
+| Critère | `/fin` | `/dodo` |
 |---|---|---|
 | Cadence | N fois/jour (1 par session) | 1 fois/jour (fin de journée) |
 | Niveau ruissellement | 2 (daily) + 3 (contextes projet/casquette) | 4 (Contexte) + 5 (Préférences) + 2bis (sync weekly) + 3bis (jalon) + bilan introspectif |
 | Bilan introspectif | Non | Oui (1-2 questions) |
-| Détection sessions déjà closes | Non applicable | Oui — skip les niveaux 2-3 déjà faits par `/fin-session` |
+| Détection sessions déjà closes | Non applicable | Oui — skip les niveaux 2-3 déjà faits par `/fin` |
 
 ## Process
 
@@ -192,7 +192,7 @@ En complément de la mise à jour factuelle ci-dessus, alimenter **systématique
 
 **Portée** : tous les projets (dossier `3 PROJETS/`) et toutes les casquettes (dossier `4 CASQUETTES/`).
 
-**Automaticité** : ne jamais demander validation à l'utilisateur. Le geste est intégré au workflow de `/fin-session`.
+**Automaticité** : ne jamais demander validation à l'utilisateur. Le geste est intégré au workflow de `/fin`.
 
 ### Étape 6ter : La mention d'intériorité — une ligne, et rien de plus
 
@@ -262,7 +262,7 @@ Fichiers actualisés :
 
 ## Convention pour `/dodo`
 
-`/dodo` (bilan jour) détecte les sections `## Logs IA <Runtime> / Session [HH:MM]` déjà présentes dans la daily du jour (Claude Code, OpenCode, IA externe + modèle, etc.). Si présentes, `/dodo` **ne re-fait pas** les Étapes 3-4 (déjà accomplies par `/fin-session`) et bascule directement sur :
+`/dodo` (bilan jour) détecte les sections `## Logs IA <Runtime> / Session [HH:MM]` déjà présentes dans la daily du jour (Claude Code, OpenCode, IA externe + modèle, etc.). Si présentes, `/dodo` **ne re-fait pas** les Étapes 3-4 (déjà accomplies par `/fin`) et bascule directement sur :
 - Bilan introspectif rapide (1-2 questions)
 - NIVEAU 2bis (sync daily → weekly)
 - NIVEAU 3bis (détection jalon franchi)

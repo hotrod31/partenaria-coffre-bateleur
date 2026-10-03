@@ -171,6 +171,6 @@ WEEK=$(date +%Y-W%V)
 
 ## Ce que cette commande ne traite pas
 
-- **Une leçon de méthode ou un piège technique** — ça ne dit pas qui tu es, ça dit comment tu travailles. Ça va au § 5 Expérience du projet ou de la casquette concernée, et `/fin-session` le fait tout seul.
+- **Une leçon de méthode ou un piège technique** — ça ne dit pas qui tu es, ça dit comment tu travailles. Ça va au § 5 Expérience du projet ou de la casquette concernée, et `/fin` le fait tout seul.
 - **Une tâche.** Si la pensée est en réalité une chose à faire, le dire et la poser au § 4 Todo du conteneur concerné, ou dans la weekly.
 - **Un sujet qui mérite un traitement long.** Si la pensée demande plusieurs pages, le dire : elle appelle une note à elle, écrite délibérément, pas un dépôt d'athanor.
