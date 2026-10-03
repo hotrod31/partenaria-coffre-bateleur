@@ -16,7 +16,7 @@ HOOKS=".claude/hooks"
 FLAG="$HOOKS/tts_enabled"
 
 # Tuer toute lecture en cours (silence immédiat)
-python .claude/hooks/piper_tts.py --kill 2>/dev/null || true
+python3 .claude/hooks/piper_tts.py --kill 2>/dev/null || true
 
 # Désactiver le flag
 if [ -f "$FLAG" ]; then

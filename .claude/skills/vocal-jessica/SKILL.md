@@ -47,7 +47,7 @@ Vérifier ensuite si le modèle est présent :
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ] && [ -f "$FLAG" ]; then
   echo ""
   echo "⚠ Modèle Jessica absent. Téléchargement (~63 MB)..."
-  python .claude/hooks/download_voice.py jessica
+  python3 .claude/hooks/download_voice.py jessica
 fi
 ```
 
@@ -61,4 +61,4 @@ fi
 ## Prérequis
 
 - Python 3.x
-- `pip install piper-tts sounddevice` (installés automatiquement au premier `/initialisation`)
+- `piper-tts` et `sounddevice`, installés automatiquement au premier `/initialisation`

@@ -9,6 +9,58 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v2.0.0 — 2026-10-03 — branche `macos`
+
+**Rupture de structure.** Le coffre cesse d'être portable : il existe désormais une version par système, maintenues séparément sur deux branches — `macos` et `windows`. Et la doctrine de mémoire change.
+
+### La colonne d'intériorité s'inverse — nouvelle commande `/ca-me-vient`
+
+Jusqu'ici, rien ne faisait remonter ce qu'une séance t'apprenait sur toi. La version précédente le prévoyait par détection automatique en fin de séance, avec arbitrage différé au bilan du soir. **L'usage l'a démenti** : la question systématique est lourde, et une pensée qu'on se promet de traiter plus tard ne se traite jamais.
+
+`/ca-me-vient` s'invoque **au moment où la pensée arrive**, en quatre temps : tu dis, on débriefe, elle te demande où, c'est écrit dans la séance.
+
+- **Le débrief interroge, il ne formule pas.** Questions ouvertes, reprise de tes mots, et mise en regard avec ce que tu as écrit ailleurs — y compris quand ça te contredit. L'IA ne propose un énoncé **que si tu le lui demandes**, et c'est ta version qui est écrite.
+- **Six destinations**, proposées selon la maturité de ce qui est sorti : `Ce que je me dis/`, `Ce que j'ai appris/`, ta weekly, le `Cheminement` de ta phase, ton chapitre, ton `Contexte.md`.
+- **Deux dossiers neufs dans `2 CONNAISSANCES/`** — `Ce que je me dis/` (tout ce qui vient) et `Ce que j'ai appris/` (les leçons formulées) — plus l'index `Ce qui mijote.md`, qui garde la trace de tout ce qui est passé.
+- **`/fin-session` ne pose plus de question** : il mentionne en une ligne qu'il a vu passer quelque chose, et s'arrête là. Pas d'écriture, pas de sollicitation.
+
+Les deux dossiers tiennent l'un des deux points où le cycle se perd — **la leçon**. Le second, **la décision**, se tient quand tu relis `Ce que j'ai appris/` et qu'une leçon devient un projet ou une casquette.
+
+### Plus aucun fichier de mémoire
+
+La mémoire vit dans les **notes de contexte** : le § 5 Expérience pour ce qui touche à ta façon de faire, `2 CONNAISSANCES/` pour ce qui touche à qui tu es. Les deux renvois à un `MEMORY.md` — dans `/clarte` et `/dodo` — pointaient vers un fichier qui n'a jamais existé dans le coffre. Retirés.
+
+### Les préférences à deux niveaux
+
+`1 ALIGNEMENT/Préférences.md` pour ce qui vaut partout ; `<Conteneur> — Préférences.md`, à la racine d'un projet ou d'une casquette, pour ce qui ne vaut que là. **Ce fichier local ne se crée que le jour où tu as une première préférence à y mettre** — jamais d'avance.
+
+### La voix se choisit
+
+**L'heuristique qui déduisait ta voix de la consonance de ton prénom est supprimée**, avec sa règle *« dans le doute, féminin »*. À l'initialisation, les trois voix te sont présentées et tu désignes la tienne. Si tu ne choisis pas, Siwis est posée et on te le dit.
+
+Edge et Kyutai entrent au catalogue sans être installés d'office — et le coffre dit où part le texte avant d'activer quoi que ce soit : Edge le fait synthétiser chez Microsoft, ce qui ne va pas de soi dans un coffre d'introspection.
+
+### Plus de Kanban
+
+Le backlog d'un projet est le **§ 4 Todo de sa note de contexte**, et il n'y a pas d'autre endroit. Retirés : le tableau global, le gabarit de suivi, le plugin `obsidian-kanban`, et les blocs qui les alimentaient dans `/hello`, `/dodo`, `/clarte`, `/angles-morts` et `/nouveau-projet`. Motif : un backlog qu'on ne voit pas en ouvrant la note du projet affiche des échéances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.
+
+### Branche macOS — ce qui change concrètement
+
+- `python` et `pip` nus deviennent `python3` et `pip3` : macOS ne fournit plus `python` depuis 12.3, et le hook vocal échouait **en silence**. Le refus PEP 668 de Homebrew est documenté là où il se produit.
+- Les alternatives PowerShell sont **retirées** de `/clarte`, `/hello` et `/markdown` — un coffre qui ne parle que d'un système est plus court à lire.
+- `Ctrl+Q` et « barre des tâches » deviennent `Cmd+Q` et le Dock.
+- La détection de la phase active ne dépend plus de `sort -V`, dont la présence n'est pas garantie : elle trie sur le numéro du dossier. Corrigé dans les six commandes concernées.
+
+### Hygiène de publication
+
+`git add`, `git commit` et `rm` ne sont plus pré-autorisés sans invite — un coffre intime dans l'arbre de travail d'un dépôt public n'a pas besoin d'autorisations d'écriture permanentes. `git pull` reste, c'est le mécanisme de mise à jour. Le `README` annonçait encore `v1.0.0` alors que `VERSION` disait `1.1.1` : il lit désormais `VERSION`. Les prénoms réels cités en exemples sont remplacés par des prénoms fictifs, et la mention d'un coffre privé est retirée du journal.
+
+### Le gabarit de daily
+
+Le bloc `## Tâches à réaliser et Focus` et ses trois cases pré-remplies sont retirés — trois tâches factices dans une daily neuve créent une dette dès le premier jour. En pied de note, un rappel : une pensée se traite par `/ca-me-vient` au moment où elle vient, pas en la notant ici pour le soir.
+
+---
+
 ## v1.1.1 — 2026-08-17
 
 ### Voix par défaut selon consonance du nom du coffre
@@ -26,8 +78,8 @@ Le skill `/initialisation` détermine automatiquement la voix du premier cri (Je
 **Exemples** :
 - « Elsa » → Jessica ✓
 - « Marc » → Pierre ✓
-- « PartenarIA Sarah » → Jessica ✓ (prénom extrait)
-- « Coffre Rodrigue » → Pierre ✓
+- « PartenarIA Léa » → Jessica ✓ (prénom extrait)
+- « Coffre Antoine » → Pierre ✓
 - « Mon Coffre » → Jessica ✓ (ambigu, défaut féminin)
 - « Camille » → Jessica ✓ (épicène, défaut féminin)
 
@@ -100,7 +152,7 @@ Le skill passe de 8 à 9 étapes internes (ajout de l'étape 4b : extraction pr�
 
 ## v1.0.3 — 2026-08-17
 
-### Correctifs plugins Obsidian (issus du test coffre Teillus)
+### Correctifs plugins Obsidian (issus du test d'installation)
 
 - **Plugin Commander** : v0.5.5 → **v0.5.8**. La v0.5.5 avait un bug de rendu qui cassait les icônes SVG des autres plugins dans la ribbon (icônes cliquables mais invisibles). La v0.5.8 corrige.
 - **Plugin periodic-notes** : v0.0.17 → **v1.0.0 stable**. Le rendu des icônes weekly/daily ne fonctionnait plus correctement avec les versions récentes d'Obsidian (1.13+). Le manifest de la release GitHub 1.0.0 contient encore `"version": "0.0.17"` par erreur du mainteneur — corrigé localement dans le manifest embarqué.

@@ -88,7 +88,7 @@ Résumé : [3-5 lignes synthétisant le pattern / la procédure]
 Veux-tu :
 a) Ajouter une trace dans la note de contexte du projet [[Projet X]] (section Historique ou Expérience)
 b) Créer une note procédure réutilisable dans `5 RESSOURCES/Processus/[Stack ou domaine].md`
-c) Capitaliser comme pattern transverse dans `5 RESSOURCES/Outils/Patterns techniques transverses.md`
+c) Capitaliser comme pattern transverse dans `5 RESSOURCES/Outils/Pièges et patterns techniques.md` (le créer s'il n'existe pas encore — un coffre neuf ne le contient pas)
 d) Rien créer en plus, garder seulement le log session
 
 Choix ?
@@ -124,7 +124,7 @@ Si refus : pas de note, le contenu reste capturé dans le log session.
 ### Étape 4 : Détection phase active
 
 ```bash
-PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1)
+PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-)
 WEEK=$(date +%Y-W%V)
 TODAY=$(date +%Y-%m-%d)
 HHMM=$(date +%H:%M)
@@ -193,6 +193,41 @@ En complément de la mise à jour factuelle ci-dessus, alimenter **systématique
 **Portée** : tous les projets (dossier `3 PROJETS/`) et toutes les casquettes (dossier `4 CASQUETTES/`).
 
 **Automaticité** : ne jamais demander validation à l'utilisateur. Le geste est intégré au workflow de `/fin-session`.
+
+### Étape 6ter : La mention d'intériorité — une ligne, et rien de plus
+
+Cette séance a peut-être laissé passer quelque chose qui parle de **qui tu es**, et non de ce que tu as fait. Si c'est le cas, cette étape te le rappelle — **sans te poser de question**.
+
+**Les neuf signaux.** Liste fermée. Si aucun n'est présent, **ne rien dire du tout** et passer à l'Étape 7.
+
+| | Signal |
+|---|---|
+| 1 | Tu as parlé de quelqu'un **en tant que personne**, pas en tant que rôle |
+| 2 | Tu as arbitré avec une raison **non technique** — « ça ne me ressemble pas », « je ne veux pas devenir ça » |
+| 3 | Tu es **revenu sur une décision passée** et tu as dit ce que tu en penses maintenant |
+| 4 | Tu as exprimé une gêne, une lassitude ou un élan **sur le fond** du travail, pas sur son exécution |
+| 5 | Tu as **contredit ou nuancé** quelque chose que tu as écrit ailleurs |
+| 6 | Tu as formulé une **règle générale sur la vie, le métier, les gens** |
+| 7 | Tu as **réfléchi sur l'intelligence artificielle** — ce qu'elle est, ce qu'elle fait aux gens |
+| 8 | Tu as parlé **du coffre lui-même**, du dispositif, de la relation de travail |
+| 9 | Une **réflexion spontanée** que tu as énoncée comme telle — « je me disais que… » |
+
+**Hors périmètre, sans exception** : une leçon de méthode, une préférence d'outil, un piège technique. Ceux-là sont déjà traités aux Étapes 2 et 6 — ils vont au § 5 Expérience du conteneur, et ils coulent tout seuls.
+
+**La forme de la mention, exactement :**
+
+```
+Au passage : « [citation, au plus près de tes mots] ».
+Pour le reprendre : /ca-me-vient
+```
+
+**Trois interdits, et ils font tout le dispositif :**
+
+- **Aucune question.** Ni « tu veux le garder ? », ni « je le note ? ». Une mention, pas une sollicitation.
+- **Aucune écriture.** Cette étape n'écrit rien, nulle part. Ce qui n'est pas repris est perdu, et c'est assumé : une pensée qu'on se promet de traiter plus tard ne se traite jamais.
+- **Aucune leçon.** Citer le fait, jamais ce qu'il signifie. Si la leçon est déjà formulée dans la mention, il ne reste plus qu'à l'approuver — et une conclusion sur qui tu es entre dans ton coffre sans être passée par toi.
+
+S'il y a plusieurs faits, les citer **tous ensemble**, en une seule mention de deux ou trois lignes.
 
 ### Étape 7 : Confirmation
 

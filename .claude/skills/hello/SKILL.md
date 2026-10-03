@@ -19,12 +19,7 @@ Synchronise le contexte, lit la mémoire, et donne un briefing personnalisé pou
 ### Étape 2 : Détecter la phase active
 
 ```bash
-ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1
-```
-
-Équivalent PowerShell si le shell est PowerShell :
-```powershell
-Get-ChildItem -Path "1 ALIGNEMENT/Phases de vie" -Directory | Sort-Object Name | Select-Object -Last 1
+ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-
 ```
 
 Extraire le numéro et nom de la phase depuis le nom du dossier.
@@ -72,23 +67,18 @@ Lire `3 PROJETS/PROJETS.md` et mettre à jour la section **Situation** de chaque
 
 Ne pas tout réécrire — modifier uniquement les lignes "Situation" et "Points critiques" si des changements ont eu lieu depuis la dernière session.
 
-### Étape 4c : Mettre à jour les Kanbans
+### Étape 4c : Mettre à jour les backlogs
 
-**Sources de tâches :** notes de contexte projet (prochaines étapes), PROJETS.md (points critiques), daily note du jour, **notes de suivi de livrables** (`3 PROJETS/[Projet]/Suivi des livrables*.md` — les tâches cochées dans ces notes doivent être reflétées comme accomplies dans le Kanban, et les tâches non cochées comme programmées ou en cours).
+Le backlog d'un projet ou d'une casquette vit dans le **§ 4 Todo de sa note de contexte** — `3 PROJETS/[Projet]/[Projet].md`, `4 CASQUETTES/[Casquette]/[Casquette].md`. Il n'y a pas d'autre endroit, et il n'y a pas de tableau de suivi séparé.
 
-**Kanban global** (`3 PROJETS/Suivi Projets.md`) :
-- Format Obsidian Kanban : frontmatter `kanban-plugin: basic`, colonnes en `## [Nom Projet]`, cartes en `- [ ]` / `- [x]`
-- Une colonne par projet, montrant uniquement les tâches **programmées** et **en cours**
-- Ajouter les nouvelles tâches identifiées, cocher les tâches accomplies depuis la dernière session
-- Supprimer les tâches accomplies du Kanban global (elles sont dans les Kanbans projet)
+**Sources de tâches :** les notes de contexte, `3 PROJETS/PROJETS.md`, la daily du jour, la weekly de la phase active.
 
-**Kanbans projet** (`3 PROJETS/[Projet]/Suivi [Projet].md`) :
-- 4 colonnes : `À programmer`, `Programmées`, `En cours`, `Accomplies`
-- Déplacer les cartes entre colonnes selon l'avancement
-- Ajouter les nouvelles tâches dans la colonne appropriée
-- Les dates sont au format `@{YYYY-MM-DD}` après la description de la carte
+**Ce qu'on fait :**
+- Cocher dans le § 4 Todo ce qui a été accompli depuis la dernière session
+- Ajouter les tâches nouvelles apparues
+- **Ne toucher qu'aux conteneurs effectivement travaillés**
 
-Ne mettre à jour que les Kanbans des projets effectivement travaillés pendant la session.
+Ce qui se joue dans la semaine vit dans la weekly, pas dans le § 4 Todo.
 
 ### Étape 5 : Composer le briefing
 

@@ -14,7 +14,7 @@ Tu guides l'utilisateur dans sa réflexion quotidienne.
 3. Vérifie s'il y a des notes récentes dans `0 INBOX/`
 4. Détecte la phase active :
    ```bash
-   ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1
+   ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-
    ```
 
 ## Le processus

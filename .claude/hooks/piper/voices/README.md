@@ -16,9 +16,9 @@ Ce dossier contient les modèles vocaux Piper (`.onnx` + `.onnx.json`) télécha
 Si tu veux forcer un téléchargement :
 
 ```bash
-python .claude/hooks/download_voice.py jessica    # ou pierre (même modèle UPMC)
-python .claude/hooks/download_voice.py siwis
-python .claude/hooks/download_voice.py --all      # les deux modèles
+python3 .claude/hooks/download_voice.py jessica    # ou pierre (même modèle UPMC)
+python3 .claude/hooks/download_voice.py siwis
+python3 .claude/hooks/download_voice.py --all      # les deux modèles
 ```
 
 Le téléchargement se fait automatiquement au premier `/vocal-jessica` (ou `/vocal-pierre`, `/vocal-siwis`) si le modèle est absent, et lors de `/initialisation`.

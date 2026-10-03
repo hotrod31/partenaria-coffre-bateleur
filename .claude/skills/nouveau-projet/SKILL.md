@@ -1,7 +1,7 @@
 ---
 name: nouveau-projet
 tags: projet, rituel, reflexion
-description: "Cree un nouveau projet structure dans le coffre : arborescence PPAR (Pourquoi/Plan/Action/Reflexion/Ressources), note de contexte, Kanban de suivi, notes de planification (objectifs SMART, budget, risques, gouvernance). Methodologie conversationnelle rigoureuse en 10 etapes : identification, alignement, validation SMART, decomposition en etapes, actions/acteurs/ressources, budget, risques, gouvernance, recapitulatif, generation. Templates markdown embarques, aucune dependance externe. Declencher quand l'utilisateur tape /nouveau-projet, dit « cree un nouveau projet », « demarrons un projet », « cadrage projet », « lance un projet »."
+description: "Cree un nouveau projet structure dans le coffre : arborescence PPAR (Pourquoi/Plan/Action/Reflexion/Ressources), note de contexte dont le § 4 Todo fait office de backlog, notes de planification (objectifs SMART, budget, risques, gouvernance). Methodologie conversationnelle rigoureuse en 10 etapes : identification, alignement, validation SMART, decomposition en etapes, actions/acteurs/ressources, budget, risques, gouvernance, recapitulatif, generation. Templates markdown embarques, aucune dependance externe. Declencher quand l'utilisateur tape /nouveau-projet, dit « cree un nouveau projet », « demarrons un projet », « cadrage projet », « lance un projet »."
 ---
 
 # nouveau-projet — Creer un projet structure (methodologie 10 etapes)
@@ -17,7 +17,6 @@ Une **arborescence PPAR** (Pourquoi / Plan / Action / Reflexion / Ressources) po
 ```
 <dossier-projet>/
 ├── <NomProjet>.md                     Note de contexte (6 sections)
-├── Suivi <NomProjet>.md               Kanban 5 colonnes
 ├── 1 Pourquoi/
 │   └── Objectifs <NomProjet>.md       Objectifs SMART justifies
 ├── 2 Plan/
@@ -198,7 +197,6 @@ RISQUES CRITIQUES : [N risques critiques identifies]
 
 NOTES QUI SERONT GENEREES :
 - <NomProjet>.md                        Note de contexte racine
-- Suivi <NomProjet>.md                  Kanban 5 colonnes
 - 1 Pourquoi/Objectifs <NomProjet>.md   Objectifs SMART
 - 2 Plan/Planification <NomProjet>.md   Etapes + actions
 - 2 Plan/Budget <NomProjet>.md          Grille budgetaire
@@ -208,7 +206,6 @@ NOTES QUI SERONT GENEREES :
 ARBORESCENCE :
 <BASE_PATH>/<NomProjet>/
 ├── <NomProjet>.md
-├── Suivi <NomProjet>.md
 ├── 1 Pourquoi/
 ├── 2 Plan/
 ├── 3 Action/
@@ -244,7 +241,6 @@ Templates disponibles :
 | Template | Cible |
 |---|---|
 | `template_projet.md` | `<NomProjet>.md` (racine du projet) |
-| `template_suivi.md` | `Suivi <NomProjet>.md` (racine du projet) |
 | `template_objectifs.md` | `1 Pourquoi/Objectifs <NomProjet>.md` |
 | `template_planification.md` | `2 Plan/Planification <NomProjet>.md` |
 | `template_budget.md` | `2 Plan/Budget <NomProjet>.md` |
@@ -280,7 +276,6 @@ Variables communes a substituer :
 - `{{PLATEFORME_PROCEDURES}}` — plateforme procedures
 - `{{RESPONSABLE_MAJ}}` — responsable maj
 - `{{CONTRACTUALISATION}}` — contrats
-- `{{TACHES_A_FAIRE}}`, `{{TACHES_PROGRAMMEES}}` — pre-remplissage du Kanban
 - `{{TODO_LISTE}}`, `{{TODO_A_CREUSER}}` — todos pour la note de contexte
 - `{{HISTORIQUE_SOURCES}}` — historique (vide au demarrage)
 
@@ -297,7 +292,7 @@ Ton projet est cree. Voici comment utiliser chaque dossier :
 **4 Reflexion/** — Bilans de jalons, comptes-rendus, mesure des ecarts entre prevu et vecu.
 **5 Ressources/** — Materiel de reference, templates, documents, liens, medias.
 
-Le Kanban `Suivi <NomProjet>.md` a la racine du projet suit l'execution des actions.
+Le § 4 Todo de la note de contexte est le backlog du projet : c'est lui qui suit l'execution des actions. **Ne jamais creer de fichier de suivi separe** — un backlog qu'on ne voit pas en ouvrant la note du projet affiche des echeances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.
 La section 6 « Reflexion / Idees au fil de l'eau » de la note de contexte accueille les idees emergentes.
 ```
 
@@ -349,7 +344,6 @@ nouveau-projet/
 ├── SKILL.md
 └── assets/
     ├── template_projet.md              Note de contexte racine (6 sections)
-    ├── template_suivi.md               Kanban 5 colonnes
     ├── template_objectifs.md           Objectifs SMART justifies
     ├── template_planification.md       Etapes + actions + ressources + jalons
     ├── template_budget.md              Grille budgetaire

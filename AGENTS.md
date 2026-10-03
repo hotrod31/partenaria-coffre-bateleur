@@ -42,7 +42,8 @@ Ce n'est pas une application. C'est un système de notes markdown structuré + u
 Lis toujours ces fichiers avant de faire quoi que ce soit :
 
 1. `1 ALIGNEMENT/Contexte.md` — source de vérité sur l'utilisateur (qui il/elle est, ses projets, ses casquettes, sa phase de vie)
-2. `1 ALIGNEMENT/Préférences.md` — préférences de travail et posture attendue
+2. `1 ALIGNEMENT/Préférences.md` — tes préférences de travail et la posture attendue, **pour ce qui vaut partout**
+2bis. **`<Conteneur> — Préférences.md`** — dès que la séance porte sur un projet ou une casquette précis, lire **aussi** son fichier de préférences local s'il existe, à la racine du conteneur, à côté de sa note de contexte. Il porte ce qui ne vaut **que** là : conventions, doctrine, pièges du périmètre. Ne pas le lire, c'est travailler sans les règles du lieu
 3. Le chapitre actif dans `1 ALIGNEMENT/Chapitres/` (celui avec `status: active` dans son frontmatter) — vision stratégique long terme
 4. La daily note la plus récente dans la phase active — activité récente
 5. Les notes de contexte des projets actifs si pertinent
@@ -67,14 +68,16 @@ Lis toujours ces fichiers avant de faire quoi que ce soit :
 │           YYYY-WXX/
 │               YYYY-MM-DD.md    (daily notes)
 │               YYYY-WXX.md      (weekly notes)
-2 CONNAISSANCES/    → Athanor : maturation de tes idées
-│   (à plat par défaut — organise selon ce qui émerge)
+2 CONNAISSANCES/    → Athanor : ce qui mijote, et ce qui a pris forme
+│   Ce qui mijote.md         (index de tout ce qui est passé)
+│   Ce que je me dis/        (tout ce qui te vient)
+│   Ce que j'ai appris/      (les leçons formulées)
+│   (le reste à plat — organise selon ce qui émerge)
 3 PROJETS/          → Engagements temporaires avec deadline
 │   PROJETS.md           (vue sommaire)
-│   Suivi Projets.md     (Kanban global)
 │   NomProjet/
-│       NomProjet.md     (note de contexte — 6 sections)
-│       Suivi.md         (Kanban 5 colonnes)
+│       NomProjet.md     (note de contexte — 6 sections, § 4 Todo = backlog)
+│       NomProjet — Préférences.md   (optionnel, créé au premier besoin)
 │       1 Pourquoi/      (alignement local)
 │       2 Plan/          (planification, roadmap)
 │       3 Action/        (exécution, suivi résultats)
@@ -94,12 +97,26 @@ Lis toujours ces fichiers avant de faire quoi que ce soit :
 1. Alignement (le pourquoi, lien avec la vision)
 2. Roadmap (phases, étapes, jalons)
 3. Historique (chronologie des grandes étapes)
-4. Todo (accomplissements + réalisations à venir)
-5. Expérience (insights, compétences acquises)
+4. Todo — **c'est le backlog du conteneur, le seul endroit où vivent ses tâches ouvertes**
+5. Expérience — **c'est la mémoire du conteneur** : ce qu'il t'a appris sur ta façon de faire
 6. Réflexion / Idées au fil de l'eau
 
-**Suivi.md — Kanban 5 colonnes :**
-À faire, Programmées, En cours, En attente, Accomplies
+### Où vit la mémoire
+
+> 🔴 **Ce coffre n'a aucun fichier de mémoire séparé, et il n'en aura pas.** Une mémoire tenue à côté des notes finit par dire autre chose qu'elles — et c'est la version à côté qu'on relit.
+
+| Ce qui s'apprend | Où ça se capitalise | Qui l'écrit |
+| --- | --- | --- |
+| **Sur ta façon de faire** — méthode, compétence, piège à ne pas réapprendre | § 5 Expérience du projet ou de la casquette | `/fin-session` et `/dodo`, sans te demander |
+| **Sur qui tu es** — ce que tu vises, ce que tu refuses, ce que tu comprends | `2 CONNAISSANCES/`, par `/ca-me-vient` | **toi**, avec l'aide du débrief — jamais l'IA seule |
+
+Et les tâches vivent au § 4 Todo. **Il n'y a pas de tableau de suivi, pas de Kanban, et il ne faut pas en créer** : un backlog qu'on ne voit pas en ouvrant la note du projet affiche des échéances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.
+
+### Ce qui te vient en cours de route
+
+Une pensée qui surgit pendant une séance se traite **sur le moment**, par `/ca-me-vient`. La commande te fait parler, t'aide à formuler — sans formuler à ta place —, puis te demande où la poser : l'athanor, la semaine, la phase, le chapitre, ou ton `Contexte.md`.
+
+**Elle ne se propose pas d'elle-même.** `/fin-session` peut te signaler en une ligne qu'il a vu passer quelque chose, et il s'arrête là : pas de question, pas d'écriture. Ce qui n'est pas repris est perdu, et c'est assumé — une pensée qu'on se promet de traiter plus tard ne se traite jamais.
 
 ---
 
@@ -253,18 +270,35 @@ NIVEAU 4 - Contexte       Update des fichiers globaux si nécessaire
 
 **Règle :** Les faits vont dans les notes concernées. `Contexte.md` et les notes de contexte projet/casquette sont les sources de vérité.
 
+**Et il y a une seconde colonne, qui ne descend pas mais qui monte.** Celle-là ne concerne pas ce que tu as fait, mais ce que tu as compris :
+
+```
+Une pensée te vient, en pleine séance
+    ↓                     /ca-me-vient — on débriefe, tu formules, tu choisis où
+L'ATHANOR                 2 CONNAISSANCES/Ce que je me dis/  (ça mijote)
+    ↓                     quand ça a pris forme, c'est toi qui le déplaces
+LA LEÇON                  2 CONNAISSANCES/Ce que j'ai appris/
+    ↓                     quand elle demande à être habitée
+UN PROJET OU UNE CASQUETTE
+```
+
+Et quand c'est évident, la pensée monte directement : la weekly, le `Cheminement` de la phase, la note du chapitre, ou `Contexte.md`.
+
+🔴 **Rien ne monte tout seul dans cette colonne.** Chaque pas est un geste que tu fais, après un débrief. C'est la seule garantie qu'une conclusion sur qui tu es ne soit jamais écrite par une machine.
+
 ---
 
 ## Commandes disponibles
 
 Les commandes sont définies dans `.claude/skills/*/SKILL.md`.
 
-Voir le [`README.md`](README.md) du coffre pour la liste des 16 commandes embarquées et leur rôle.
+Voir le [`README.md`](README.md) du coffre pour la liste des commandes embarquées et leur rôle.
 
 Points clés :
 - **Cycle de session** : `/hello` en début de journée, `/fin-session` à chaque clôture de session thématique dans la journée, `/dodo` en fin de journée
 - `/bilan-jour` pour la réflexion quotidienne, `/bilan-semaine` pour la weekly review
 - `/nouveau-projet` pour créer un projet structuré, `/nouveau-chapitre` pour un nouveau cycle long
+- **`/ca-me-vient` au moment où une pensée surgit** — c'est la commande de l'intériorité, et la seule qui ne s'invoque pas à heure fixe
 - `/contradicteur` et `/angles-morts` pour l'introspection profonde
 - `/creer-commande` pour étendre ton coffre au fil du temps
 
@@ -331,7 +365,7 @@ Tâches et todos reçus → weekly note active (`YYYY-WXX/YYYY-WXX.md`).
 
 ## Mode vocal (Piper local, souverain)
 
-Le coffre embarque un système de synthèse vocale locale via **Piper** (open source MIT, 100% offline, aucun appel réseau). À l'initialisation, la voix Jessica (féminine chaleureuse) est activée par défaut — le partenaire IA lit ses réponses à voix haute.
+Le coffre embarque un système de synthèse vocale locale via **Piper** (open source MIT, 100 % hors ligne, aucun appel réseau). À l'initialisation, **c'est toi qui choisis ta voix** parmi les trois ci-dessous — on ne la déduit ni de ton nom, ni de ton prénom, ni de quoi que ce soit d'autre. Si tu ne choisis pas, Siwis est posée par défaut et on te le dit.
 
 Trois voix disponibles :
 - **Jessica** (`/vocal-jessica`) — féminine chaleureuse, modèle `fr_FR-upmc-medium` speaker 0
@@ -339,6 +373,15 @@ Trois voix disponibles :
 - **Siwis** (`/vocal-siwis`) — féminine neutre, modèle `fr_FR-siwis-medium` mono-speaker
 
 **Le silence est un droit absolu.** À tout moment : `/vocal-stop` désactive le mode vocal et tue toute lecture en cours. Aucun blocage possible.
+
+**D'autres moteurs existent, et ils ne sont pas installés d'office :**
+
+| | Ce qu'il apporte | Ce qu'il coûte |
+| --- | --- | --- |
+| **Edge** | des voix plus naturelles, gratuites | **chaque texte lu part chez Microsoft** pour être synthétisé. Dans un coffre d'introspection, c'est un choix à faire les yeux ouverts — jamais un réglage par défaut |
+| **Kyutai** | les voix les plus expressives, et elles tournent en local | lourd : il faut une machine taillée pour, et la lecture se fait attendre |
+
+Ils s'installent à la demande, et le coffre te dit où part le texte avant de rien activer.
 
 Mécanisme technique : un hook `Stop` dans `.claude/settings.local.json` déclenche `.claude/hooks/piper_tts.py` après chaque réponse Claude Code. Le script lit les flags `.claude/hooks/tts_enabled` et `.claude/hooks/tts_piper_voice` pour déterminer s'il doit lire et quelle voix utiliser. Les modèles `.onnx` sont téléchargés à la demande dans `.claude/hooks/piper/voices/` (~60 MB par modèle, non versionnés).
 
@@ -360,6 +403,12 @@ Les clés API, tokens et éléments techniques ne sont **jamais** stockés dans 
 - Hardcoder un numéro ou nom de phase de vie (toujours détecter dynamiquement)
 - Écrire du français sans accents
 - **Écraser une note existante avec `Write`** (daily, weekly, note de contexte, note structurée). Toujours **Read → Edit** pour ajouter/modifier. `Write` est réservé à la création d'un fichier qui n'existe pas encore, ou à une réécriture complète explicitement demandée par l'utilisateur.
+- **Créer un Kanban ou un fichier de suivi séparé**, ni en proposer un. Le backlog est le § 4 Todo de la note de contexte, et il n'y a pas d'autre endroit
+- **Créer un fichier de mémoire**, sous quelque nom que ce soit. Ce qui s'apprend va au § 5 Expérience du conteneur, ou dans `2 CONNAISSANCES/` par `/ca-me-vient`
+- **Créer un fichier `<Conteneur> — Préférences.md` par avance**, avant qu'il y ait une préférence à y mettre. Un fichier vide ne se lit pas
+- **Déduire une voix, un genre ou un trait de caractère du nom ou du prénom de l'utilisateur**
+- **Formuler à sa place une leçon sur qui il est.** Interroger, mettre en regard avec ce qu'il a écrit, reprendre ses mots — oui. Proposer l'énoncé, seulement s'il le demande, et écrire **sa** version
+- **Faire monter quelque chose dans la colonne d'intériorité sans débrief**, ni déposer une pensée sans lui demander où elle va
 
 ### Plan relationnel
 

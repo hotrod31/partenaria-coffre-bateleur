@@ -25,7 +25,7 @@ Un vault Obsidian structuré selon l'architecture **IAPCRA** — la dualité **I
 
 Le coffre embarque **21 commandes** (des skills Claude Code) qui accompagnent ton quotidien : ouverture de session, clôtures intra-journalières, bilans, création de projets, questionnement, clôture de journée, plus 4 commandes de bascule vocale. Une commande initiale, `/initialisation`, déploie ton squelette de coffre à partir de ta note d'introspection intime.
 
-À l'initialisation, un **partenaire IA vocal** t'accueille avec sa voix (mode vocal activé par défaut sur Jessica). Ta première commande à apprendre est `/vocal-stop` — le silence est ton droit absolu.
+À l'initialisation, un **partenaire IA vocal** t'accueille avec sa voix — **celle que tu auras choisie**, parmi les trois installées avec le coffre. Ta première commande à apprendre est `/vocal-stop` — le silence est ton droit absolu.
 
 ---
 
@@ -38,10 +38,10 @@ Avant de cloner ce coffre, assure-toi d'avoir installé :
 3. **Git** — pour cloner ce dépôt (Windows : https://git-scm.com — Mac/Linux : natif)
 
 Optionnel mais recommandé pour `/initialisation` avec un fichier .docx :
-- **markitdown** (`pip install markitdown`) — conversion .docx → markdown
+- **markitdown** (`pip3 install --user markitdown`) — conversion .docx → markdown
 
 Optionnel mais recommandé pour l'**expérience vocale** (le partenaire IA te lit ses réponses à voix haute) :
-- **Piper TTS** (`pip install piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
+- **Piper TTS** (`pip3 install --user piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
 
 ---
 
@@ -51,11 +51,17 @@ Optionnel mais recommandé pour l'**expérience vocale** (le partenaire IA te li
 
 Rodrigue le fera avec toi pendant votre visio de seuillage. Techniquement :
 
+**Il existe une version par système**, maintenues séparément — les commandes et l'installation n'y sont pas les mêmes. Clone **la tienne** :
+
 ```bash
-git clone https://github.com/hotrod31/partenaria-coffre-bateleur.git ~/PartenarIA
+# sur Mac
+git clone -b macos --single-branch https://github.com/hotrod31/partenaria-coffre-bateleur.git ~/PartenarIA
+
+# sur Windows
+git clone -b windows --single-branch https://github.com/hotrod31/partenaria-coffre-bateleur.git ~/PartenarIA
 ```
 
-Le dossier `~/PartenarIA` (ou l'emplacement de ton choix) devient ton coffre personnel.
+Le dossier `~/PartenarIA` (ou l'emplacement de ton choix) devient ton coffre personnel. **Ce clone-ci est la version macOS.**
 
 ### 2. Ouvrir dans Obsidian et Claude Code
 
@@ -133,13 +139,14 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 
 | Commande | Rôle |
 |----------|------|
-| `/nouveau-projet` | Crée un projet structuré (arborescence PPAR + Kanban) |
+| `/nouveau-projet` | Crée un projet structuré (arborescence PPAR, et son § 4 Todo fait office de backlog) |
 | `/nouveau-chapitre` | Clôture le chapitre en cours et en ouvre un nouveau (6-12 mois) |
 
 ### Introspection profonde
 
 | Commande | Rôle |
 |----------|------|
+| `/ca-me-vient` | **Au moment où une pensée te vient.** On en débriefe, tu la formules, puis tu choisis où elle se pose — l'athanor, ta semaine, ta phase, ton chapitre ou ton Contexte. C'est la seule commande qui ne s'invoque pas à heure fixe |
 | `/contradicteur` | Bascule ton partenaire IA en posture de contradicteur exigeant |
 | `/angles-morts` | Identifie ce qui n'est PAS dans ton corpus, zones d'ombre |
 | `/clarte` | Tableau de bord actualisé : vue pilotage de tous tes projets |
@@ -163,7 +170,7 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 | Commande | Rôle |
 |----------|------|
 | `/vocal-stop` | **La première commande à connaître.** Désactive le mode vocal (silence immédiat, arrête toute lecture en cours). |
-| `/vocal-jessica` | Bascule sur la voix Jessica (féminine chaleureuse). Voix par défaut activée à l'initialisation. |
+| `/vocal-jessica` | Bascule sur la voix Jessica (féminine chaleureuse). |
 | `/vocal-pierre` | Bascule sur la voix Pierre (masculine, même modèle UPMC que Jessica). |
 | `/vocal-siwis` | Bascule sur la voix Siwis (féminine neutre, modèle Siwis distinct). |
 
@@ -186,9 +193,9 @@ Les principes-clés :
 
 Voir [`CHANGELOG.md`](CHANGELOG.md) pour l'ensemble des évolutions du coffre-template.
 
-Actuellement : **v1.0.0** (17 août 2026) — première version distribuable.
+Actuellement : **v2.0.0** — voir `VERSION` à la racine, qui fait foi.
 
-Le coffre évoluera au fil des retours des bateleurs. Pour récupérer une version plus récente, il te suffira de `git pull` depuis ton coffre — les fichiers de doctrine seront mis à jour, tes notes personnelles restent intactes.
+Le coffre évoluera au fil des retours des bateleurs. Pour récupérer une version plus récente, il te suffira de `git pull` depuis ton coffre (tu restes sur ta branche) — les fichiers de doctrine seront mis à jour, tes notes personnelles restent intactes.
 
 ---
 

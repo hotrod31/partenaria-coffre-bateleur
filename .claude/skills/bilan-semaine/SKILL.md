@@ -17,7 +17,7 @@ Lis `1 ALIGNEMENT/Contexte.md` pour comprendre la situation de l'utilisateur.
 ### Étape 2 : Détecter la phase active et les semaines
 
 ```bash
-PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | sort -V | tail -1)
+PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-)
 PHASE_NAME=$(basename "$PHASE_DIR")
 
 # Si lancé dimanche soir : la semaine "en cours" est celle qui démarre lundi

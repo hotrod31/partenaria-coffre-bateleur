@@ -15,7 +15,7 @@ Chaque casquette est un dossier avec **la même structure PPAR que les projets**
 ```
 NomCasquette/
 ├── NomCasquette.md          ← Note de contexte (6 sections)
-├── Suivi.md                 ← Kanban 5 colonnes
+├── NomCasquette — Préférences.md   ← optionnel, créé au premier besoin
 ├── 1 Pourquoi/              ← Alignement local
 ├── 2 Plan/                  ← Planification, roadmap
 ├── 3 Action/                ← Exécution, suivi résultats
@@ -48,5 +48,5 @@ Si tu doutes : "est-ce que cette activité peut se terminer un jour ?"
 
 Chaque casquette mérite une revue régulière (mensuelle ou trimestrielle) pour :
 - Vérifier l'alignement (est-ce que je m'investis toujours dans le bon sens ?)
-- Nettoyer le Suivi (déplacer les tâches, archiver ce qui est fait)
+- Nettoyer le § 4 Todo (cocher ce qui est fait, écarter ce qui n'a plus lieu d'être)
 - Alimenter le fil de l'eau des idées

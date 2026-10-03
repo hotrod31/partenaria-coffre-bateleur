@@ -24,7 +24,7 @@ Clôture **la journée** (pas une session). Différent de `/fin-session` qui cl�
 ### Étape 0 : Détection des sessions déjà closes
 
 ```bash
-PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1)
+PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-)
 WEEK=$(date +%Y-W%V)
 TODAY=$(date +%Y-%m-%d)
 DAILY="${PHASE_DIR}${WEEK}/${TODAY}.md"
@@ -76,17 +76,17 @@ Relis la conversation et identifie **deux ensembles** :
 | # | Type | Définition | Routage |
 |---|---|---|---|
 | 1 | **Décisions** | Choix actés qui affectent les process ou l'organisation. Ex : « On part sur NocoDB pour le CRM », « J'arrête ce projet », « On bascule l'archi en V2 » | NIVEAU 3 (note contexte projet/casquette) + NIVEAU 4 si stratégique |
-| 2 | **Préférences** | Feedback utilisateur sur le comportement de l'agent. Ex : « Sois plus direct », « Ne me demande pas de valider chaque fois », « Mode propositionnel pour /bilan-jour » | NIVEAU 5 (Préférences.md) + capitalisation MEMORY.md cross-session |
+| 2 | **Préférences** | Feedback sur la façon de travailler ensemble. Ex : « Sois plus direct », « Ne me demande pas de valider chaque fois » | **Deux niveaux.** Si ça vaut partout → NIVEAU 5, `1 ALIGNEMENT/Préférences.md`. Si ça ne vaut que pour un projet ou une casquette → son fichier local `<Conteneur> — Préférences.md`, à créer s'il n'existe pas encore |
 | 3 | **Faits** | Informations factuelles nouvelles. Ex : « Nouveau client signé », « Le prix a changé », « Le COSTRAT s'est tenu hier » | NIVEAU 3 (note contexte projet/casquette) ou NIVEAU 4 (Contexte) |
 | 4 | **Contradictions** | Incohérences entre ce qui est documenté dans le vault et ce qui a été dit. Ex : La note de projet dit « deadline mars » mais on a parlé de « deadline juin » | Résolution directe dans la note source du vault — l'info la plus récente gagne |
-| 5 | **Ressources** | Liens, outils, concepts à documenter. Ex : URL article, nom d'outil, package npm, référence bibliographique | NIVEAU 3 (Ressources/ du projet) ou `5 RESSOURCES/` si transverse ou `5 RESSOURCES/Outils/Patterns techniques transverses.md` si pattern technique réutilisable |
+| 5 | **Ressources** | Liens, outils, concepts à documenter. Ex : URL article, nom d'outil, package npm, référence bibliographique | NIVEAU 3 (Ressources/ du projet) ou `5 RESSOURCES/` si transverse ou `5 RESSOURCES/Outils/Pièges et patterns techniques.md` si pattern technique réutilisable (à créer au premier usage) |
 
 **Règle d'or** : si une extraction est vide (rien à noter sur ce type), le mentionner explicitement (« Décisions : aucune ») plutôt que de l'omettre — force à se poser la question, évite l'omission par paresse.
 
 ### Étape 2 : Détecter la phase active
 
 ```bash
-ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1
+ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-
 ```
 
 Extraire le numéro et nom de la phase depuis le nom du dossier.
@@ -146,11 +146,9 @@ Ajoute à la fin de la note :
 Si des projets ont été travaillés, mets à jour directement :
 - `3 PROJETS/[Projet]/[Projet].md` → Progression, roadmap, status
 - `3 PROJETS/PROJETS.md` → Mettre à jour la **Situation** des projets travaillés + la date `updated` du frontmatter
-- `3 PROJETS/Suivi Projets.md` → Kanban global : ajouter/cocher/supprimer les tâches des projets travaillés
-- `3 PROJETS/[Projet]/Suivi [Projet].md` → Kanban projet : déplacer les cartes entre colonnes (À programmer → Programmées → En cours → Accomplies), ajouter les nouvelles tâches
-- `3 PROJETS/[Projet]/Suivi des livrables*.md` → Synchroniser : si des tâches ont été cochées/décochées dans les notes de livrables, refléter l'état dans le Kanban projet correspondant (et vice versa)
+- `3 PROJETS/[Projet]/[Projet].md` **§ 4 Todo** → cocher ce qui est accompli, ajouter ce qui est apparu. **C'est le backlog du projet, et le seul endroit où vivent ses tâches ouvertes**
 
-**Format Kanban :** frontmatter `kanban-plugin: basic`, colonnes en `## Heading`, cartes en `- [ ]` / `- [x]`, dates en `@{YYYY-MM-DD}`.
+> **Pourquoi pas un tableau de suivi séparé.** Parce qu'il faut penser à le tenir. Le § 4 Todo, lui, est relu à chaque fois qu'on ouvre la note du projet — et un backlog qu'on ne voit pas affiche des échéances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.
 
 Si des casquettes ont été impactées, mets à jour directement :
 - `4 CASQUETTES/[Casquette]/[Casquette].md` → Nouvelles infos, responsabilités
@@ -302,7 +300,7 @@ Ne pas créer d'entrée si la journée n'a pas produit de win ou d'insight notab
 ```bash
 WEEK=$(date +%Y-W%V)
 TODAY=$(date +%Y-%m-%d)
-PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ | sort -V | tail -1)
+PHASE_DIR=$(ls -d "1 ALIGNEMENT/Phases de vie/"*/ 2>/dev/null | awk -F'/' '{d=$(NF-1); n=d+0; print n"	"$0}' | sort -n | tail -1 | cut -f2-)
 WEEKLY="${PHASE_DIR}${WEEK}/${WEEK}.md"
 DAILY="${PHASE_DIR}${WEEK}/${TODAY}.md"
 ```
@@ -388,7 +386,16 @@ Si aucun changement de contexte global n'est nécessaire, ne rien proposer.
 
 ### Étape 7 : Mise à jour Préférences (NIVEAU 5 — AUTO)
 
-Si de nouvelles préférences ou patterns ont émergé pendant la session, mets à jour `1 ALIGNEMENT/Préférences.md` directement (sans validation).
+Si de nouvelles préférences ou patterns ont émergé pendant la journée, les écrire directement, sans validation. **Mais à deux niveaux, et le tri se fait en une question :**
+
+> *Est-ce que ça vaudrait encore si on parlait d'autre chose ?*
+
+| Réponse | Où ça va |
+|---|---|
+| Oui — ça vaut partout | `1 ALIGNEMENT/Préférences.md` |
+| Non — ça ne vaut que pour ce projet ou cette casquette | `<Conteneur> — Préférences.md`, à la racine du conteneur, **à créer s'il n'existe pas encore** |
+
+Dans le doute, le local. Un fichier global qui grossit cesse d'être lu en entier ; un fichier local qu'on déplace plus tard ne coûte rien.
 
 ### Étape 8 : Confirmation
 

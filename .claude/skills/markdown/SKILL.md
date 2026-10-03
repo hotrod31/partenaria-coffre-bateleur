@@ -44,7 +44,7 @@ Tu convertis un document (Word, PDF, PowerPoint, Excel, HTML, audio, etc.) en no
 
 - Récupère le chemin depuis `$ARGUMENTS` (peut être Windows `C:\...` ou Unix `/c/Users/...`).
 - Normalise le chemin (`cygpath -u` si nécessaire pour Bash, ou garde Windows tel quel).
-- Vérifie que le fichier existe (`test -f` en Bash, ou `Test-Path` en PowerShell).
+- Vérifie que le fichier existe (`test -f`).
 - Si le fichier n'existe pas, affiche une erreur claire et stoppe.
 - Extrais le nom du fichier source (avec extension) et le nom sans extension.
 
@@ -66,7 +66,7 @@ Détecter dynamiquement la racine du coffre (utiliser `pwd` ou détecter le doss
 #### Cas B — Fichier hors du coffre
 
 - **Destination de la copie source** : `0 INBOX/<nom du fichier complet avec extension>`.
-- Copie le fichier source vers cette destination (`cp` en Bash, `Copy-Item` en PowerShell).
+- Copie le fichier source vers cette destination (`cp`).
 - Si le nom existe déjà dans `0 INBOX/`, ajoute un suffixe `-2`, `-3`, etc. avant l'extension.
 - **Destination de la note convertie** : `0 INBOX/` (à côté de la copie source).
 - Wikilink : `[[<nom du fichier copié avec extension>]]`.
@@ -76,7 +76,7 @@ Détecter dynamiquement la racine du coffre (utiliser `pwd` ou détecter le doss
 Lance markitdown sur le fichier (source si dans le coffre, copie si hors coffre) :
 
 ```bash
-python -m markitdown "<chemin du fichier à convertir>" > /tmp/markitdown_out.md 2>/tmp/markitdown_err.log
+python3 -m markitdown "<chemin du fichier à convertir>" > /tmp/markitdown_out.md 2>/tmp/markitdown_err.log
 ```
 
 - Si la conversion échoue (exit code ≠ 0), affiche le contenu de `/tmp/markitdown_err.log` à l'utilisateur et stoppe.
@@ -168,7 +168,7 @@ Si la conversion a produit un contenu très court ou suspect (PDF scanné sans O
 
 ## En cas d'erreur
 
-- **`markitdown: command not found`** → markitdown n'est pas installé. Lance `pip install 'markitdown[all]'` (installation à refaire si reset Python).
+- **`markitdown: command not found`** → markitdown n'est pas installé. Lance `pip3 install --user 'markitdown[all]'`. Si Homebrew refuse l'installation (« externally-managed-environment », PEP 668), ajoute `--break-system-packages` ou installe dans un environnement virtuel.
 - **Sortie vide ou très courte** → souvent PDF scanné sans OCR (texte présent visuellement mais pas extractible). Alerte l'utilisateur, propose une alternative manuelle (capture + OCR séparé).
 - **Erreur d'encodage** → markitdown s'attend à UTF-8 en sortie. Si caractères corrompus, vérifier `chcp` (CP1252 Windows par défaut). Forcer `PYTHONIOENCODING=utf-8` dans le shell avant l'appel.
 - **Fichier source verrouillé** (Office ouvert) → fermer le fichier dans Office, retenter.

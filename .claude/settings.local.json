@@ -10,17 +10,14 @@
       "Bash(mkdir:*)",
       "Bash(cp:*)",
       "Bash(mv:*)",
-      "Bash(rm:*)",
       "Bash(touch:*)",
       "Bash(date:*)",
       "Bash(git status:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "Bash(git pull:*)",
-      "Bash(python:*)",
-      "Bash(pip:*)"
+      "Bash(python3:*)",
+      "Bash(pip3:*)"
     ]
   },
   "hooks": {
@@ -29,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python .claude/hooks/piper_tts.py"
+            "command": "python3 .claude/hooks/piper_tts.py"
           }
         ]
       }

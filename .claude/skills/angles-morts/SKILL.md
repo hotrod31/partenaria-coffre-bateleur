@@ -39,8 +39,8 @@ Pour qu'il y ait de la matière à contredire, **élargir** la récolte en lisan
    - Lire l'intention du chapitre actif et de la phase active
    - Lire les décisions dans `2 CONNAISSANCES/` qui touchent au sujet
 
-3. **Kanbans et notes de contexte** :
-   - Lire `3 PROJETS/PROJETS.md`, `3 PROJETS/Suivi Projets.md` pour l'état d'ensemble
+3. **Notes de contexte et backlogs** :
+   - Lire `3 PROJETS/PROJETS.md` pour l'état d'ensemble, et le § 4 Todo des projets concernés
    - Lire les notes de contexte des projets concernés
 
 4. **Lecture du AGENTS.md** :

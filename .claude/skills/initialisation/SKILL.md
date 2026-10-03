@@ -48,33 +48,40 @@ Récupère la réponse. Nettoie-la (retire les caractères problématiques pour 
 
 Note aussi la version « nom de dossier » compatible : `<NOM_COFFRE_DOSSIER>` (identique si déjà propre, sinon adapté).
 
-### Étape 2b — Détection de la consonance du nom pour choisir la voix par défaut
+### Étape 2b — Choisir la voix
 
-À partir de `<NOM_COFFRE>`, déterminer `<VOIX_DEFAUT>` ∈ `{jessica, pierre}` selon la consonance du nom.
+Le coffre peut te lire ses réponses à voix haute. **La voix, c'est toi qui la choisis** — on ne la devine pas à partir de ton prénom.
 
-**Méthode** :
+Poser la question, une fois :
 
-1. **Extraire le prénom candidat** dans le nom du coffre. Ignorer les mots génériques (« Coffre », « Mon », « PartenarIA », « Vault ») pour identifier le token qui ressemble à un prénom. Ex :
-   - `« Elsa »` → prénom = `Elsa`
-   - `« Coffre Elsa »` → prénom = `Elsa`
-   - `« PartenarIA Marc »` → prénom = `Marc`
-   - `« Mon Coffre »` → aucun prénom identifiable
-2. **Déterminer la consonance** du prénom :
-   - **Féminin probable** : terminaisons `-a`, `-e`, `-ette`, `-elle`, `-ine`, `-ie`, `-ia`, `-ah`, `-anne`, `-lène`, `-ise` ; ou prénom connu féminin (Marie, Anne, Sarah, Christelle, Emma, etc.)
-   - **Masculin probable** : terminaisons `-o`, `-us`, `-in`, `-en`, `-an`, `-c`, `-l`, `-r`, `-t`, `-d`, `-el` ; ou prénom connu masculin (Marc, Pierre, Rodrigue, Stéphane, etc.)
-   - **Ambigu** : prénoms épicènes (Camille, Dominique, Claude) ou nom non-prénom
-3. **Trancher** :
-   - Féminin probable → `<VOIX_DEFAUT> = jessica`
-   - Masculin probable → `<VOIX_DEFAUT> = pierre`
-   - **Ambigu ou aucun prénom identifiable → `<VOIX_DEFAUT> = jessica`** (règle : dans le doute, féminin)
+> Ton partenaire peut te parler. Trois voix sont installées avec le coffre, toutes les trois **sur ta machine** — rien de ce qu'elles lisent ne sort de chez toi :
+>
+> - **Jessica** — voix féminine
+> - **Pierre** — voix masculine
+> - **Siwis** — voix féminine, plus neutre
+>
+> Laquelle veux-tu pour commencer ? Tu pourras changer à tout moment avec `/vocal-jessica`, `/vocal-pierre` ou `/vocal-siwis`, et couper avec `/vocal-stop`.
 
-Cette variable sera utilisée à l'étape 7b pour configurer les flags Piper.
+Noter la réponse comme `<VOIX_DEFAUT>` ∈ `{jessica, pierre, siwis}`.
+
+**S'il ne choisit pas, ou s'il dit « peu importe »** : prendre `siwis`, et le dire — *« je mets Siwis, tu changeras quand tu voudras »*. Ne jamais déduire un choix de son nom, de son prénom ou de quoi que ce soit d'autre : une voix attribuée d'office se trompe tôt ou tard, et sur quelque chose qui ne se discute pas.
+
+**D'autres voix existent**, et elles ne sont pas installées par défaut parce qu'elles ne se valent pas sur un point précis :
+
+| | Ce qu'elle apporte | Ce qu'elle coûte |
+|---|---|---|
+| Les voix **Edge** | plus naturelles, et gratuites | **chaque texte lu part chez Microsoft** pour être synthétisé. Dans un coffre d'introspection, c'est un choix à faire les yeux ouverts, pas un réglage |
+| Les voix **Kyutai** | les plus expressives, et elles tournent en local | lourdes à faire tourner — il faut une machine taillée pour, et la lecture se fait attendre |
+
+Si le sujet vient, le dire ainsi et ne rien installer sans qu'il l'ait demandé.
+
+Cette variable sera utilisée à l'étape 7b pour configurer Piper.
 
 ### Étape 3 — Lecture (et conversion si nécessaire)
 
 - **`.md` / `.txt`** : lecture directe avec le tool Read
 - **`.pdf`** : lecture native via le tool Read (Claude Code gère les PDF)
-- **`.docx`** : conversion via Bash `markitdown "<chemin>"` (nécessite `pip install markitdown` — cf. README du coffre) puis lecture du markdown produit
+- **`.docx`** : conversion via Bash `markitdown "<chemin>"` (nécessite `pip3 install --user markitdown` — cf. README du coffre) puis lecture du markdown produit
 
 **Compter les mots du contenu extrait.** Si moins de 500 mots :
 
@@ -268,14 +275,14 @@ Utiliser Edit sur ces fichiers pour renseigner le chemin exact `1 ALIGNEMENT/Pha
 
 **c) `.obsidian/plugins/calendar/data.json`** — remplacer `"weeklyNoteFolder": ""` par `"weeklyNoteFolder": "1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>"`
 
-### Étape 7b — Activation du mode vocal (voix par défaut selon consonance du nom)
+### Étape 7b — Activation du mode vocal
 
-Avant d'émettre le rapport final, préparer le mode vocal Piper avec la voix `<VOIX_DEFAUT>` déterminée à l'étape 2b (jessica si nom féminin ou ambigu, pierre si nom masculin).
+Avant d'émettre le rapport final, préparer le mode vocal Piper avec la voix `<VOIX_DEFAUT>` **que le bateleur a choisie** à l'étape 2b.
 
 **1. Installer les dépendances Python** (silencieux si déjà présentes) :
 
 ```bash
-pip install --quiet piper-tts sounddevice 2>&1 | tail -3
+pip3 install --user --quiet piper-tts sounddevice 2>&1 | tail -3
 ```
 
 **2. Télécharger le modèle si absent** (~63 MB — mutualisé jessica/pierre, un seul modèle UPMC couvre les deux voix) :
@@ -283,7 +290,7 @@ pip install --quiet piper-tts sounddevice 2>&1 | tail -3
 ```bash
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ]; then
   echo "Préparation de la voix pour le premier cri (~63 MB, ~1 min)..."
-  python .claude/hooks/download_voice.py <VOIX_DEFAUT>
+  python3 .claude/hooks/download_voice.py <VOIX_DEFAUT>
 fi
 ```
 
@@ -296,7 +303,7 @@ printf "<VOIX_DEFAUT>" > .claude/hooks/tts_piper_voice
 
 Remplacer `<VOIX_DEFAUT>` par la valeur exacte (`jessica` ou `pierre`).
 
-**Si `pip install` échoue** (pas de Python, pas de pip, offline) : ne pas bloquer, continuer sans mode vocal. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
+**Si l'installation échoue** (pas de Python 3, pas de `pip3`, hors ligne, ou Homebrew qui refuse avec « externally-managed-environment » — c'est PEP 668, ajouter alors `--break-system-packages`) : ne pas bloquer, continuer sans mode vocal. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
 
 **Si le téléchargement du modèle échoue** : idem, continuer sans mode vocal, mentionner dans le rapport.
 
@@ -341,7 +348,7 @@ Comme Claude Code et Obsidian sont actuellement ouverts sur ce dossier,
 je ne peux pas le renommer moi-même (le dossier est verrouillé par les
 processus actifs). Voici la procédure à suivre :
 
-1. Ferme complètement Obsidian (Ctrl+Q ou fermer via la barre des tâches)
+1. Ferme complètement Obsidian (Cmd+Q, ou clic droit sur son icône du Dock puis « Quitter »)
 2. Ferme cette session Claude Code (tape /exit ou ferme le terminal)
 3. Ouvre l'explorateur de fichiers sur le dossier parent
 4. Renomme le dossier « partenaria-coffre-bateleur » en « <NOM_COFFRE_DOSSIER> »
@@ -454,5 +461,5 @@ Le tutoiement est institué. Je te répondrai juste, sans te complaire.
 8. **Présentation IA routée par tempérament** — la version affichée (SYMBOLIQUE / ÉQUILIBRÉ / FACTUEL) est choisie automatiquement selon les 4 signaux de l'étape 4b. Aucune question au bateleur pour ce choix, aucun affichage du tempérament détecté.
 9. **Silence après la présentation** — rien n'est affiché après le premier cri du partenaire IA. Pas de « À demain », pas de « À bientôt », pas de rappel /hello. La présentation se pose et se tait.
 10. **Salutation temporelle** — « Bonjour » avant 18h, « Bonsoir » à partir de 18h. Détection via Bash `date +%H`, jamais inférer.
-11. **Voix par défaut selon consonance du nom du coffre** — à l'étape 2b, le LLM détermine si le prénom identifiable dans `<NOM_COFFRE>` est féminin (→ Jessica), masculin (→ Pierre) ou ambigu (→ Jessica par défaut). Cette voix est utilisée pour le premier cri parlé. Aucune question au bateleur pour ce choix. Le bateleur peut toujours changer après via `/vocal-*`.
-12. **`<NOM_VOIX_HUMAIN>` dans le rapport** — substituer par le nom capitalisé de la voix : `jessica` → « Jessica », `pierre` → « Pierre ». Utilisé dans la ligne « Mode vocal activé — voix ___ » du rapport.
+11. **La voix est choisie par le bateleur** — à l'étape 2b, les trois voix lui sont présentées et il désigne la sienne. **Ne jamais la déduire de son nom ni de son prénom.** S'il ne choisit pas, prendre `siwis` et le dire. Cette voix sert au premier cri parlé, et il peut changer à tout moment via `/vocal-*`.
+12. **`<NOM_VOIX_HUMAIN>` dans le rapport** — substituer par le nom capitalisé de la voix : `jessica` → « Jessica », `pierre` → « Pierre », `siwis` → « Siwis ». Utilisé dans la ligne « Mode vocal activé — voix ___ » du rapport.
