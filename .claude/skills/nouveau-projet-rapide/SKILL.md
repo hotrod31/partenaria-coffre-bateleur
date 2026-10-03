@@ -13,7 +13,7 @@ Cinq questions, et le projet existe. **Pas de budget, pas d'analyse de risques, 
 |---|---|---|
 | Durée du cadrage | quelques minutes | une bonne demi-heure |
 | Questions | 5 | 10 étapes |
-| Notes produites | **1** — la note de contexte | **6** — contexte, objectifs, planification, budget, risques, gouvernance |
+| Notes produites | **1** — la note de contexte | **jusqu'à 6** — contexte, objectifs, planification, et selon le projet budget, risques, gouvernance |
 | Pour quoi | un projet que tu portes seul, dont tu vois l'issue | un projet avec de l'argent, des tiers, une échéance dure, ou plusieurs mois devant |
 | Exemples | « reprendre la course », « refaire mon site », « publier mes dix premiers articles » | « ouvrir mon activité », « lancer une formation payante », « déménager l'atelier » |
 
@@ -85,27 +85,27 @@ mkdir -p "$BASE/1 Pourquoi" "$BASE/2 Plan" "$BASE/3 Action" "$BASE/4 Réflexion"
 
 ⚠️ **Vérifier d'abord que le dossier n'existe pas** — `ls "3 PROJETS/"` et chercher le nom. Si un projet du même nom existe, demander avant de toucher à quoi que ce soit.
 
-**b) La note de contexte**, à partir du gabarit du skill complet :
+**b) La note de contexte**, à partir du gabarit du coffre :
 
 ```
-.claude/skills/nouveau-projet/assets/template_projet.md
+5 RESSOURCES/Modèles/Projet.md
 ```
 
-🔴 **Utiliser ce gabarit, ne pas en écrire un second.** Les deux commandes partagent la même note de contexte à six sections ; un gabarit recopié ici divergerait de l'autre au premier changement.
+🔴 **Utiliser ce gabarit, ne pas en écrire un second.** C'est le même que celui de `/nouveau-projet` — il n'en existe qu'une version, et c'est elle que le Bateleur ouvre quand il crée une note à la main.
 
-Placeholders à remplir :
+Ce qu'on remplit, et ce qu'on laisse :
 
-| Placeholder | Avec quoi |
+| Section du gabarit | Avec quoi |
 |---|---|
-| `{{PROJET_NOM}}` | le nom |
-| `{{DESCRIPTION_COURTE}}` | la phrase de la question 1 |
-| `{{CONTEXTE_ENJEUX}}` | le pourquoi-maintenant de la question 2, **et le lien vers la leçon source** si le projet vient de l'athanor |
-| `{{OBJECTIFS_LISTE}}` | l'issue visible de la question 3, en une ou deux lignes |
-| `{{ECHEANCE}}`, `{{ECHEANCE_FMT}}` | la date |
-| `{{DATE_CREATION}}`, `{{DATE_CREATION_FMT}}` | `date +%Y-%m-%d`, relevée au système |
-| `{{TODO_LISTE}}` | les actions de la question 4, en cases à cocher |
-| `{{ETAPES_LISTE}}` | **laisser vide**, avec une ligne : *« Pas de découpage en étapes — cadrage rapide. »* |
-| `{{TODO_A_CREUSER}}`, `{{HISTORIQUE_SOURCES}}` | vides au démarrage |
+| Le titre `{{title}}` | le nom du projet |
+| Le frontmatter `deadline:` | la date de la question 3 |
+| **§ 1 Alignement** | le pourquoi-maintenant de la question 2, **et le lien vers la leçon source** si le projet vient de l'athanor |
+| **§ 2 Roadmap** | l'issue visible de la question 3 et l'échéance. **Pas de découpage en étapes** — c'est le travail de la version longue |
+| **§ 3 Historique** | une ligne : la date du jour, « projet ouvert ». Rien de plus |
+| **§ 4 Todo** | les actions de la question 4, en cases à cocher |
+| **§ 5 Expérience, § 6 Réflexion** | laisser le gabarit tel quel — ils se rempliront en vivant |
+
+**Retirer les indications entre crochets** que l'on n'a pas remplies, plutôt que les laisser dans la note. Une note neuve pleine de `[Étape 2]` est une note qu'on n'ouvre pas deux fois.
 
 **c) Rien d'autre.** Pas de note d'objectifs, pas de planification, pas de budget, pas de risques, pas de gouvernance. **Et pas de fichier de suivi** : le § 4 Todo de la note de contexte **est** le backlog du projet.
 

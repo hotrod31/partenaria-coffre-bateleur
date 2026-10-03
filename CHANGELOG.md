@@ -50,6 +50,24 @@ C'est aussi le chemin par lequel une leçon de `Ce que j'ai appris/` devient un 
 
 `/fin-session` devient **`/fin`**. Même commande, nom plus court pour ce qui se tape plusieurs fois par jour.
 
+### Un seul gabarit par note, et les six sont dans le coffre
+
+Le coffre portait **deux notes de contexte divergentes** : `5 RESSOURCES/Modèles/Projet.md`, que tu ouvres à la main, et une copie dans `assets/` du skill, que la commande appliquait. Elles n'avaient ni le même frontmatter, ni les mêmes titres de section — deux projets du même coffre, l'un créé à la main et l'autre par la commande, n'avaient donc pas la même note de contexte.
+
+**Les six gabarits vivent désormais dans `5 RESSOURCES/Modèles/`, et nulle part ailleurs** : `Projet.md`, `Projet — Objectifs.md`, `Projet — Planification.md`, `Projet — Budget.md`, `Projet — Risques.md`, `Projet — Gouvernance.md`. Le dossier `assets/` du skill est supprimé. Deux conséquences : il n'existe qu'une version de chaque note, et **tu peux les ouvrir et les modifier sans entrer dans `.claude/`**.
+
+Les cinq gabarits versés ont été réécrits pour l'usage à la main — des indications et des exemples à la place des variables de substitution. Et deux ne se remplissent plus que s'ils ont lieu d'être : **budget seulement si le projet engage de l'argent, gouvernance seulement s'il implique d'autres personnes**. Un projet porté seul n'a pas de gouvernance, et en produire une est du remplissage.
+
+### Accents, et renvois dans le vide
+
+`nouveau-projet` était le **seul des 23 skills écrit sans accents** — 0 ligne accentuée sur 367, là où tous les autres le sont normalement. Ce n'était pas une convention, c'était un défaut d'origine. Repris : 168 lignes accentuées sur 346.
+
+Trois renvois pointaient dans le vide, et chacun aurait échoué devant un bateleur :
+
+- **`/bascule-notes-periodiques`**, appelée par `/nouvelle-phase-vie` sans exister. Les gestes sont désormais écrits dans le skill — et ils portent sur **trois** fichiers de configuration, pas deux : `daily-notes.json`, `periodic-notes/data.json` **et** `calendar/data.json`, que l'ancienne rédaction oubliait.
+- **`/bilan-veille`**, citée par `/hello`. Fausse alerte : la logique y était déjà écrite en entier, seule la phrase d'introduction renvoyait à une commande absente.
+- **`/deck-projet`, `/tableau-projet`, `/gantt`, `/roadmap`**, présentées comme disponibles alors qu'aucune n'est embarquée. Elles sont maintenant annoncées pour ce qu'elles sont : installables depuis `ressources.partenaria.fr`, et à ne pas proposer avant.
+
 ### `/bilan-jour` passe en mode propositionnel
 
 Il posait cinq questions, une par une, en fin de journée. **Il lit désormais la journée et rédige le bilan avant de parler** : la daily en entier, logs de séance compris, les pensées déposées dans l'athanor, les notes de contexte touchées. Puis il ne demande qu'une chose — ta note d'énergie, la seule donnée qu'aucune trace ne porte — groupe ses arbitrages en une seule prise de parole, et écrit sans redemander.

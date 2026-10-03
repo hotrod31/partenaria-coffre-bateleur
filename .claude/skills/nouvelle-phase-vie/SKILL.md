@@ -113,13 +113,26 @@ Mets à jour la section "Phase de Vie Actuelle" dans `1 ALIGNEMENT/Contexte.md` 
 
 À ce stade, la nouvelle phase est créée et la phase précédente clôturée. Les icônes daily/weekly d'Obsidian pointent encore vers la phase précédente.
 
-**Appeler la commande dédiée `/bascule-notes-periodiques`** qui :
-1. Détecte automatiquement la phase active (qui est maintenant la nouvelle)
-2. Affiche les chemins actuels et les chemins cibles
-3. Demande confirmation à l'utilisateur (NON silencieux)
-4. Applique la bascule si validé sur `.obsidian/daily-notes.json` (core) et `.obsidian/plugins/periodic-notes/data.json` (communautaire)
+**Trois fichiers de configuration à repointer** — et il faut les trois, en oublier un suffit à ce que les notes continuent d'être créées dans l'ancienne phase :
 
-Si l'utilisateur refuse la bascule à ce stade, ce n'est pas bloquant — il pourra relancer `/bascule-notes-periodiques` plus tard.
+| Fichier | Clé(s) à modifier |
+|---|---|
+| `.obsidian/daily-notes.json` | `folder` |
+| `.obsidian/plugins/periodic-notes/data.json` | `daily.folder` et `weekly.folder` |
+| `.obsidian/plugins/calendar/data.json` | `weeklyNoteFolder` |
+
+La nouvelle valeur est le chemin de la phase active : `1 ALIGNEMENT/Phases de vie/<N> <Nom de la phase>`.
+
+**Comment procéder :**
+
+1. Relever le chemin actuel dans chacun des trois fichiers
+2. **Montrer à l'utilisateur les chemins actuels et les chemins cibles**, et demander confirmation — ce geste n'est pas silencieux, il touche sa configuration
+3. S'il valide, appliquer avec Edit sur les trois fichiers
+4. S'il refuse, **ce n'est pas bloquant** : le dire, et préciser qu'il peut le demander plus tard — mais que d'ici là ses dailies et weeklies continueront d'être créées dans l'ancienne phase
+
+⚠️ **Puis fermer complètement Obsidian et le rouvrir.** Le plugin Periodic Notes ne relit son `data.json` qu'au démarrage complet de l'application : un simple rechargement de la fenêtre ne suffit pas, et il continuera à écrire dans l'ancienne phase sans rien signaler.
+
+**Vérification après redémarrage** : Paramètres → Periodic Notes → le dossier affiché doit être celui de la nouvelle phase.
 
 ### Étape 8 : Confirmation
 

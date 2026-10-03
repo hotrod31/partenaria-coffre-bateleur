@@ -33,7 +33,7 @@ Extraire le numéro et nom de la phase depuis le nom du dossier.
 
 ### Étape 3b : Bilan automatique de la veille
 
-Exécuter la logique de `/bilan-veille` **silencieusement** :
+Remplir **silencieusement** le bilan de la veille dans la daily du jour :
 
 1. Calculer le sous-dossier de semaine du jour et vérifier le jour de la semaine via une commande système (ne jamais calculer mentalement) :
    ```bash
