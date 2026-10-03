@@ -40,6 +40,24 @@ La mémoire vit dans les **notes de contexte** : le § 5 Expérience pour ce qui
 
 Edge et Kyutai entrent au catalogue sans être installés d'office — et le coffre dit où part le texte avant d'activer quoi que ce soit : Edge le fait synthétiser chez Microsoft, ce qui ne va pas de soi dans un coffre d'introspection.
 
+### `/nouveau-projet-rapide` — et `/fin` au lieu de `/fin-session`
+
+`/nouveau-projet` reste entier : dix étapes, six notes, et il sert quand un projet engage de l'argent, des tiers ou une échéance qu'on ne peut pas rater. **Mais il était le seul chemin**, et un cadrage en dix étapes abandonné à la sixième ne laisse rien derrière lui.
+
+`/nouveau-projet-rapide` ouvre un projet en **cinq questions** — est-ce un projet ou une casquette, qu'est-ce que c'est, pourquoi maintenant, à quoi on verra que c'est fait, par quoi ça commence — et produit **une seule note** : la note de contexte, avec ses premières actions au § 4 Todo. Pas de budget, pas de risques, pas de gouvernance. Les deux commandes **partagent le même gabarit** de note de contexte : il n'en existe pas deux copies.
+
+C'est aussi le chemin par lequel une leçon de `Ce que j'ai appris/` devient un projet — elle est citée au § 1, ce qui donne au projet sa raison d'être et referme le second point où le cycle se perd : **la décision**.
+
+`/fin-session` devient **`/fin`**. Même commande, nom plus court pour ce qui se tape plusieurs fois par jour.
+
+### `/bilan-jour` passe en mode propositionnel
+
+Il posait cinq questions, une par une, en fin de journée. **Il lit désormais la journée et rédige le bilan avant de parler** : la daily en entier, logs de séance compris, les pensées déposées dans l'athanor, les notes de contexte touchées. Puis il ne demande qu'une chose — ta note d'énergie, la seule donnée qu'aucune trace ne porte — groupe ses arbitrages en une seule prise de parole, et écrit sans redemander.
+
+Le questionnaire ne subsiste que dans un cas : une daily vide, où il n'a rien à lire. Il est l'exception, pas le mode normal. Motif : en fin de journée, un questionnaire ne se remplit pas.
+
+La note produite s'appelle désormais « Bilan du jour » et non « Daily Review ».
+
 ### Plus de Kanban
 
 Le backlog d'un projet est le **§ 4 Todo de sa note de contexte**, et il n'y a pas d'autre endroit. Retirés : le tableau global, le gabarit de suivi, le plugin `obsidian-kanban`, et les blocs qui les alimentaient dans `/hello`, `/dodo`, `/clarte`, `/angles-morts` et `/nouveau-projet`. Motif : un backlog qu'on ne voit pas en ouvrant la note du projet affiche des échéances qui n'ont jamais eu lieu, avec l'apparence de la rigueur.

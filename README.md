@@ -139,7 +139,8 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 
 | Commande | Rôle |
 |----------|------|
-| `/nouveau-projet` | Crée un projet structuré (arborescence PPAR, et son § 4 Todo fait office de backlog) |
+| `/nouveau-projet-rapide` | **Ouvre un projet en cinq questions** — arborescence, note de contexte, premières actions. C'est aussi le chemin par lequel une leçon de ton athanor devient un projet |
+| `/nouveau-projet` | Cadre un projet en profondeur (10 étapes : objectifs, planification à deux niveaux, budget, risques, gouvernance). Pour ce qui engage de l'argent, des tiers ou une échéance dure |
 | `/nouveau-chapitre` | Clôture le chapitre en cours et en ouvre un nouveau (6-12 mois) |
 
 ### Introspection profonde

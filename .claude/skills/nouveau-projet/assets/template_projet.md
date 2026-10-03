@@ -11,6 +11,10 @@ tags:
 
 > **{{DESCRIPTION_COURTE}}**
 
+> **Tes préférences sur ce projet.** Dès qu'une façon de travailler ne vaut **que** pour ce projet — une convention, une doctrine, un piège à ne pas réapprendre — elle va dans un fichier `{{PROJET_NOM}} — Préférences.md`, posé à côté de cette note. Ce qui vaut partout reste dans `1 ALIGNEMENT/Préférences.md`.
+>
+> **Ce fichier ne se crée que le jour où tu as une première préférence à y mettre.** Pas d'avance : un fichier vide ne se lit pas.
+
 ## 1. Pourquoi (Alignement)
 
 **Contexte et enjeux** — {{CONTEXTE_ENJEUX}}
@@ -52,9 +56,13 @@ tags:
 
 ---
 
-## 5. Experience (insights, competences acquises)
+## 5. Experience
 
-*A remplir au fil du projet.*
+Ce que ce projet t'a appris **sur ta façon de faire** — méthode, compétence acquise, piège à ne pas réapprendre.
+Alimenté au fil de l'eau par `/fin` et `/dodo`, sans que tu aies à le demander.
+
+> **C'est ici que vit la mémoire de ce projet, et nulle part ailleurs.** Le coffre n'a aucun fichier de mémoire séparé : une mémoire tenue à côté des notes finit par dire autre chose qu'elles.
+> Ce qui t'a appris quelque chose **sur qui tu es** ne va pas ici — ça monte par `/ca-me-vient` vers `2 CONNAISSANCES/`.
 
 ---
 

@@ -297,7 +297,7 @@ Voir le [`README.md`](README.md) du coffre pour la liste des commandes embarqué
 Points clés :
 - **Cycle de session** : `/hello` en début de journée, `/fin` à chaque clôture de session thématique dans la journée, `/dodo` en fin de journée
 - `/bilan-jour` pour la réflexion quotidienne, `/bilan-semaine` pour la weekly review
-- `/nouveau-projet` pour créer un projet structuré, `/nouveau-chapitre` pour un nouveau cycle long
+- **`/nouveau-projet-rapide`** pour ouvrir un projet en cinq questions — et `/nouveau-projet` quand il engage de l'argent, des tiers ou une échéance dure. `/nouveau-chapitre` pour un nouveau cycle long
 - **`/ca-me-vient` au moment où une pensée surgit** — c'est la commande de l'intériorité, et la seule qui ne s'invoque pas à heure fixe
 - `/contradicteur` et `/angles-morts` pour l'introspection profonde
 - `/creer-commande` pour étendre ton coffre au fil du temps

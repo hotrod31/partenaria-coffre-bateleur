@@ -8,7 +8,9 @@ description: "Cree un nouveau projet structure dans le coffre : arborescence PPA
 
 Cette commande accompagne l'utilisateur pour cadrer et creer un nouveau projet dans son coffre Obsidian. Le processus est **conversationnel** : l'assistant guide l'utilisateur etape par etape, challenge ses reponses, pose les questions qu'il ne se pose pas, et ne passe a l'etape suivante que quand l'etape en cours est validee.
 
-Ce n'est pas une commande de generation rapide — c'est un rituel de definition serieux qui peut prendre 30 min a 2h selon la profondeur du projet. Au bout du rituel, le projet est **completement cadre** : objectifs valides SMART, etapes decoupees, acteurs identifies, budget estime, risques anticipes, gouvernance definie.
+Ce n'est pas une commande de generation rapide — c'est un rituel de definition serieux qui peut prendre 30 min a 2h selon la profondeur du projet.
+
+> 🔀 **Il existe une version resserree : `/nouveau-projet-rapide`.** Cinq questions, quelques minutes, une seule note produite. **Verifier en ouvrant que c'est bien de celle-ci qu'il a besoin** — la version longue ne se justifie que si le projet engage de l'argent, des tiers, ou une echeance qu'on ne peut pas rater. Si ce n'est pas le cas, le dire une fois et proposer la version rapide. Un cadrage en dix etapes abandonne a la sixieme ne laisse rien derriere lui. Au bout du rituel, le projet est **completement cadre** : objectifs valides SMART, etapes decoupees, acteurs identifies, budget estime, risques anticipes, gouvernance definie.
 
 ## Ce que tu vas obtenir
 
