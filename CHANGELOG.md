@@ -9,6 +9,39 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v2.0.0 — 2026-10-11 — branche `windows`
+
+**La branche `windows` rattrape la v2.0.0.** Elle était restée en **v1.1.1 du 17/08/2026** pendant que `macos` partait à la v2.0.0 le 03/10 : près de deux mois d'écart, et l'écart n'était pas cosmétique. Elle reçoit donc **tout le contenu de la v2.0.0** — dont le détail est décrit dans l'entrée ci-dessous, qui vaut désormais pour les deux branches — puis les seules adaptations propres à Windows.
+
+### Ce que la branche `windows` n'avait pas, et qui arrive ici
+
+- 🔴 **L'athanor** — `2 CONNAISSANCES/Ce que je me dis/`, `Ce que j'ai appris/` et l'index `Ce qui mijote.md`. C'est le cœur du dispositif de maturation, et il était purement absent.
+- 🔴 **`/ca-me-vient`** — la commande qui dépose une pensée au moment où elle arrive. Elle n'existait pas.
+- **`/fin`** — la commande s'y appelait encore `/fin-session`. Même commande, nom plus court pour ce qui se tape plusieurs fois par jour.
+- **`/nouveau-projet-rapide`** — l'ouverture d'un projet en cinq questions, à côté du cadrage en dix étapes.
+- 🔴 **Plus de Kanban.** `3 PROJETS/Suivi Projets.md`, le gabarit `Suivi.md` et le plugin `obsidian-kanban` sont retirés. La branche les livrait encore, alors que la doctrine les a supprimés le 26/08 avec la règle « ne jamais en recréer » : le coffre installait un objet que sa propre doctrine interdit.
+- ⚠️ **Periodic Notes revient en 0.0.17.** La branche embarquait la `v1.0.0-beta1` dont l'icône de barre latérale **rend inertes les boutons posés via Commander** — la panne du 18/08, jamais reportée ici. Les deux boutons sont rétablis, un daily et un weekly.
+- **Les six gabarits de projet dans `5 RESSOURCES/Modèles/`**, et nulle part ailleurs ; la voix qui se choisit au lieu d'être déduite du prénom ; les préférences à deux niveaux ; `/bilan-jour` en mode propositionnel.
+
+### Adaptations propres à Windows
+
+- 🔴 **`python3` et `pip3` deviennent `python` et `pip`** — dans les skills, dans le hook `Stop` et dans les permissions. **L'inverse exact du choix macOS, et pour le même motif : éviter un échec silencieux.** L'installeur de python.org pose `python.exe` et `py.exe`, jamais `python3.exe`, et Windows fournit à la place un stub qui **ouvre le Microsoft Store**. Le repli documenté est `py -m pip`, qui passe par le lanceur officiel.
+- 🔴 **Le second piège Python est documenté là où il se produit** : un Python installé depuis le Microsoft Store écrit ses paquets dans un dossier isolé que le hook vocal ne voit pas toujours. `pip install` réussit, la voix reste muette, et rien ne le dit. Le `README` demande donc l'installation depuis **python.org** avec **« Add python.exe to PATH »**.
+- Le refus **PEP 668 de Homebrew** et `--break-system-packages` n'ont pas d'objet ici : retirés, remplacés par les cas d'erreur réels de Windows — `pip` introuvable, et le dossier `Scripts` hors du PATH.
+- **`Ctrl+Q` et la barre des tâches** remplacent `Cmd+Q` et le Dock.
+- **`Git for Windows` passe de prérequis optionnel à prérequis ferme** — il installe Git Bash, dont les commandes du coffre se servent.
+- `brew install node` devient `winget install OpenJS.NodeJS.LTS`, avec le rappel d'**ouvrir un nouveau terminal** pour que le PATH soit relu.
+- 🔷 **Le piège OneDrive est écrit dans le `README`.** Un coffre posé dans `Documents` ou sur le `Bureau` cumulerait **OneDrive, Obsidian Sync et git** sur les mêmes fichiers. C'est le pendant exact du piège iCloud côté Mac, et il se pose dans les mêmes termes : le coffre va dans un dossier hors de leur portée, et **il porte le nom de l'IA, pas celui du dispositif**.
+- 🔷 **L'alias est documenté** — `function <nom> { Set-Location "C:\workspace\<nom>"; claude }` dans `$PROFILE.CurrentUserCurrentHost`. Il n'était écrit nulle part, alors que c'est la seule commande qu'un bateleur ait à retenir.
+- Le `README` ne montre plus que la commande de clone de **sa** branche, dans Git Bash.
+
+### Ce qui reste à faire, et qui vaut pour les deux branches
+
+- ⚠️ **`/connect-mcp` décrit encore OpenCode**, écarté le 03/10 au profit de Claude Code seul. Ce n'est pas une divergence de plateforme : les deux branches le portent, et c'est à traiter sur les deux.
+- ⚠️ **Le mode vocal n'a jamais été éprouvé sur Windows.** La chaîne Piper est mesurée sur Apple Silicon depuis le 03/10 ; `piper_tts.py` porte bien un `IS_WINDOWS` et son `taskkill`, mais **aucun premier cri n'a été entendu sur un PC**. C'est le maillon dont l'échec est silencieux — à vérifier à la première installation.
+
+---
+
 ## v2.0.0 — 2026-10-03 — branche `macos`
 
 **Rupture de structure.** Le coffre cesse d'être portable : il existe désormais une version par système, maintenues séparément sur deux branches — `macos` et `windows`. Et la doctrine de mémoire change.
@@ -96,9 +129,9 @@ Le backlog d'un projet est le **§ 4 Todo de sa note de contexte**, et il n'y a 
 
 ### Branche macOS — ce qui change concrètement
 
-- `python` et `pip` nus deviennent `python3` et `pip3` : macOS ne fournit plus `python` depuis 12.3, et le hook vocal échouait **en silence**. Le refus PEP 668 de Homebrew est documenté là où il se produit.
+- `python` et `pip` nus deviennent `python` et `pip` : macOS ne fournit plus `python` depuis 12.3, et le hook vocal échouait **en silence**. Le refus PEP 668 de Homebrew est documenté là où il se produit.
 - Les alternatives PowerShell sont **retirées** de `/clarte`, `/hello` et `/markdown` — un coffre qui ne parle que d'un système est plus court à lire.
-- `Ctrl+Q` et « barre des tâches » deviennent `Cmd+Q` et le Dock.
+- `Ctrl+Q` et « barre des tâches » deviennent `Ctrl+Q` et le Dock.
 - La détection de la phase active ne dépend plus de `sort -V`, dont la présence n'est pas garantie : elle trie sur le numéro du dossier. Corrigé dans les six commandes concernées.
 
 ### Hygiène de publication

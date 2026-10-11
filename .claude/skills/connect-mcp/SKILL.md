@@ -58,7 +58,7 @@ else
   echo "Claude Code CLI: absent"
 fi
 
-# Claude Desktop (macOS)
+# Claude Desktop (les trois emplacements possibles)
 if [ -f "$HOME/Library/Application Support/Claude/claude_desktop_config.json" ]; then
   echo "Claude Desktop (macOS): DETECTE"
 elif [ -f "$APPDATA/Claude/claude_desktop_config.json" ] 2>/dev/null; then
@@ -167,7 +167,7 @@ echo "OpenCode patche."
 Fallback Python si `jq` absent :
 
 ```bash
-python3 - <<'EOF'
+python - <<'EOF'
 import json, os
 
 path = os.path.expanduser("~/.config/opencode/opencode.json")
@@ -244,7 +244,7 @@ echo "Claude Code CLI patche."
 Fallback Python :
 
 ```bash
-python3 - <<'EOF'
+python - <<'EOF'
 import json, os
 
 path = os.path.expanduser("~/.claude.json")
@@ -312,7 +312,7 @@ echo "Claude Desktop patche."
 Fallback Python :
 
 ```bash
-python3 - <<'EOF'
+python - <<'EOF'
 import json, os, sys
 
 path = os.path.join(
@@ -404,7 +404,7 @@ Si une étape a échoué (fichier non trouvé, jq absent, erreur de parsing), in
 
 **MCP remote (HTTP/SSE) dans Claude Code/Desktop :** utiliser `type: "sse"` et une clé `url` au lieu de `command`/`args`. Vérifier dans le README du MCP si ce mode est supporté.
 
-**Si npx n'est pas disponible :** proposer d'installer Node.js (`brew install node` sur macOS, `apt install nodejs` sur Linux). Le MCP s'installera automatiquement via npx lors du premier lancement.
+**Si npx n'est pas disponible :** proposer d'installer Node.js — sur Windows `winget install OpenJS.NodeJS.LTS`, puis **ouvrir un nouveau terminal** pour que le PATH soit relu. Le MCP s'installera automatiquement via npx lors du premier lancement.
 
 ### Compatibilité des formats
 

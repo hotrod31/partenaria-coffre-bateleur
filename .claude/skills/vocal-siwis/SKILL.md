@@ -47,7 +47,7 @@ Vérifier ensuite si le modèle est présent :
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-siwis-medium.onnx" ] && [ -f "$FLAG" ]; then
   echo ""
   echo "⚠ Modèle Siwis absent. Téléchargement (~60 MB)..."
-  python3 .claude/hooks/download_voice.py siwis
+  python .claude/hooks/download_voice.py siwis
 fi
 ```
 

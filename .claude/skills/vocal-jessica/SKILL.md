@@ -47,7 +47,7 @@ Vérifier ensuite si le modèle est présent :
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ] && [ -f "$FLAG" ]; then
   echo ""
   echo "⚠ Modèle Jessica absent. Téléchargement (~63 MB)..."
-  python3 .claude/hooks/download_voice.py jessica
+  python .claude/hooks/download_voice.py jessica
 fi
 ```
 

@@ -76,7 +76,7 @@ Détecter dynamiquement la racine du coffre (utiliser `pwd` ou détecter le doss
 Lance markitdown sur le fichier (source si dans le coffre, copie si hors coffre) :
 
 ```bash
-python3 -m markitdown "<chemin du fichier à convertir>" > /tmp/markitdown_out.md 2>/tmp/markitdown_err.log
+python -m markitdown "<chemin du fichier à convertir>" > /tmp/markitdown_out.md 2>/tmp/markitdown_err.log
 ```
 
 - Si la conversion échoue (exit code ≠ 0), affiche le contenu de `/tmp/markitdown_err.log` à l'utilisateur et stoppe.
@@ -168,7 +168,7 @@ Si la conversion a produit un contenu très court ou suspect (PDF scanné sans O
 
 ## En cas d'erreur
 
-- **`markitdown: command not found`** → markitdown n'est pas installé. Lance `pip3 install --user 'markitdown[all]'`. Si Homebrew refuse l'installation (« externally-managed-environment », PEP 668), ajoute `--break-system-packages` ou installe dans un environnement virtuel.
+- **`markitdown: command not found`** → markitdown n'est pas installé. Lance `pip install --user "markitdown[all]"`. ⚠️ **Si `pip` lui-même est introuvable**, passer par le lanceur officiel : `py -m pip install --user "markitdown[all]"`. Et si l'installation réussit mais que la commande reste introuvable, c'est que le dossier `Scripts` de Python n'est pas dans le PATH — appeler alors le module directement : `python -m markitdown`.
 - **Sortie vide ou très courte** → souvent PDF scanné sans OCR (texte présent visuellement mais pas extractible). Alerte l'utilisateur, propose une alternative manuelle (capture + OCR séparé).
 - **Erreur d'encodage** → markitdown s'attend à UTF-8 en sortie. Si caractères corrompus, vérifier `chcp` (CP1252 Windows par défaut). Forcer `PYTHONIOENCODING=utf-8` dans le shell avant l'appel.
 - **Fichier source verrouillé** (Office ouvert) → fermer le fichier dans Office, retenter.

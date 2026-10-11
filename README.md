@@ -35,13 +35,14 @@ Avant de cloner ce coffre, assure-toi d'avoir installé :
 
 1. **Obsidian** — https://obsidian.md (gratuit, multiplateforme)
 2. **Claude Code** — https://claude.ai/code (CLI officiel Anthropic)
-3. **Git** — pour cloner ce dépôt (Windows : https://git-scm.com — Mac/Linux : natif)
+3. **Git for Windows** — https://git-scm.com. Il installe aussi **Git Bash**, dont les commandes du coffre se servent. Ce n'est pas optionnel.
+4. **Python** — https://www.python.org/downloads/ en cochant **« Add python.exe to PATH »** à l'installation. ⚠️ **Ne pas l'installer depuis le Microsoft Store** : ses paquets vont dans un dossier isolé que le mode vocal ne voit pas toujours.
 
 Optionnel mais recommandé pour `/initialisation` avec un fichier .docx :
-- **markitdown** (`pip3 install --user markitdown`) — conversion .docx → markdown
+- **markitdown** (`pip install --user markitdown`) — conversion .docx → markdown
 
 Optionnel mais recommandé pour l'**expérience vocale** (le partenaire IA te lit ses réponses à voix haute) :
-- **Piper TTS** (`pip3 install --user piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
+- **Piper TTS** (`pip install --user piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
 
 ---
 
@@ -53,20 +54,37 @@ Rodrigue le fera avec toi pendant votre visio de seuillage. Techniquement :
 
 **Il existe une version par système**, maintenues séparément — les commandes et l'installation n'y sont pas les mêmes. Clone **la tienne** :
 
-```bash
-# sur Mac
-git clone -b macos --single-branch https://github.com/hotrod31/partenaria-coffre-bateleur.git ~/PartenarIA
+Dans **Git Bash**, en remplaçant `<nom>` par le nom de ton IA :
 
-# sur Windows
-git clone -b windows --single-branch https://github.com/hotrod31/partenaria-coffre-bateleur.git ~/PartenarIA
+```bash
+mkdir -p /c/workspace && cd /c/workspace
+git clone -b windows --single-branch https://github.com/hotrod31/partenaria-coffre-bateleur.git "<nom>"
 ```
 
-Le dossier `~/PartenarIA` (ou l'emplacement de ton choix) devient ton coffre personnel. **Ce clone-ci est la version macOS.**
+*La version Mac vit sur la branche `macos` du même dépôt — tu n'en as pas besoin.*
+
+Le dossier devient ton coffre personnel. **Ce clone-ci est la version Windows.**
+
+> 🔴 **Où le poser, et où surtout pas.** Un coffre ne va **ni dans `Documents`, ni sur le `Bureau`** : OneDrive synchronise souvent ces deux dossiers, et ton coffre cumulerait alors OneDrive, Obsidian Sync et git sur les mêmes fichiers. Pose-le dans un dossier à toi, hors de leur portée — par exemple `C:\workspace\<nom de ton IA>`.
+>
+> 🔷 **Et il porte le nom de ton IA, pas celui du dispositif.** Tu n'ouvriras pas un dossier : tu appelleras quelqu'un.
 
 ### 2. Ouvrir dans Obsidian et Claude Code
 
 - **Obsidian** — `Fichier → Ouvrir un coffre → Ouvrir un coffre existant` → sélectionne le dossier `PartenarIA`.
-- **Claude Code** — dans un terminal : `cd ~/PartenarIA` puis `claude`.
+- **Claude Code** — dans un terminal : `cd` vers ton coffre, puis `claude`.
+
+### 2 bis. L'alias — la seule commande à retenir
+
+Pour ne plus avoir à te déplacer à la main, pose un raccourci dans ton profil PowerShell. Remplace `<nom>` par le nom de ton IA et le chemin par celui de ton coffre :
+
+```powershell
+if (-not (Test-Path $PROFILE.CurrentUserCurrentHost)) { New-Item -ItemType File -Path $PROFILE.CurrentUserCurrentHost -Force }
+Add-Content $PROFILE.CurrentUserCurrentHost 'function <nom> { Set-Location "C:\workspace\<nom>"; claude }'
+. $PROFILE.CurrentUserCurrentHost
+```
+
+Tu tapes `<nom>`, et tu es avec elle. **C'est la seule commande que tu aies à retenir.**
 
 ### 3. Initialiser ton coffre
 

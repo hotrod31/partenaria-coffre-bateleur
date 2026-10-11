@@ -150,7 +150,7 @@ Fichiers créés/modifiés :
 - [si bascule confirmée] .obsidian/daily-notes.json
 - [si bascule confirmée] .obsidian/plugins/periodic-notes/data.json
 
-⚠️ Si la bascule des notes périodiques a été appliquée : **fermer complètement Obsidian** (Cmd+Q, ou clic droit sur son icône du Dock puis « Quitter ») puis rouvrir. Cmd+R NE SUFFIT PAS — le community plugin Periodic Notes ne relit son data.json qu'au démarrage complet de l'app, sinon il continue à créer les notes dans l'ancienne phase (bug observé 2026-06-01). Vérification après restart : Paramètres → Periodic Notes → Note Folder doit afficher la nouvelle phase.
+⚠️ Si la bascule des notes périodiques a été appliquée : **fermer complètement Obsidian** (Ctrl+Q, ou clic droit sur son icône dans la barre des tâches puis « Fermer la fenêtre ») puis rouvrir. Ctrl+R NE SUFFIT PAS — le community plugin Periodic Notes ne relit son data.json qu'au démarrage complet de l'app, sinon il continue à créer les notes dans l'ancienne phase (bug observé 2026-06-01). Vérification après restart : Paramètres → Periodic Notes → Note Folder doit afficher la nouvelle phase.
 ```
 
 ## Notes

@@ -16,8 +16,8 @@
       "Bash(git log:*)",
       "Bash(git diff:*)",
       "Bash(git pull:*)",
-      "Bash(python3:*)",
-      "Bash(pip3:*)"
+      "Bash(python:*)",
+      "Bash(pip:*)"
     ]
   },
   "hooks": {
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/piper_tts.py"
+            "command": "python .claude/hooks/piper_tts.py"
           }
         ]
       }

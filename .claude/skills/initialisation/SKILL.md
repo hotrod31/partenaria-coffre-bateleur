@@ -81,7 +81,7 @@ Cette variable sera utilisée à l'étape 7b pour configurer Piper.
 
 - **`.md` / `.txt`** : lecture directe avec le tool Read
 - **`.pdf`** : lecture native via le tool Read (Claude Code gère les PDF)
-- **`.docx`** : conversion via Bash `markitdown "<chemin>"` (nécessite `pip3 install --user markitdown` — cf. README du coffre) puis lecture du markdown produit
+- **`.docx`** : conversion via Bash `markitdown "<chemin>"` (nécessite `pip install --user markitdown` — cf. README du coffre) puis lecture du markdown produit
 
 **Compter les mots du contenu extrait.** Si moins de 500 mots :
 
@@ -282,7 +282,7 @@ Avant d'émettre le rapport final, préparer le mode vocal Piper avec la voix `<
 **1. Installer les dépendances Python** (silencieux si déjà présentes) :
 
 ```bash
-pip3 install --user --quiet piper-tts sounddevice 2>&1 | tail -3
+pip install --user --quiet piper-tts sounddevice 2>&1 | tail -3
 ```
 
 **2. Télécharger le modèle si absent** (~63 MB — mutualisé jessica/pierre, un seul modèle UPMC couvre les deux voix) :
@@ -290,7 +290,7 @@ pip3 install --user --quiet piper-tts sounddevice 2>&1 | tail -3
 ```bash
 if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ]; then
   echo "Préparation de la voix pour le premier cri (~63 MB, ~1 min)..."
-  python3 .claude/hooks/download_voice.py <VOIX_DEFAUT>
+  python .claude/hooks/download_voice.py <VOIX_DEFAUT>
 fi
 ```
 
@@ -303,7 +303,12 @@ printf "<VOIX_DEFAUT>" > .claude/hooks/tts_piper_voice
 
 Remplacer `<VOIX_DEFAUT>` par la valeur exacte (`jessica` ou `pierre`).
 
-**Si l'installation échoue** (pas de Python 3, pas de `pip3`, hors ligne, ou Homebrew qui refuse avec « externally-managed-environment » — c'est PEP 668, ajouter alors `--break-system-packages`) : ne pas bloquer, continuer sans mode vocal. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
+**Si l'installation échoue** (Python absent, `pip` introuvable, hors ligne) : ne pas bloquer, continuer sans mode vocal.
+
+> 🔴 **Deux pièges Windows, et tous deux échouent en silence.**
+>
+> - **`python3` n'existe pas sur Windows.** L'installeur de python.org pose `python.exe` et `py.exe`, jamais `python3.exe` — et Windows fournit à la place un stub qui **ouvre le Microsoft Store**. C'est pour ça que le coffre écrit `python` partout. Si `python` ne répond pas, essayer **`py -m pip`**, qui passe par le lanceur officiel.
+> - **Python installé depuis le Microsoft Store écrit ses paquets dans un dossier isolé** que le hook ne voit pas toujours. Si `pip install` réussit mais que la voix reste muette, c'est la piste : réinstaller depuis **python.org** en cochant **« Add python.exe to PATH »**. Ajouter dans le rapport une ligne « Mode vocal indisponible — installe piper-tts pour l'expérience complète ».
 
 **Si le téléchargement du modèle échoue** : idem, continuer sans mode vocal, mentionner dans le rapport.
 
@@ -348,7 +353,7 @@ Comme Claude Code et Obsidian sont actuellement ouverts sur ce dossier,
 je ne peux pas le renommer moi-même (le dossier est verrouillé par les
 processus actifs). Voici la procédure à suivre :
 
-1. Ferme complètement Obsidian (Cmd+Q, ou clic droit sur son icône du Dock puis « Quitter »)
+1. Ferme complètement Obsidian (Ctrl+Q, ou clic droit sur son icône dans la barre des tâches puis « Fermer la fenêtre »)
 2. Ferme cette session Claude Code (tape /exit ou ferme le terminal)
 3. Ouvre l'explorateur de fichiers sur le dossier parent
 4. Renomme le dossier « partenaria-coffre-bateleur » en « <NOM_COFFRE_DOSSIER> »
