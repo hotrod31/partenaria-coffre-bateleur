@@ -15,6 +15,18 @@ import sys
 import urllib.request
 from pathlib import Path
 
+# La console Windows parle cp1252, où « ✓ » et « ✗ » n'existent pas. Sans cette
+# ligne, le script meurt sur son propre message de réussite -- et il meurt
+# APRÈS avoir écrit le .onnx de 73 Mo, mais AVANT de télécharger le .json qui
+# l'accompagne. Piper a besoin des deux : on se retrouvait donc avec un modèle
+# inutilisable et une trace d'erreur qui parlait de codec, pas de voix.
+# Constaté le 13/10/2026 sur une installation neuve.
+for _flux in (sys.stdout, sys.stderr):
+    try:
+        _flux.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 HOOKS_DIR = Path(__file__).parent.resolve()
 VOICE_DIR = HOOKS_DIR / "piper" / "voices"
 

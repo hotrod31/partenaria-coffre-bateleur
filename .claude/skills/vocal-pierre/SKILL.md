@@ -1,57 +1,37 @@
 ---
 name: vocal-pierre
-description: "Bascule le mode vocal sur la voix Pierre (Piper local, masculine, modèle fr_FR-upmc-medium speaker 1). Souverain, gratuit, 100 % offline. Déclencher quand l'utilisateur tape /vocal-pierre, dit 'voix Pierre', 'active la voix masculine', 'passe en vocal Pierre'."
+description: "Active la voix Pierre (masculine, moteur piper) pour CETTE fenêtre de terminal uniquement — les autres sessions ne sont pas touchées. Retaper la commande éteint la lecture de la fenêtre. Déclencher quand l'utilisateur tape /vocal-pierre, dit 'voix Pierre', 'passe en Pierre', 'lis-moi ça avec Pierre'."
 ---
 
-# /vocal-pierre — Bascule voix Pierre (Piper local)
+# /vocal-pierre — la voix Pierre, pour cette fenêtre seulement
 
-Active ou bascule le mode vocal en utilisant **Pierre** — voix masculine, TTS souverain via Piper local (modèle `fr_FR-upmc-medium` speaker `1`).
+Fait lire tes réponses à voix haute par **Pierre** — masculine. Moteur : **piper**.
 
-## Logique
+> 🔷 **Portée : cette fenêtre de terminal, et elle seule.** Chaque fenêtre porte sa propre voix. Une fenêtre où tu n'as rien tapé reste **muette**, et l'éteindre ici ne fait pas taire celle d'à côté. C'est ce qui permet de travailler à deux conversations sans que l'une parle par-dessus l'autre.
 
-1. **Si mode actif ET voix courante = pierre** → **désactiver** le mode vocal. Répondre : `Mode vocal désactivé.`
-2. **Si mode actif ET autre voix** → **switcher** vers Pierre. Répondre : `Mode vocal basculé sur Pierre.`
-3. **Si mode inactif** → **activer** avec Pierre. Répondre : `Mode vocal activé — Pierre.`
+**Retaper `/vocal-pierre` éteint la lecture de cette fenêtre.** Même geste pour allumer et pour éteindre.
 
-## Implémentation
+## Logique à exécuter
 
-Utiliser Bash pour manipuler les 2 fichiers flags dans `.claude/hooks/` du coffre :
+Lance via Bash, et **affiche la sortie telle quelle** :
 
 ```bash
-HOOKS=".claude/hooks"
-FLAG="$HOOKS/tts_enabled"
-VOICE="$HOOKS/tts_piper_voice"
-TARGET="pierre"
-
-CURRENT_VOICE=""
-if [ -f "$VOICE" ]; then
-  CURRENT_VOICE=$(tr -d '[:space:]' < "$VOICE")
-fi
-
-if [ -f "$FLAG" ] && [ "$CURRENT_VOICE" = "$TARGET" ]; then
-  rm -f "$FLAG"
-  echo "Mode vocal désactivé."
-elif [ -f "$FLAG" ]; then
-  printf "%s" "$TARGET" > "$VOICE"
-  echo "Mode vocal basculé sur Pierre."
-else
-  touch "$FLAG"
-  printf "%s" "$TARGET" > "$VOICE"
-  echo "Mode vocal activé — Pierre."
-fi
+python .claude/hooks/tts_bascule.py piper pierre "Pierre"
 ```
 
-Vérifier ensuite si le modèle est présent :
+Le script tranche seul entre les trois cas selon ce qui est déjà actif dans cette fenêtre. Réponds avec la phrase qu'il renvoie, en rétablissant les accents :
 
-```bash
-if [ ! -f ".claude/hooks/piper/voices/fr_FR-upmc-medium.onnx" ] && [ -f "$FLAG" ]; then
-  echo ""
-  echo "⚠ Modèle Pierre absent. Téléchargement (~63 MB)..."
-  python .claude/hooks/download_voice.py pierre
-fi
-```
+| État de départ | Ce que tu réponds |
+| --- | --- |
+| lecture active, déjà sur Pierre | « Mode vocal désactivé pour cette fenêtre. » |
+| lecture active, autre voix | « Mode vocal basculé sur Pierre. » |
+| fenêtre muette | « Mode vocal activé — Pierre. » |
 
 ## Notes
 
-- Modèle mutualisé avec Jessica : `fr_FR-upmc-medium.onnx` contient les deux speakers. Si Jessica a été téléchargée avant, aucun re-téléchargement nécessaire.
-- Autres voix : `/vocal-jessica` (féminine chaleureuse), `/vocal-siwis` (féminine neutre), `/vocal-stop` (désactive).
+- ✅ **100 % local, aucun appel réseau.** Rien de ce que tu dis ou écris ne sort de ta machine.
+- Qualité en dessous des voix Edge : c'est le prix de la souveraineté.
+- Le modèle (**fr_FR-upmc-medium.onnx**, ~70 Mo) se télécharge **au premier usage**, pas à l'installation. Le premier appel peut donc prendre une minute.
+- **Toute la logique vit dans `tts_bascule.py`**, et la résolution d'état dans `tts_session.py` — une seule copie pour les huit voix, pour qu'elles ne divergent pas.
+- Pour le silence immédiat pendant une lecture : **`/vocal-stop`**. C'est la première commande à connaître, avant même d'avoir entendu une voix.
+- Les autres voix : **réseau** `/vocal-denise`, `/vocal-eloise`, `/vocal-vivienne`, `/vocal-henri`, `/vocal-remy` — **100 % local** `/vocal-jessica`, `/vocal-siwis`

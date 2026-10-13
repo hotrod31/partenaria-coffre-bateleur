@@ -38,9 +38,21 @@ introspection*.pdf
 introspection*.docx
 *-introspection.*
 
-# TTS Piper — flags de session et modèles téléchargés à la demande
+# TTS — état local de la lecture vocale, JAMAIS versionné.
+# Ces fichiers changent à chaque /vocal-*. Versionnés, ils saliraient le
+# dépôt en permanence et créeraient un conflit au premier git pull — c'est
+# exactement pour ça que le hook Stop appelle un dispatcher et ne change pas.
 .claude/hooks/tts_enabled
+.claude/hooks/tts_engine
 .claude/hooks/tts_piper_voice
+.claude/hooks/tts_edge_voice
 .claude/hooks/piper_tts.lock
+.claude/hooks/edge_tts.lock
+.claude/hooks/tts_voix_defaut
+.claude/hooks/tts_edge_indisponible
+.claude/hooks/sessions/
+.claude/hooks/*.lock
+
+# Modèles Piper, téléchargés à la demande (60 à 75 Mo chacun)
 .claude/hooks/piper/voices/*.onnx
 .claude/hooks/piper/voices/*.onnx.json

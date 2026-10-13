@@ -9,6 +9,37 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v2.1.0 — 2026-10-13 — branche `windows`
+
+**La voix devient utilisable à plusieurs fenêtres, et elle ne mentira plus quand elle ne peut pas parler.**
+
+Jusqu'ici la lecture vocale du coffre tenait dans un seul fichier-drapeau, `tts_enabled`, **partagé par toutes les fenêtres de terminal ouvertes** : l'allumer ici rendait bavarde la fenêtre d'à côté, et l'éteindre là-bas te rendait muet ici. Avec deux conversations en parallèle, c'est inutilisable.
+
+### Chaque fenêtre porte sa propre voix
+
+- **`tts_session.py`** *(nouveau)* — l'état vit désormais dans `sessions/<identifiant>.json`. **Fiche absente = fenêtre muette.** Une fenêtre où tu n'as rien tapé ne parle pas, et `/vocal-stop` n'y coupe rien.
+- **`tts_bascule.py`** *(nouveau)* — toute la logique allumer / basculer / éteindre, **à un seul endroit**. Les neuf commandes n'en contiennent plus une ligne : neuf copies d'une même règle divergent, et la première correction oubliée quelque part fait que deux commandes ne se comportent plus pareil.
+- **`tts_stop.py`** *(nouveau)* — le silence d'abord, le réglage ensuite. Et il coupe **les deux moteurs** : une lecture peut être en cours sur Piper alors qu'Edge est devenu l'actif.
+- **`/vocal`** *(nouvelle commande)* — allume **ta** voix, celle que tu as retenue à l'écoute. Tout choix nommé devient le nouveau défaut, donc `/vocal` rejoue toujours ton dernier souhait.
+
+### Deux moteurs, et un dispatcher qui ne salit plus le dépôt
+
+- **`tts_dispatch.py`** *(nouveau)* — point d'entrée unique du hook `Stop`. 🔴 **Conséquence qui compte : le hook de `settings.local.json` ne changera plus jamais.** Ce fichier est versionné ; le modifier à chaque bascule de moteur créait un conflit au premier `git pull`.
+- **`edge_tts_speak.py`** *(nouveau)* — les voix neuronales Microsoft, gratuites et sans compte, nettement au-dessus de Piper. ⚠️ **Mais le texte sort de la machine** : pour tout ce qui est sensible, Piper reste le moteur souverain.
+- **`piper_tts.py`** — remplacé par une version qui connaît les sessions : voix par fenêtre via `TTS_SESSION_VOICE`, et **verrous par session**, donc une fenêtre ne coupe plus la voix d'une autre.
+- Cinq nouvelles commandes réseau : `/vocal-denise`, `/vocal-eloise`, `/vocal-vivienne`, `/vocal-henri`, `/vocal-remy`.
+
+### Deux défauts corrigés, tous les deux à échec silencieux
+
+- 🔴 **`download_voice.py` mourait sur son propre message de réussite.** Il imprime `✓`, que la console Windows en cp1252 ne connaît pas — et il mourait **après** avoir écrit le `.onnx` de 73 Mo, **avant** de télécharger le `.json` qui l'accompagne. Piper a besoin des deux. Résultat : un modèle inutilisable, et une trace d'erreur qui parlait de codec et pas de voix. Les sorties sont maintenant forcées en UTF-8.
+- 🔴 **Une voix indisponible restait muette sans rien dire.** Le service Edge refuse périodiquement les connexions *(erreur 403, rotation du jeton côté Microsoft — constaté le 13/10/2026 sur `edge-tts 7.2.8`, la dernière version publiée, donc sans mise à jour possible)*. L'installateur **teste le service avant de retenir le moteur** : s'il ne répond pas, rien n'est installé, un marqueur est posé, et les commandes Edge **expliquent pourquoi** au lieu de se taire.
+
+### Ce que ce coffre n'installe pas, et pourquoi c'est écrit ici
+
+**Les voix Kyutai exigent un GPU NVIDIA.** Mesuré le 13/10/2026 : **0,28× le temps réel sur RTX 5080, 3,86× sur CPU seul** — quatorze fois plus lent, soit quatre minutes de calcul pour lire une réponse d'une minute. Le critère n'est pas la gamme de la machine, c'est CUDA. L'installateur détecte le GPU et le **dit**, mais ne tente rien sans lui.
+
+---
+
 ## v2.0.0 — 2026-10-11 — branche `windows`
 
 **La branche `windows` rattrape la v2.0.0.** Elle était restée en **v1.1.1 du 17/08/2026** pendant que `macos` partait à la v2.0.0 le 03/10 : près de deux mois d'écart, et l'écart n'était pas cosmétique. Elle reçoit donc **tout le contenu de la v2.0.0** — dont le détail est décrit dans l'entrée ci-dessous, qui vaut désormais pour les deux branches — puis les seules adaptations propres à Windows.

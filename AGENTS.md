@@ -363,27 +363,45 @@ Tâches et todos reçus → weekly note active (`YYYY-WXX/YYYY-WXX.md`).
 
 ---
 
-## Mode vocal (Piper local, souverain)
+## Lecture vocale — une voix par fenêtre
 
-Le coffre embarque un système de synthèse vocale locale via **Piper** (open source MIT, 100 % hors ligne, aucun appel réseau). À l'initialisation, **c'est toi qui choisis ta voix** parmi les trois ci-dessous — on ne la déduit ni de ton nom, ni de ton prénom, ni de quoi que ce soit d'autre. Si tu ne choisis pas, Siwis est posée par défaut et on te le dit.
+> 🔴 **Le silence est un droit absolu.** À tout moment, `/vocal-stop` coupe la lecture en cours et éteint la fenêtre. Aucun blocage possible, aucune condition. C'est la première commande à lui apprendre — **avant** qu'il ait entendu une voix.
 
-Trois voix disponibles :
-- **Jessica** (`/vocal-jessica`) — féminine chaleureuse, modèle `fr_FR-upmc-medium` speaker 0
-- **Pierre** (`/vocal-pierre`) — masculine, même modèle UPMC speaker 1
-- **Siwis** (`/vocal-siwis`) — féminine neutre, modèle `fr_FR-siwis-medium` mono-speaker
+**Chaque fenêtre de terminal porte sa propre voix.** Allumer la lecture dans une fenêtre ne rend pas bavarde celle d'à côté, et une fenêtre où rien n'a été tapé reste muette. Retaper une commande `/vocal-*` éteint la fenêtre.
 
-**Le silence est un droit absolu.** À tout moment : `/vocal-stop` désactive le mode vocal et tue toute lecture en cours. Aucun blocage possible.
+**À l'initialisation, c'est lui qui choisit sa voix en l'écoutant** — on ne la déduit ni de son nom, ni de son prénom, ni de quoi que ce soit d'autre. S'il ne choisit pas, **Jessica** est posée par défaut et on le lui dit.
 
-**D'autres moteurs existent, et ils ne sont pas installés d'office :**
+### Les deux moteurs
 
 | | Ce qu'il apporte | Ce qu'il coûte |
 | --- | --- | --- |
-| **Edge** | des voix plus naturelles, gratuites | **chaque texte lu part chez Microsoft** pour être synthétisé. Dans un coffre d'introspection, c'est un choix à faire les yeux ouverts — jamais un réglage par défaut |
-| **Kyutai** | les voix les plus expressives, et elles tournent en local | lourd : il faut une machine taillée pour, et la lecture se fait attendre |
+| **Piper** *(le socle)* | **100 % local, aucun appel réseau.** Rien de ce qu'il écrit ne sort de sa machine | une qualité en dessous d'Edge. C'est le prix de la souveraineté |
+| **Edge** *(facultatif)* | des voix nettement plus naturelles, gratuites, sans compte, aucun modèle à télécharger | ⚠️ **chaque texte lu part chez Microsoft.** Dans un coffre d'introspection, c'est un choix à faire les yeux ouverts — **jamais un réglage par défaut** |
 
-Ils s'installent à la demande, et le coffre te dit où part le texte avant de rien activer.
+**Voix locales** — Jessica (`/vocal-jessica`, féminine chaleureuse, `fr_FR-upmc-medium` locuteur 0) · Pierre (`/vocal-pierre`, masculine, même modèle locuteur 1) · Siwis (`/vocal-siwis`, féminine neutre, `fr_FR-siwis-medium`).
 
-Mécanisme technique : un hook `Stop` dans `.claude/settings.local.json` déclenche `.claude/hooks/piper_tts.py` après chaque réponse Claude Code. Le script lit les flags `.claude/hooks/tts_enabled` et `.claude/hooks/tts_piper_voice` pour déterminer s'il doit lire et quelle voix utiliser. Les modèles `.onnx` sont téléchargés à la demande dans `.claude/hooks/piper/voices/` (~60 MB par modèle, non versionnés).
+**Voix réseau** — Denise · Éloïse · Vivienne · Henri · Rémy. 🔴 **Elles ne sont installées que si le service répondait à l'installation.** Le service Microsoft refuse périodiquement les connexions *(erreur 403)* ; dans ce cas rien n'est installé, un marqueur est posé, et les commandes **expliquent pourquoi** au lieu de se taire.
+
+### Kyutai, et pourquoi il n'est pas là
+
+Les voix Kyutai sont les plus expressives, et elles tournent en local — **mais elles exigent un GPU NVIDIA**. Mesuré le 13/10/2026 : **0,28× le temps réel sur une RTX 5080, 3,86× sur CPU seul**, soit quatorze fois plus lent — quatre minutes de calcul pour lire une réponse d'une minute. **Le critère n'est pas la gamme de la machine, c'est CUDA** : ni un processeur rapide ni 32 Go de RAM n'y changent quoi que ce soit.
+
+### Mécanisme technique
+
+Un hook `Stop` dans `.claude/settings.local.json` déclenche **`.claude/hooks/tts_dispatch.py`** après chaque réponse.
+
+🔴 **Ce hook ne change jamais, et c'est volontaire** : `settings.local.json` est **versionné**, et le modifier à chaque bascule de moteur créerait un conflit au premier `git pull`. C'est l'état de la fenêtre qu'on écrit, et il n'est pas suivi par git.
+
+| Fichier | Rôle |
+| --- | --- |
+| `tts_dispatch.py` | résout l'état de la fenêtre appelante et passe la main au bon moteur |
+| `tts_session.py` | l'état par fenêtre : `sessions/<identifiant>.json`. **Fiche absente = fenêtre muette** |
+| `tts_bascule.py` | allumer / basculer / éteindre — **une seule copie pour les dix commandes**, pour qu'elles ne divergent pas |
+| `tts_stop.py` | le silence d'abord, le réglage ensuite. Coupe **les deux moteurs** |
+| `piper_tts.py` · `edge_tts_speak.py` | les moteurs. Ils lisent la voix dans `TTS_SESSION_VOICE` |
+| `tts_voix_defaut` | la voix retenue à l'écoute, au format `moteur:voix`. Ce que `/vocal` rejoue |
+
+Les modèles `.onnx` se téléchargent à la demande dans `.claude/hooks/piper/voices/` (~70 Mo chacun). **Rien de tout cet état n'est versionné** — voir `.gitignore`.
 
 ## Infrastructure technique
 

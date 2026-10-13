@@ -1,61 +1,82 @@
 """
-piper_tts.py — Lecture TTS via Piper en local (souverain, gratuit, 100 % offline).
+piper_tts.py — Lecture TTS via Piper en local (souverain, gratuit).
 
-Ce script est exécuté par le hook Stop de Claude Code après chaque réponse de l'IA.
-Il lit les flags dans le même dossier pour déterminer si le mode vocal est actif,
-quelle voix utiliser, et joue la réponse via Piper si tout est OK.
+Mêmes modes d'usage que fish_tts.py :
+  1. python piper_tts.py "Texte"
+  2. echo "Texte" | python piper_tts.py --stdin
+  3. python piper_tts.py --file <path>
+  4. python piper_tts.py --kill
+  5. Stop hook : payload JSON sur stdin (lit si tts_enabled existe)
 
-Modes d'usage :
-  1. Hook Stop : payload JSON sur stdin (lit si tts_enabled existe)
-  2. python piper_tts.py "Texte"                (lecture directe)
-  3. echo "Texte" | python piper_tts.py --stdin (lecture depuis stdin)
-  4. python piper_tts.py --file <path>           (lecture depuis fichier)
-  5. python piper_tts.py --kill                  (arrête toute lecture en cours)
+Voix supportee (unique repli hors ligne) :
+  - tom : Tom mono-speaker, masculine, 44 kHz
 
-Voix supportées (sélection via `tts_piper_voice` dans ce dossier) :
-  - jessica (défaut) : UPMC speaker 0, féminine chaleureuse
-  - pierre           : UPMC speaker 1, masculine
-  - siwis            : Siwis mono-speaker, féminine neutre
-
-Prérequis Python :
-  pip install piper-tts sounddevice
+Le fichier `tts_voice_id` ne s'applique PAS à Piper (override Fish uniquement).
 """
 
 import sys
+
 import os
 import re
 import json
+import io
+import wave
 import subprocess
-import platform
 from pathlib import Path
 
-# --- Configuration self-contained ---
-# Tous les chemins sont relatifs au dossier de ce script.
+# --- Configuration ---
+# Le coffre est portable : le dossier des hooks se deduit du fichier
+# lui-meme, jamais d'un chemin ecrit en dur. (Portage du 13/10/2026.)
+for _flux in (sys.stdout, sys.stderr):
+    try:
+        _flux.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 HOOKS_DIR = Path(__file__).parent.resolve()
 FLAG_FILE = HOOKS_DIR / "tts_enabled"
-LOCK_FILE = HOOKS_DIR / "piper_tts.lock"
 
 VOICE_DIR = HOOKS_DIR / "piper" / "voices"
-VOICE_FILE = HOOKS_DIR / "tts_piper_voice"  # contient l'identifiant de voix : jessica / pierre / siwis
+VOICE_FILE = HOOKS_DIR / "tts_piper_voice"  # contient un identifiant : tom
 
-# Mapping identifiant → (fichier .onnx, speaker_id ou None pour mono-speaker)
+# Mapping identifiant → (modèle .onnx, speaker_id ou None pour mono-speaker)
 PIPER_VOICES = {
-    "jessica": (VOICE_DIR / "fr_FR-upmc-medium.onnx", 0),
-    "pierre":  (VOICE_DIR / "fr_FR-upmc-medium.onnx", 1),
-    "siwis":   (VOICE_DIR / "fr_FR-siwis-medium.onnx", None),
+    # fr_FR-upmc-medium porte DEUX voix dans un seul fichier : le second
+    # membre du couple est le numero de locuteur dans le modele.
+    "jessica": (VOICE_DIR / "fr_FR-upmc-medium.onnx", 0),      # feminine chaleureuse
+    "pierre":  (VOICE_DIR / "fr_FR-upmc-medium.onnx", 1),      # masculine
+    "siwis":   (VOICE_DIR / "fr_FR-siwis-medium.onnx", None),  # feminine neutre
 }
+# Jessica par defaut : la meilleure voix de Piper en francais, et une voix
+# feminine -- le choix de Vanessa pour Diafora le 13/10/2026.
 DEFAULT_VOICE = "jessica"
 
-MAX_CHARS = 50000
-CHUNK_TARGET = 1500
 
-IS_WINDOWS = platform.system() == "Windows"
-CREATE_NO_WINDOW = 0x08000000 if IS_WINDOWS else 0
+def _verrou_de_session(prefixe):
+    """Le fichier verrou de LA FENETRE appelante.
 
+    Pose le 23/09/2026. Avant, un seul fichier par moteur retenait un seul PID :
+    deux fenetres sur le meme moteur s'ecrasaient donc mutuellement le leur, et
+    /m dans l'une tuait le son de l'autre. TTS_SESSION_ID est pose par
+    tts_worker.py et par tts_dispatch.py. Sans lui -- appel manuel en ligne de
+    commande -- on retombe sur le nom historique, qui n'a pas disparu.
+    """
+    sid = os.environ.get("TTS_SESSION_ID", "").strip()
+    sid = "".join(c for c in sid if c.isalnum() or c in "-_")[:128]
+    if not sid:
+        return HOOKS_DIR / ("%s.lock" % prefixe)
+    return HOOKS_DIR / ("%s.%s.lock" % (prefixe, sid))
 
 def resolve_voice():
-    """Retourne (model_path, speaker_id) selon le contenu de tts_piper_voice."""
+    """Retourne (model_path, speaker_id) pour la voix de la session appelante.
+
+    TTS_SESSION_VOICE est pose par tts_dispatch.py d'apres l'etat de la fenetre.
+    Le fichier global ne sert plus que de repli hors session.
+    """
     name = DEFAULT_VOICE
+    de_la_session = os.environ.get("TTS_SESSION_VOICE", "").strip().lower()
+    if de_la_session in PIPER_VOICES:
+        return PIPER_VOICES[de_la_session]
     try:
         if VOICE_FILE.exists():
             n = VOICE_FILE.read_text(encoding="utf-8").strip().lower()
@@ -65,9 +86,68 @@ def resolve_voice():
         pass
     return PIPER_VOICES[name]
 
+MAX_CHARS = 50000
+CHUNK_TARGET = 1500
+
+CREATE_NO_WINDOW = 0x08000000
+
+
+def _naissance(pid):
+    """L'heure de naissance d'un processus, ou None s'il n'existe plus.
+
+    Windows reattribue les numeros de processus. Un verrou abandonne -- lecture
+    tuee de force, machine qui a bronche -- finit donc par designer un innocent.
+    Constate le 23/09/2026 : le verrou portait le numero d'un processus sans
+    rapport, qu'une commande d'arret aurait tue. Le couple (numero, heure de
+    naissance), lui, est unique.
+    """
+    try:
+        import ctypes
+        from ctypes import wintypes
+        PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+        k = ctypes.windll.kernel32
+        h = k.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, int(pid))
+        if not h:
+            return None
+        try:
+            creation = wintypes.FILETIME()
+            reste = (wintypes.FILETIME(), wintypes.FILETIME(), wintypes.FILETIME())
+            ok = k.GetProcessTimes(h, ctypes.byref(creation), ctypes.byref(reste[0]),
+                                   ctypes.byref(reste[1]), ctypes.byref(reste[2]))
+        finally:
+            k.CloseHandle(h)
+        if not ok:
+            return None
+        return (creation.dwHighDateTime << 32) | creation.dwLowDateTime
+    except Exception:
+        return None
+
+
+def _poser_verrou(chemin):
+    """Inscrit notre numero de processus et notre heure de naissance."""
+    chemin.write_text("%d %s" % (os.getpid(), _naissance(os.getpid()) or 0),
+                      encoding="utf-8")
+
+
+def _pid_du_verrou(chemin):
+    """Le PID a tuer, ou None si le verrou ne designe plus la bonne lecture."""
+    try:
+        morceaux = chemin.read_text(encoding="utf-8").strip().split()
+        pid = int(morceaux[0])
+    except (OSError, ValueError, IndexError):
+        return None
+    attendue = int(morceaux[1]) if len(morceaux) > 1 and morceaux[1].isdigit() else 0
+    if not attendue:
+        # Verrou au format d'avant le 23/09/2026 : il ne porte qu'un numero, donc
+        # il ne prouve rien. On refuse de tuer sur cette seule foi.
+        return None
+    if _naissance(pid) != attendue:
+        return None            # processus disparu, ou numero recycle : on n'y touche pas
+    return pid
+
 
 def extract_prose(text: str) -> str:
-    """Filtre le Markdown pour ne garder que la prose lisible à voix haute."""
+    """Filtre le Markdown pour ne garder que la prose lisible."""
     lines = text.split("\n")
     paragraphs = []
     current = []
@@ -89,8 +169,6 @@ def extract_prose(text: str) -> str:
         if stripped.startswith("|"):
             continue
         if re.match(r"^[-*_]{3,}$", stripped):
-            continue
-        if re.match(r"^={3,}$", stripped):
             continue
         if not stripped:
             flush()
@@ -162,22 +240,28 @@ def split_into_chunks(text, target=CHUNK_TARGET):
 
 def kill_previous():
     """Tue toute lecture audio en cours via le PID stocké dans le lock file."""
-    if not LOCK_FILE.exists():
+    verrou = _verrou_de_session("piper_tts")
+    if not verrou.exists():
+        return
+    pid = _pid_du_verrou(verrou)
+    if pid is None:
+        # Verrou orphelin, ou numero recycle par un processus etranger.
+        # On nettoie, et surtout on ne tue rien.
+        try:
+            verrou.unlink()
+        except OSError:
+            pass
         return
     try:
-        pid = int(LOCK_FILE.read_text().strip())
-        if IS_WINDOWS:
-            subprocess.run(
-                ["taskkill", "/F", "/T", "/PID", str(pid)],
-                capture_output=True,
-                creationflags=CREATE_NO_WINDOW,
-            )
-        else:
-            subprocess.run(["kill", "-9", str(pid)], capture_output=True)
+        subprocess.run(
+            ["taskkill", "/F", "/T", "/PID", str(pid)],
+            capture_output=True,
+            creationflags=CREATE_NO_WINDOW,
+        )
     except (ValueError, OSError):
         pass
     try:
-        LOCK_FILE.unlink()
+        _verrou_de_session("piper_tts").unlink()
     except OSError:
         pass
 
@@ -195,7 +279,7 @@ def speak(text: str):
         return
 
     kill_previous()
-    LOCK_FILE.write_text(str(os.getpid()), encoding="utf-8")
+    _poser_verrou(_verrou_de_session("piper_tts"))
 
     try:
         import sounddevice as sd
@@ -203,10 +287,6 @@ def speak(text: str):
         from piper.config import SynthesisConfig
 
         model_path, speaker_id = resolve_voice()
-        if not model_path.exists():
-            # Modèle absent — silence, l'utilisateur doit lancer /vocal-setup
-            return
-
         voice = PiperVoice.load(str(model_path))
         syn_config = SynthesisConfig(speaker_id=speaker_id) if speaker_id is not None else None
         sample_rate = voice.config.sample_rate
@@ -228,12 +308,9 @@ def speak(text: str):
         finally:
             stream.stop()
             stream.close()
-    except ImportError:
-        # piper-tts ou sounddevice non installés — silence
-        return
     finally:
         try:
-            LOCK_FILE.unlink()
+            _verrou_de_session("piper_tts").unlink()
         except OSError:
             pass
 
@@ -279,7 +356,7 @@ def main():
         speak(text)
         return
 
-    # Mode hook Stop : payload JSON sur stdin, lit si tts_enabled existe
+    # Mode hook Stop : payload JSON sur stdin
     if not FLAG_FILE.exists():
         return
 

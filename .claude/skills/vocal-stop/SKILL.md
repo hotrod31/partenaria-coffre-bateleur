@@ -1,34 +1,29 @@
 ---
 name: vocal-stop
-description: "Désactive le mode vocal — le partenaire IA cesse de lire ses réponses à voix haute. Rend aussi le silence immédiat si une lecture est en cours. Déclencher quand l'utilisateur tape /vocal-stop, dit 'arrête la voix', 'stop la voix', 'silence', 'coupe la voix', 'plus de voix'."
+description: "Coupe la lecture vocale de CETTE fenêtre de terminal, et rend le silence immédiat même si une voix est en train de parler. Les autres fenêtres ne sont pas touchées. Déclencher quand l'utilisateur tape /vocal-stop, dit 'arrête la voix', 'coupe', 'tais-toi', 'silence', 'plus de voix'."
 ---
 
-# /vocal-stop — Désactive le mode vocal
+# /vocal-stop — le silence, tout de suite
 
-Désactive complètement le mode vocal du partenaire IA. Aucune réponse ne sera plus lue à voix haute jusqu'à ce que tu réactives avec `/vocal-jessica`, `/vocal-pierre` ou `/vocal-siwis`.
+Coupe la lecture vocale de **cette fenêtre**. Et coupe aussi la lecture **en cours** : si une voix parle, elle s'arrête au milieu de sa phrase.
 
-Tue aussi toute lecture audio en cours (silence immédiat).
+> 🔴 **C'est la première commande à connaître, avant même d'avoir entendu une voix.** Le silence est un droit absolu — jamais négociable, jamais retardé, jamais conditionné à quoi que ce soit.
 
-## Implémentation
+> 🔷 **Portée : cette fenêtre.** Si c'est la fenêtre d'à côté qui parle, celle-ci n'a rien à couper et te le dira.
+
+## Logique à exécuter
+
+Lance via Bash, et **affiche la sortie telle quelle** :
 
 ```bash
-HOOKS=".claude/hooks"
-FLAG="$HOOKS/tts_enabled"
-
-# Tuer toute lecture en cours (silence immédiat)
-python .claude/hooks/piper_tts.py --kill 2>/dev/null || true
-
-# Désactiver le flag
-if [ -f "$FLAG" ]; then
-  rm -f "$FLAG"
-  echo "Mode vocal désactivé. Silence."
-else
-  echo "Mode vocal déjà désactivé."
-fi
+python .claude/hooks/tts_stop.py
 ```
+
+Réponds avec la phrase qu'il renvoie, en rétablissant les accents :
+« Silence. Mode vocal désactivé pour cette fenêtre. » / « Mode vocal déjà désactivé pour cette fenêtre. »
 
 ## Notes
 
-- Le fichier `tts_piper_voice` reste inchangé — si tu réactives ensuite avec une commande `/vocal-*`, la voix précédemment choisie est restaurée.
-- Pour réactiver : `/vocal-jessica`, `/vocal-pierre`, ou `/vocal-siwis`.
-- Le mode vocal est toujours **désactivable à tout moment** — c'est ton droit absolu, jamais bloqué par le système.
+- Le silence vient **d'abord**, le réglage ensuite. Et il passe par le dispatcher, qui coupe **les deux moteurs** : une lecture peut être en cours sur Piper alors qu'Edge est devenu l'actif.
+- **Ton choix de voix n'est pas perdu.** Rallumer avec n'importe quelle commande `/vocal-*` retrouve la voix que tu avais.
+- Pour rallumer : **réseau** *(qualité supérieure)* `/vocal-denise`, `/vocal-eloise`, `/vocal-vivienne`, `/vocal-henri`, `/vocal-remy` — **100 % local** `/vocal-jessica`, `/vocal-pierre`, `/vocal-siwis`.

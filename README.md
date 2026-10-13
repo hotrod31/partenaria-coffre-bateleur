@@ -23,9 +23,11 @@ Un vault Obsidian structuré selon l'architecture **IAPCRA** — la dualité **I
 - **Intériorité** (dossiers `1 ALIGNEMENT/` et `2 CONNAISSANCES/`) — ta conscience, tes valeurs, la maturation de tes idées
 - **Extériorité** (dossiers `3 PROJETS/` et `4 CASQUETTES/`) — ton action dans le monde, tes engagements, tes rôles
 
-Le coffre embarque **21 commandes** (des skills Claude Code) qui accompagnent ton quotidien : ouverture de session, clôtures intra-journalières, bilans, création de projets, questionnement, clôture de journée, plus 4 commandes de bascule vocale. Une commande initiale, `/initialisation`, déploie ton squelette de coffre à partir de ta note d'introspection intime.
+Le coffre embarque **29 commandes** (des skills Claude Code) qui accompagnent ton quotidien : ouverture de session, clôtures intra-journalières, bilans, création de projets, questionnement, clôture de journée, plus **10 commandes de lecture vocale**. Une commande initiale, `/initialisation`, déploie ton squelette de coffre à partir de ta note d'introspection intime.
 
-À l'initialisation, un **partenaire IA vocal** t'accueille avec sa voix — **celle que tu auras choisie**, parmi les trois installées avec le coffre. Ta première commande à apprendre est `/vocal-stop` — le silence est ton droit absolu.
+À l'initialisation, un **partenaire IA vocal** t'accueille avec sa voix — **celle que tu auras choisie en les écoutant**. Ta première commande à apprendre est `/vocal-stop` — le silence est ton droit absolu.
+
+> 🔷 **Chaque fenêtre de terminal porte sa propre voix.** Allumer la lecture ici ne rend pas bavarde la fenêtre d'à côté, et une fenêtre où tu n'as rien tapé reste muette. C'est ce qui permet de tenir deux conversations sans que l'une parle par-dessus l'autre.
 
 ---
 
@@ -42,7 +44,8 @@ Optionnel mais recommandé pour `/initialisation` avec un fichier .docx :
 - **markitdown** (`pip install --user markitdown`) — conversion .docx → markdown
 
 Optionnel mais recommandé pour l'**expérience vocale** (le partenaire IA te lit ses réponses à voix haute) :
-- **Piper TTS** (`pip install --user piper-tts sounddevice`) — synthèse vocale locale, souveraine, gratuite, 100% offline. Trois voix françaises disponibles : Jessica (féminine chaleureuse), Pierre (masculine), Siwis (féminine neutre). Modèles téléchargés automatiquement à la demande (~63 MB par modèle).
+- **Piper TTS** (`pip install --user piper-tts sounddevice soundfile`) — synthèse vocale **locale, souveraine, gratuite, 100 % hors ligne**. Trois voix françaises : Jessica *(féminine chaleureuse)*, Pierre *(masculine)*, Siwis *(féminine neutre)*. Modèles téléchargés à la demande (~70 Mo chacun).
+- **Edge TTS** (`pip install --user edge-tts`) — **facultatif**, et seulement si le service répond. Voix neuronales Microsoft, gratuites et sans compte, nettement meilleures que Piper. ⚠️ **Mais le texte lu sort de ta machine** : c'est un choix à faire les yeux ouverts, jamais un réglage par défaut.
 
 ---
 
@@ -184,14 +187,24 @@ Il consolide toutes les sessions du jour, alimente les traces long terme, tient 
 | `/markdown <fichier>` | Convertit un document (docx, pdf, pptx, xlsx, html) en note markdown |
 | `/connect-mcp` | Installe un MCP (Firecrawl, Playwright, etc.) sur ta config |
 
-### Mode vocal (Piper local, souverain)
+### Lecture vocale — une voix par fenêtre
+
+> 🔷 **Toutes ces commandes n'agissent que sur la fenêtre où tu les tapes.** Retaper la même commande éteint la lecture.
 
 | Commande | Rôle |
 |----------|------|
-| `/vocal-stop` | **La première commande à connaître.** Désactive le mode vocal (silence immédiat, arrête toute lecture en cours). |
-| `/vocal-jessica` | Bascule sur la voix Jessica (féminine chaleureuse). |
-| `/vocal-pierre` | Bascule sur la voix Pierre (masculine, même modèle UPMC que Jessica). |
-| `/vocal-siwis` | Bascule sur la voix Siwis (féminine neutre, modèle Siwis distinct). |
+| `/vocal-stop` | 🔴 **La première à connaître, avant même d'avoir entendu une voix.** Silence immédiat : coupe la lecture en cours et éteint la fenêtre. |
+| `/vocal` | Allume **ta** voix — celle que tu as retenue à l'écoute. |
+| `/vocal-jessica` | Jessica — féminine chaleureuse. **100 % locale.** |
+| `/vocal-pierre` | Pierre — masculine. **100 % locale** *(même modèle que Jessica)*. |
+| `/vocal-siwis` | Siwis — féminine neutre. **100 % locale** *(second modèle)*. |
+| `/vocal-denise` | Denise — féminine posée. ⚠️ **Réseau** |
+| `/vocal-eloise` | Éloïse — féminine, plus jeune. ⚠️ **Réseau** |
+| `/vocal-vivienne` | Vivienne — féminine, multilingue. ⚠️ **Réseau** |
+| `/vocal-henri` | Henri — masculine. ⚠️ **Réseau** |
+| `/vocal-remy` | Rémy — masculine, multilingue. ⚠️ **Réseau** |
+
+⚠️ **« Réseau » veut dire que le texte lu part chez Microsoft** pour être transformé en voix. Les cinq voix réseau **ne sont présentes que si le service répondait le jour de l'installation** — sinon elles te disent pourquoi au lieu de rester muettes. Les trois voix locales, elles, marchent toujours.
 
 ---
 
