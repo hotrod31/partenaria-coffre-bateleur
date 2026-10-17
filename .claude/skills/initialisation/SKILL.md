@@ -15,7 +15,8 @@ Ton geste est un **rite d'initiation technique** : tu poses les fondations sur l
 
 **Le contenu de la note d'introspection est confidentiel.** Il passe par toi pendant l'extraction (flux technique automatisé) mais **ne doit jamais être révélé dans le rapport final ni dans aucune trace visible** :
 
-- Ne cite jamais de valeurs extraites dans les messages user
+- **Ne divulgue rien de ta propre initiative** — aucune valeur extraite n'apparaît dans un message, un rapport ou une trace que tu produis spontanément
+- ✅ **Mais tu réponds à ce que le bateleur te demande sur sa propre matière.** 🔑 **La frontière n'est pas le silence, c'est l'initiative** : tu ne déballes jamais ce qu'on ne te demande pas, et tu ne caches rien de ce qu'on te demande. *C'est sa matière — à lui de décider ce qu'il en fait dire, quand, et devant qui. Ce n'est pas à toi de juger quels sujets il peut aborder.*
 - Ne crée aucun fichier de log intermédiaire
 - Le rapport final est **strictement factuel** (liste des fichiers créés, pas leur contenu)
 - Le bateleur doit pouvoir partager ton rapport final en visio sans rien révéler de son intime
@@ -134,9 +135,13 @@ Ce tempérament détermine la version du message de présentation IA à afficher
 
 Pose au bateleur cette deuxième question :
 
-> Comment veux-tu nommer cette première phase de vie ? (2-5 mots, format libre — ex : « Découverte », « Retrouver mon corps », « Cadrer mon activité ». Elle durera 2-12 semaines.)
+> Comment veux-tu nommer cette première phase de vie, et sur combien de semaines l'imagines-tu ? (2-5 mots pour le nom, format libre — ex : « Découverte », « Retrouver mon corps », « Cadrer mon activité ». Pour la durée : entre 2 et 12 semaines, et tu pourras la clôturer plus tôt ou la prolonger quand tu voudras.)
 
 Récupère la réponse. Nettoie-la (retire les caractères problématiques pour un nom de dossier). Note-la comme `<NOM_PHASE>`.
+
+**Note aussi la durée qu'il donne**, en semaines, comme `<DUREE_PHASE>`.
+
+> 🔴 **S'il ne donne pas de durée, ne l'invente pas.** Écris `[durée à fixer]` dans le frontmatter de l'intention, et dis-le-lui en une ligne. ⛔ *Une échéance qu'il n'a pas choisie est une échéance qu'il ne tiendra pas — et il la découvrira dans un fichier sans savoir d'où elle vient.*
 
 Récupère aussi la **date du jour** et la **semaine ISO courante** via Bash :
 
@@ -230,7 +235,7 @@ période: [YEAR_MONTH] → [YEAR_MONTH + 6-12 mois]
 ---
 status: active
 chapitre: "[[YEAR_MONTH - <intention-initiale-courte>]]"
-période: [TODAY] → [TODAY + 6 semaines par défaut]
+période: [TODAY] → [TODAY + <DUREE_PHASE>]
 ---
 
 # 1 <NOM_PHASE>
@@ -451,12 +456,12 @@ Le tutoiement est institué. Je te répondrai juste, sans te complaire.
 
 ## Règles de conception (à respecter absolument)
 
-1. **Silence sur le contenu** — ne cite jamais de valeurs extraites dans ce que tu affiches à l'utilisateur
-2. **Deux questions au bateleur** — le nom du coffre (étape 2, avant lecture) puis le nom de la première phase de vie (étape 5, après extraction). Rien d'autre.
+1. **Aucune divulgation spontanée** — tu ne cites jamais de valeurs extraites dans ce que tu produis de ta propre initiative : messages, rapport, traces. ✅ **Tu réponds en revanche à ce qu'il te demande sur sa propre matière** — la frontière est l'initiative, pas le silence. *Reformulé le 17/10/2026 : la règle disait « silence sur le contenu » sans distinguer les deux, ce qui faisait arbitrer à l'IA ce que le bateleur peut dire de lui-même.*
+2. **Deux questions au bateleur** — le nom du coffre (étape 2, avant lecture) puis **le nom et la durée de la première phase de vie** (étape 5, après extraction : **une seule question qui porte les deux**). Rien d'autre.
 3. **Aucune invention** — si une section du guide n'est pas traitée, placeholder `[à compléter — Q_X ...]`
 4. **Idempotence stricte** — si un fichier cible existe déjà, arrêter net et signaler, jamais écraser
 5. **Dates système** — toujours via commande Bash `date`, jamais inférer
-6. **Nom de phase** — reprendre exactement ce que le bateleur a saisi (nettoyage minimal pour compatibilité dossier)
+6. **Nom et durée de phase** — reprendre exactement ce que le bateleur a saisi (nettoyage minimal pour compatibilité dossier). 🔴 **La durée vient de lui, jamais d'un défaut** : s'il ne la donne pas, écrire `[durée à fixer]` et le lui dire. *Corrigé le 17/10/2026 — le gabarit imposait « 6 semaines par défaut » alors que la question annonçait « 2 à 12 semaines ».*
 7. **Aucun log intermédiaire** — n'écrire aucun fichier autre que les 7 cibles + les 3 configs Obsidian
 8. **Présentation IA routée par tempérament** — la version affichée (SYMBOLIQUE / ÉQUILIBRÉ / FACTUEL) est choisie automatiquement selon les 4 signaux de l'étape 4b. Aucune question au bateleur pour ce choix, aucun affichage du tempérament détecté.
 9. **Silence après la présentation** — rien n'est affiché après le premier cri du partenaire IA. Pas de « À demain », pas de « À bientôt », pas de rappel /hello. La présentation se pose et se tait.
