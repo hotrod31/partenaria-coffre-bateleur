@@ -215,7 +215,7 @@ période: [YEAR_MONTH] → [YEAR_MONTH + 6-12 mois]
 [Extrait développé de S3 — vision profonde et voix propre]
 
 ## Objectifs macro
-[Extrait de S10 — contribution envisagée. Décliner en 3-5 objectifs macro si formulables, sinon placeholder]
+[Extrait de S5 — contribution envisagée. Décliner en 3-5 objectifs macro si formulables, sinon placeholder]
 
 ## Contraintes
 [À compléter au fil de ton cheminement]
@@ -242,7 +242,7 @@ période: [TODAY] → [TODAY + 6 semaines par défaut]
 [À préciser lors de ta première session /hello]
 
 ## Ce que je veux voir advenir
-[3-5 objectifs concrets, extraits de S10 si possible, sinon placeholder]
+[3-5 objectifs concrets, extraits de S5 si possible, sinon placeholder]
 ```
 
 **e) `1 ALIGNEMENT/Phases de vie/1 <NOM_PHASE>/Clarté/1 Cheminement.md`** :
