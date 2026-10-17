@@ -1,13 +1,15 @@
 ---
 name: initialisation
-description: Déploie le squelette du coffre PartenarIA à partir du fichier d'introspection intime du bateleur. Prend le chemin d'un fichier en argument (`.md`, `.txt`, `.pdf`, `.docx`). Lit la matière libre-form guidée par les 7 sections du guide d'introspection, extrait sémantiquement les éléments et génère automatiquement Contexte.md, Préférences.md, premier chapitre, première phase de vie, première semaine et première daily. Configure aussi Obsidian pour pointer vers la nouvelle phase. Déclencher quand l'utilisateur tape /initialisation <chemin>, dit « initialise mon coffre », « pose le squelette », « déploie mon coffre bateleur ».
+description: Déploie le squelette du coffre PartenarIA à partir de l'introspection intime du bateleur. Sans argument, lit tout ce qui se trouve dans `0 INBOX/` — une seule note, ou plusieurs notes numérotées qu'il remet dans l'ordre. Accepte aussi un chemin de fichier ou de dossier en argument (`.md`, `.txt`, `.pdf`, `.docx`). Lit la matière libre-form guidée par les 7 sections du guide d'introspection, extrait sémantiquement les éléments et génère automatiquement Contexte.md, Préférences.md, premier chapitre, première phase de vie, première semaine et première daily. Configure aussi Obsidian pour pointer vers la nouvelle phase. Déclencher quand l'utilisateur tape /initialisation, dit « initialise mon coffre », « pose le squelette », « déploie mon coffre bateleur ».
 ---
 
 # /initialisation — Déploiement du coffre Bateleur
 
 ## Rôle
 
-Tu déploies le squelette du coffre PartenarIA d'un bateleur qui vient de franchir le seuil du Fou. Le bateleur t'a fourni le chemin d'un fichier d'introspection intime (rédigé selon le guide `PartenarIA — Ton introspection`, 7 sections/17 questions, format libre 5000-10000 mots).
+Tu déploies le squelette du coffre PartenarIA d'un bateleur qui vient de franchir le seuil du Fou. Sa matière d'introspection intime est dans son coffre (rédigée ou dictée selon le guide `PartenarIA — Ton introspection`, 7 sections/17 questions, format libre 5000-10000 mots).
+
+**Elle arrive sous deux formes, et les deux sont normales** : une note unique qui porte tout, ou **plusieurs notes numérotées** — une par séance de dictée, exportées depuis Upmeet. Dans le second cas, **l'ordre des notes est l'ordre dans lequel il s'est raconté**, et c'est à toi de le rétablir.
 
 Ton geste est un **rite d'initiation technique** : tu poses les fondations sur lesquelles le bateleur va construire sa relation avec toi. Sois précis, sobre, respectueux.
 
@@ -19,22 +21,60 @@ Ton geste est un **rite d'initiation technique** : tu poses les fondations sur l
 - Ne crée aucun fichier de log intermédiaire
 - Le rapport final est **strictement factuel** (liste des fichiers créés, pas leur contenu)
 - Le bateleur doit pouvoir partager ton rapport final en visio sans rien révéler de son intime
+- 🔴 **Tu ne déplaces, ne renommes et ne supprimes jamais ses notes d'introspection.** Elles restent exactement là où il les a mises. ⛔ *Ce sont ses mots, pas un fichier de travail — leur rangement lui appartient.* ✅ **Mais tu dis où elles sont**, en une ligne du rapport final : il doit savoir que son intime est encore dans son inbox, et décider lui-même de ce qu'il en fait.
 
 ## Arguments
 
-- **Chemin du fichier d'introspection** (obligatoire) — absolu ou relatif à la racine du coffre
-- Formats acceptés : `.md`, `.txt`, `.pdf`, `.docx`
+**L'argument est facultatif.** Trois formes, résolues dans cet ordre :
 
-Si aucun argument n'est fourni : demander le chemin au bateleur, une seule fois, avec un message clair.
+| Ce qui est donné | Ce que tu lis |
+|---|---|
+| **rien** | tout ce qui se trouve dans **`0 INBOX/`** — c'est le cas normal |
+| un **chemin de dossier** | tout ce qui se trouve dans ce dossier |
+| un **chemin de fichier** | ce fichier seul |
+
+Formats acceptés : `.md`, `.txt`, `.pdf`, `.docx`.
+
+⛔ **Ne demande jamais le chemin au bateleur.** Sa matière est dans son inbox — s'il n'y a rien, tu le lui dis, tu ne lui fais pas chercher un chemin.
 
 ## Flux d'exécution (8 étapes)
 
-### Étape 1 — Validation de l'entrée
+### Étape 1 — Résoudre la source et ordonner la matière
 
-1. Vérifier que le fichier existe
-2. Vérifier que l'extension est supportée (`.md`, `.txt`, `.pdf`, `.docx`)
-3. Si extension non supportée : arrêter avec message clair
-4. Si fichier introuvable : arrêter avec message clair
+**1. Résoudre la source** selon le tableau des arguments ci-dessus. Si l'argument désigne un chemin qui n'existe pas : arrêter avec un message clair.
+
+**2. Énumérer les fichiers** de la source, **sans descendre dans les sous-dossiers**. Écarter :
+
+- les fichiers dont l'extension n'est pas supportée
+- les fichiers cachés (nom commençant par `.`) et les fichiers techniques du système : `.DS_Store`, `Thumbs.db`, `desktop.ini`
+
+**3. Si aucun fichier n'est retenu**, arrêter avec ce message :
+
+> Je ne trouve aucune note d'introspection dans `0 INBOX/`. Dépose-la là — une note unique, ou plusieurs notes numérotées — et relance `/initialisation`.
+
+**4. 🔴 Ordonner les fichiers retenus par TRI NATUREL, jamais par tri alphabétique.**
+
+> ⛔ **Le tri alphabétique range `0.10` AVANT `0.2`.** Avec dix notes ou plus, l'ordre se casse — et il se casse **en silence** : la matière reste lisible, seule la chronologie du récit est fausse, et personne ne le voit.
+
+**La règle** : extraire du nom de fichier **tous les groupes de chiffres**, et les comparer **comme des nombres**, de gauche à droite. `0.2` *(groupes 0 et 2)* passe donc avant `0.10` *(groupes 0 et 10)*. Ça couvre aussi bien `0.1 / 0.2 / 0.10` que `01 / 02` ou `1 / 2 / 11`.
+
+Les fichiers dont le nom ne contient **aucun chiffre** se rangent **après** les autres, triés entre eux par **date de création** — l'ordre réel de production est plus fiable qu'un ordre alphabétique.
+
+**5. Annoncer ce qui va être lu, et le faire confirmer.** ⛔ **Aucun contenu, jamais** — seulement des noms de fichiers.
+
+- **Si un seul fichier** : l'annoncer en une ligne, sans question. *Il n'y a pas d'ordre à confirmer.*
+- **Si plusieurs fichiers** : les lister dans l'ordre retenu, numérotés, puis demander une seule fois :
+
+> Voici tes notes d'introspection, dans l'ordre où je vais les lire :
+>
+> 1. …
+> 2. …
+>
+> C'est bien l'ordre dans lequel tu t'es raconté ? Réponds oui, ou dis-moi laquelle déplacer.
+
+🔴 **C'est le seul moment où une inversion se rattrape.** Après l'extraction, l'ordre est dissous dans le contexte et plus rien ne le signale.
+
+**6. Si des fichiers ont été écartés, les NOMMER** dans le même message *(« je laisse de côté : … »)*. ⛔ **Jamais de mise à l'écart silencieuse** : un fichier non lu dont personne ne parle est de la matière perdue sans trace.
 
 ### Étape 2 — Question 1 : nom du coffre (méta, avant toute lecture)
 
@@ -79,13 +119,17 @@ Cette variable sera utilisée à l'étape 7b pour configurer Piper.
 
 ### Étape 3 — Lecture (et conversion si nécessaire)
 
+**Lire les fichiers un par un, dans l'ordre arrêté à l'étape 1**, et traiter la suite de leurs contenus comme **une seule matière continue** pour les étapes 4 et 4b.
+
 - **`.md` / `.txt`** : lecture directe avec le tool Read
 - **`.pdf`** : lecture native via le tool Read (Claude Code gère les PDF)
 - **`.docx`** : conversion via Bash `markitdown "<chemin>"` (nécessite `pip install --user markitdown` — cf. README du coffre) puis lecture du markdown produit
 
-**Compter les mots du contenu extrait.** Si moins de 500 mots :
+> 🔴 **Piège des PDF longs, et il échoue franchement.** Le tool Read **exige le paramètre `pages` au-delà de dix pages**, et n'en rend **que vingt par appel**. Une transcription d'une heure de dictée dépasse les deux. ➡️ **Lire par tranches successives — `"1-20"`, `"21-40"`, … — jusqu'à la fin du document.** ⛔ **Ne jamais s'arrêter au premier appel en croyant tenir la note entière** : il ne manquerait pas une erreur, il manquerait les trois quarts de son récit.
 
-> Ton fichier d'introspection contient environ N mots. Le guide `PartenarIA — Ton introspection` en recommande 5000-10000 pour que la matière soit suffisante. L'initialisation va se poursuivre, mais plusieurs sections de ton Contexte.md contiendront des placeholders `[à compléter]` que tu pourras remplir plus tard.
+**Compter les mots sur le TOTAL de la matière lue**, pas fichier par fichier. Si moins de 500 mots :
+
+> Ton introspection contient environ N mots. Le guide `PartenarIA — Ton introspection` en recommande 5000-10000 pour que la matière soit suffisante. L'initialisation va se poursuivre, mais plusieurs sections de ton Contexte.md contiendront des placeholders `[à compléter]` que tu pourras remplir plus tard.
 
 L'initialisation continue quand même — le bateleur assume.
 
@@ -335,6 +379,10 @@ Remplacer `<VOIX_DEFAUT>` par la valeur exacte (`jessica` ou `pierre`).
 
 Ton coffre est prêt.
 
+Tes notes d'introspection sont restées où tu les avais mises : <CHEMIN_SOURCE>.
+Je n'y ai pas touché. Tu décides si tu les laisses là ou si tu les ranges
+ailleurs.
+
 Mode vocal activé — voix <NOM_VOIX_HUMAIN> (Piper local, souverain).
 Tape /vocal-stop pour l'arrêter à tout moment, ou /vocal-jessica /
 /vocal-pierre / /vocal-siwis pour changer de voix. C'est ta première
@@ -457,7 +505,7 @@ Le tutoiement est institué. Je te répondrai juste, sans te complaire.
 ## Règles de conception (à respecter absolument)
 
 1. **Silence sur le contenu** — ne cite jamais de valeurs extraites dans ce que tu affiches à l'utilisateur
-2. **Deux questions au bateleur** — le nom du coffre (étape 2, avant lecture) puis le nom de la première phase de vie (étape 5, après extraction). Rien d'autre.
+2. **Deux questions au bateleur** — le nom du coffre (étape 2, avant lecture) puis le nom de la première phase de vie (étape 5, après extraction). Rien d'autre. *La confirmation d'ordre de l'étape 1 n'est pas une question de ce compte : elle ne se pose que s'il y a plusieurs notes, et elle ne lui demande aucun choix — seulement de vérifier.*
 3. **Aucune invention** — si une section du guide n'est pas traitée, placeholder `[à compléter — Q_X ...]`
 4. **Idempotence stricte** — si un fichier cible existe déjà, arrêter net et signaler, jamais écraser
 5. **Dates système** — toujours via commande Bash `date`, jamais inférer
@@ -468,3 +516,7 @@ Le tutoiement est institué. Je te répondrai juste, sans te complaire.
 10. **Salutation temporelle** — « Bonjour » avant 18h, « Bonsoir » à partir de 18h. Détection via Bash `date +%H`, jamais inférer.
 11. **La voix est choisie par le bateleur** — à l'étape 2b, les trois voix lui sont présentées et il désigne la sienne. **Ne jamais la déduire de son nom ni de son prénom.** S'il ne choisit pas, prendre `siwis` et le dire. Cette voix sert au premier cri parlé, et il peut changer à tout moment via `/vocal-*`.
 12. **`<NOM_VOIX_HUMAIN>` dans le rapport** — substituer par le nom capitalisé de la voix : `jessica` → « Jessica », `pierre` → « Pierre », `siwis` → « Siwis ». Utilisé dans la ligne « Mode vocal activé — voix ___ » du rapport.
+13. **L'inbox est la source par défaut, et le chemin ne se demande pas** — sans argument, tu lis tout `0 INBOX/`. Un fichier ou un dossier passé en argument reste honoré. ⛔ **Ne jamais faire chercher un chemin au bateleur.**
+14. 🔴 **Tri naturel, et l'ordre se montre avant d'être utilisé** — les groupes de chiffres du nom se comparent **comme des nombres**, jamais comme du texte *(`0.2` avant `0.10`)*. S'il y a plusieurs notes, la liste ordonnée s'affiche et se fait confirmer **avant** l'extraction ; les fichiers écartés sont nommés. ⛔ **Aucune mise à l'écart silencieuse, aucun ordre présumé.**
+15. 🔴 **Un PDF se lit jusqu'au bout** — au-delà de dix pages, le tool Read exige `pages` et n'en rend que vingt par appel. **Lire par tranches jusqu'à la dernière page.** ⛔ *S'arrêter au premier appel ne produit pas une erreur : ça produit une initialisation bâtie sur le quart du récit.*
+16. **La matière reste où elle est** — jamais déplacée, renommée ni supprimée. Sa position est dite une fois dans le rapport final, et c'est au bateleur d'en décider.
