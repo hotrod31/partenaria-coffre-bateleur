@@ -56,3 +56,59 @@ introspection*.docx
 # Modèles Piper, téléchargés à la demande (60 à 75 Mo chacun)
 .claude/hooks/piper/voices/*.onnx
 .claude/hooks/piper/voices/*.onnx.json
+
+# =============================================================
+# Notes personnelles du bateleur — JAMAIS versionnees
+# =============================================================
+# Le coffre-template ne versionne que sa propre doctrine : les
+# README.md des dossiers et les quelques fichiers listes en
+# exception ci-dessous. Tout le reste de ce que tu ecris dans les
+# dossiers 0 a 6 t'appartient, et ne doit pouvoir partir dans
+# aucun depot — y compris sur un `git add -A` tape sans regarder.
+#
+# Rappel qui compte : .gitignore n'a AUCUN effet sur un fichier
+# deja suivi par git. Les fichiers de doctrine restent donc suivis
+# et continuent d'arriver par `git pull`. Pour ajouter un NOUVEAU
+# fichier de doctrine dans ces dossiers cote template, il faut
+# l'ajouter ici en exception, ou faire `git add -f <chemin>`.
+
+/0 INBOX/**
+/1 ALIGNEMENT/**
+/2 CONNAISSANCES/**
+/3 PROJETS/**
+/4 CASQUETTES/**
+/5 RESSOURCES/**
+/6 ARCHIVES/**
+
+# Les dossiers eux-memes restent parcourus, sinon git ne descend pas
+# jusqu'aux exceptions nichees plus bas.
+!/0 INBOX/**/
+!/1 ALIGNEMENT/**/
+!/2 CONNAISSANCES/**/
+!/3 PROJETS/**/
+!/4 CASQUETTES/**/
+!/5 RESSOURCES/**/
+!/6 ARCHIVES/**/
+
+# Exceptions : la doctrine du template, et elle seule.
+!/0 INBOX/README.md
+!/1 ALIGNEMENT/Chapitres/README.md
+!/1 ALIGNEMENT/Phases de vie/README.md
+!/2 CONNAISSANCES/Ce que j'ai appris/README.md
+!/2 CONNAISSANCES/Ce que je me dis/README.md
+!/2 CONNAISSANCES/Ce qui mijote.md
+!/2 CONNAISSANCES/README.md
+!/3 PROJETS/PROJETS.md
+!/4 CASQUETTES/README.md
+!/5 RESSOURCES/Outils/README.md
+!/5 RESSOURCES/Processus/README.md
+!/6 ARCHIVES/README.md
+
+# =============================================================
+# Secrets
+# =============================================================
+# AGENTS.md promet au bateleur que son .env est "deja exclu par
+# .gitignore". Il ne l'etait pas. Il l'est.
+.env
+.env.*
+!.env.example

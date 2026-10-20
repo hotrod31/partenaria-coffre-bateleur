@@ -9,6 +9,23 @@ Convention SemVer allégée : `vMAJOR.MINOR.PATCH`
 
 ---
 
+## v2.1.1 — 2026-10-20 — branche `windows`
+
+**Tes notes ne peuvent plus partir dans un dépôt, même par maladresse. Et le `.env` que la doctrine promettait d'exclure l'est enfin.**
+
+Ton coffre est le clone d'un dépôt public. Un clone descend, il ne remonte pas : rien n'en sort tant que personne ne tape une commande d'envoi, et personne d'autre que l'auteur du template n'a le droit d'écrire dans ce dépôt. Le risque était donc théorique. Mais **« théorique » n'est pas « nul »**, et le jour où un bateleur se crée son propre dépôt, c'est lui qui décide de sa visibilité.
+
+### Les dossiers 0 à 6 n'exposent plus que la doctrine
+
+- **`.gitignore`** — le contenu des sept dossiers du coffre est désormais exclu en bloc, avec une **liste fermée d'exceptions** : les douze fichiers de doctrine du template, nommés un par un. Un `git add -A` tapé sans regarder n'ajoute plus rien de personnel — vérifié sur dix fichiers de test, de la daily note au `.env` en passant par une archive de données.
+- 🔴 **`.gitignore` n'a aucun effet sur un fichier déjà suivi par git.** C'est ce qui rend l'exclusion sans danger : les douze fichiers de doctrine restent suivis et **continuent d'arriver par `git pull`**. Contrepartie assumée, écrite dans le fichier : ajouter un *nouveau* fichier de doctrine dans ces dossiers côté template demande désormais de l'inscrire en exception, ou de faire `git add -f`.
+
+### Une promesse qui n'était pas tenue
+
+- 🔴 **`AGENTS.md` dit au bateleur de ranger ses clés API dans un `.env` local, « déjà exclu par `.gitignore` ». Il ne l'était pas.** Aucune des trois branches n'excluait ce fichier — seuls `venv/` et `env/`, qui sont des dossiers Python et n'ont rien à voir. La doctrine affirmait une protection que le fichier n'implémentait pas, ce qui est pire que ne rien promettre. `.env` et `.env.*` sont maintenant exclus, `.env.example` reste versionnable.
+
+---
+
 ## v2.1.0 — 2026-10-13 — branche `windows`
 
 **La voix devient utilisable à plusieurs fenêtres, et elle ne mentira plus quand elle ne peut pas parler.**
