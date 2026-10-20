@@ -63,6 +63,8 @@ git clone -b windows --single-branch https://github.com/hotrod31/partenaria-coff
 
 Le dossier `~/PartenarIA` (ou l'emplacement de ton choix) devient ton coffre personnel. **Ce clone-ci est la version macOS.**
 
+> 🔷 **« Mon coffre est le clone d'un dépôt public — est-ce que mes notes sont exposées ? »** Non, et à trois verrous. **Un clone descend, il ne remonte pas** : rien ne quitte ta machine tant que personne ne tape une commande d'envoi. **Tu n'as aucun droit d'écriture sur ce dépôt** : même tapée volontairement, cette commande serait refusée. Et **le `.gitignore` exclut le contenu des dossiers 0 à 6**, donc un `git add -A` maladroit n'attrape rien de ce que tu écris. La confidentialité de tes notes, elle, ne dépend pas de git mais de **ta synchronisation Obsidian Sync, chiffrée de bout en bout**. Ce sont deux sujets séparés — ne laisse personne te les mélanger.
+
 ### 2. Ouvrir dans Obsidian et Claude Code
 
 - **Obsidian** — `Fichier → Ouvrir un coffre → Ouvrir un coffre existant` → sélectionne le dossier `PartenarIA`.
